@@ -1,0 +1,48 @@
+# Operating System
+.DS_Store
+Thumbs.db
+
+# PlatformIO / Firmware build outputs
+.pio/
+firmware/.pio/
+firmware/test_native/test_soil_estimator
+.pioenvs/
+.piolibdeps/
+.clangd/
+
+# Python / Scripts
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+scripts/.venv/
+scripts/__pycache__/
+backend/.venv/
+backend/__pycache__/
+
+# Flutter & Dart
+.dart_tool/
+mobile/.dart_tool/
+mobile/build/
+mobile/.flutter-plugins
+mobile/.flutter-plugins-dependencies
+mobile/.packages
+mobile/android/.gradle/
+mobile/android/local.properties
+mobile/ios/.symlinks/
+mobile/ios/Pods/
+mobile/macos/Flutter/ephemeral/
+
+# IDE & Editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Environment & secrets
+.env
+.env*.local

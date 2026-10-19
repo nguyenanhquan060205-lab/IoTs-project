@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trình Giả Lập Trạm ESP32 & Cảm Biến Đất IoT (Virtual Hardware Simulator)</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --surface-card: #1e293b;
+            --surface-hover: #334155;
+            --primary: #10b981;
+            --accent: #3b82f6;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --oled-bg: #000000;
+            --oled-blue: #38bdf8;
+            --oled-yellow: #facc15;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 24px;
+        }
+
+        .header-title h1 {
+            font-size: 22px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff;
+        }
+
+        .header-title p {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #34d399;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #34d399;
+            box-shadow: 0 0 8px #34d399;
+            animation: pulse 1.8s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.9); }
+        }
+
+        .simulator-grid {
+            display: grid;
+            grid-template-columns: 380px 1fr 340px;
+            gap: 20px;
+            flex: 1;
+        }
+
+        .card {
+            background: var(--surface-card);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-header {
+            font-size: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* VIRTUAL OLED SCREEN */
+        .oled-wrapper {
+            background: #111;
+            padding: 14px;
+            border-radius: 12px;
+            border: 2px solid #222;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+        }
+
+        .oled-screen {
+            background: var(--oled-bg);
+            width: 100%;
+            height: 160px;
+            border-radius: 6px;
+            border: 1px solid #333;
+            padding: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .oled-screen::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: repeating-linear-gradient(0deg, rgba(0,0,0,0.2) 0px, rgba(0,0,0,0.2) 1px, transparent 1px, transparent 2px);
+            pointer-events: none;
+        }
+
+        .oled-header {
+            display: flex;
+            justify-content: space-between;
+            color: var(--oled-yellow);
+            font-size: 13px;
+            font-weight: 700;
+            border-bottom: 1px dashed rgba(250, 204, 21, 0.4);
+            padding-bottom: 6px;
+        }
+
+        .oled-body {
+            color: var(--oled-blue);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .oled-footer {
+            border-top: 1px dashed rgba(56, 189, 248, 0.4);
+            padding-top: 6px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #fff;
+        }
+
+        /* WATER SENSOR CONTROLLER */
+        .sensor-control {
+            margin-top: 10px;
+            background: rgba(0,0,0,0.2);
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .sensor-val-display {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 12px;
+        }
+
+        .sensor-val-display .adc-val {
+            font-size: 28px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent);
+        }
+
+        .slider-wrapper {
+            margin: 15px 0;
+        }
+
+        input[type=range] {
+            width: 100%;
+            height: 10px;
+            border-radius: 5px;
+            background: #334155;
+            outline: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.6);
+            border: 2px solid #fff;
+        }
+
+        .presets {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .preset-btn {
+            flex: 1;
+            padding: 8px;
+            background: var(--surface-hover);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #cbd5e1;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .preset-btn:hover {
+            background: #475569;
+            color: #fff;
+        }
+
+        /* RELAY & ACTUATORS */
+        .actuator-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(0,0,0,0.25);
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+            margin-bottom: 12px;
+        }
+
+        .relay-status {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .relay-led {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #475569;
+            transition: all 0.3s;
+        }
+
+        .relay-led.active {
+            background: var(--danger);
+            box-shadow: 0 0 14px var(--danger);
+        }
+
+        .relay-switch-btn {
+            background: #334155;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .relay-switch-btn.active {
+            background: var(--danger);
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
+        }
+
+        /* TELEMETRY CARDS IN CENTER */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .metric-card {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .metric-title {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            margin: 6px 0;
+            color: #fff;
+        }
+
+        .metric-unit {
+            font-size: 11px;
+            color: #64748b;
+        }
+
+        .metric-card.n .metric-value { color: #34d399; }
+        .metric-card.p .metric-value { color: #fbbf24; }
+        .metric-card.k .metric-value { color: #f472b6; }
+        .metric-card.ec .metric-value { color: #38bdf8; }
+        .metric-card.ph .metric-value { color: #a78bfa; }
+        .metric-card.moist .metric-value { color: #60a5fa; }
+
+        /* DIAGNOSIS BOX */
+        .diagnosis-box {
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            border-radius: 12px;
+            padding: 16px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .diagnosis-box.warning {
+            background: rgba(245, 158, 11, 0.08);
+            border-color: rgba(245, 158, 11, 0.3);
+        }
+
+        .diagnosis-box.danger {
+            background: rgba(239, 68, 68, 0.08);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .diagnosis-title {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .diagnosis-desc {
+            font-size: 13px;
+            color: #cbd5e1;
+            line-height: 1.5;
+        }
+
+        /* TERMINAL LOG */
+        .terminal-log {
+            background: #090d16;
+            border-radius: 10px;
+            padding: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: #38bdf8;
+            height: 100%;
+            overflow-y: auto;
+            border: 1px solid #1e293b;
+            line-height: 1.6;
+        }
+
+        .log-entry { margin-bottom: 4px; word-break: break-all; }
+        .log-time { color: #64748b; }
+        .log-in { color: #f59e0b; }
+        .log-out { color: #10b981; }
+
+        footer {
+            margin-top: 16px;
+            text-align: center;
+            font-size: 12px;
+            color: #64748b;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-title">
+            <h1>🌱 VIRTUAL ESP32 SOIL NUTRIENT SIMULATOR</h1>
+            <p>Trạm Giả lập Vi Điều Khiển ESP32 & Cảm biến nước nội suy N-P-K / pH</p>
+        </div>
+        <div class="status-badge" id="mqttStatus">
+            <span class="status-dot" id="statusDot"></span>
+            <span id="statusText">Đang kết nối MQTT...</span>
+        </div>
+    </header>
+
+    <div class="simulator-grid">
+        <!-- CỘT 1: PHẦN CỨNG ẢO ESP32 & OLED -->
+        <div class="card">
+            <div class="card-header">
+                <span>🖥️ Màn Hình OLED 0.96" SSD1306</span>
+                <span style="font-size: 11px; color: #64748b;">I2C 0x3C</span>
+            </div>
+
+            <!-- VIRTUAL OLED -->
+            <div class="oled-wrapper">
+                <div class="oled-screen">
+                    <div class="oled-header">
+                        <span>SOIL IOT: WIFI OK</span>
+                        <span id="oledTimer">00:00</span>
+                    </div>
+                    <div class="oled-body">
+                        <div>Am: <span id="oledMoist">50.0%</span>  EC:<span id="oledEc">750</span></div>
+                        <div>N:<span id="oledN">72</span>  P:<span id="oledP">35</span>  K:<span id="oledK">90</span></div>
+                        <div>pH: <span id="oledPh">6.4</span>  Nhiet: 27.5C</div>
+                    </div>
+                    <div class="oled-footer">
+                        <div>BOM: <span id="oledPump" style="color: #4ade80;">[OFF]</span></div>
+                        <div>MQTT: OK</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-header">
+                <span>💧 Cảm biến nước (ADC GPIO34)</span>
+            </div>
+
+            <!-- SENSOR SLIDER -->
+            <div class="sensor-control">
+                <div class="sensor-val-display">
+                    <div>
+                        <div style="font-size: 12px; color: #94a3b8;">ĐIỆN ÁP ADC (12-bit)</div>
+                        <div class="adc-val" id="adcDisplay">1750</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 12px; color: #94a3b8;">ĐỘ ẨM TƯƠNG QUAN</div>
+                        <div style="font-size: 20px; font-weight: 700; color: #38bdf8;" id="moistDisplay">51.7%</div>
+                    </div>
+                </div>
+
+                <div class="slider-wrapper">
+                    <input type="range" id="waterSlider" min="200" max="3200" value="1750" step="10">
+                </div>
+
+                <div class="presets">
+                    <button class="preset-btn" onclick="setPreset(250)">🌵 Khô cằn</button>
+                    <button class="preset-btn" onclick="setPreset(1700)">🌿 Lý tưởng</button>
+                    <button class="preset-btn" onclick="setPreset(3100)">🌊 Ngập úng</button>
+                </div>
+            </div>
+
+            <!-- ACTUATOR (RELAY) -->
+            <div style="margin-top: 16px;">
+                <div class="card-header">
+                    <span>🔌 Rơ-le Máy Bơm (GPIO26)</span>
+                </div>
+                <div class="actuator-box">
+                    <div class="relay-status">
+                        <div class="relay-led" id="relayLed"></div>
+                        <div>
+                            <div style="font-size: 13px; font-weight: 600;">Máy Bơm Tưới</div>
+                            <div style="font-size: 11px; color: #64748b;" id="relayStateText">Trạng thái: TẮT</div>
+                        </div>
+                    </div>
+                    <button class="relay-switch-btn" id="relayToggleBtn" onclick="toggleRelay()">BẬT BƠM</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CỘT 2: THÔNG SỐ DINH DƯỠNG NPK & SUY DIỄN NÔNG HỌC -->
+        <div class="card">
+            <div class="card-header">
+                <span>📊 Phổ Dinh Dưỡng Đất (Heuristic Inference Model)</span>
+                <span style="font-size: 11px; color: #34d399;">Chu kỳ: 3s</span>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric-card moist">
+                    <div class="metric-title">Độ Ẩm Đất</div>
+                    <div class="metric-value" id="cardMoist">51.7%</div>
+                    <div class="metric-unit">Chuẩn: 50 - 70%</div>
+                </div>
+                <div class="metric-card ec">
+                    <div class="metric-title">Độ Dẫn Điện EC</div>
+                    <div class="metric-value" id="cardEc">750</div>
+                    <div class="metric-unit">µS/cm (Độ phì)</div>
+                </div>
+                <div class="metric-card ph">
+                    <div class="metric-title">Độ pH Đất</div>
+                    <div class="metric-value" id="cardPh">6.4</div>
+                    <div class="metric-unit">Chuẩn: 6.0 - 6.8</div>
+                </div>
+                <div class="metric-card n">
+                    <div class="metric-title">Nitơ (N - Đạm)</div>
+                    <div class="metric-value" id="cardN">68.2</div>
+                    <div class="metric-unit">mg/kg (Thân lá)</div>
+                </div>
+                <div class="metric-card p">
+                    <div class="metric-title">Photpho (P - Lân)</div>
+                    <div class="metric-value" id="cardP">33.5</div>
+                    <div class="metric-unit">mg/kg (Rễ hoa)</div>
+                </div>
+                <div class="metric-card k">
+                    <div class="metric-title">Kali (K - Tro)</div>
+                    <div class="metric-value" id="cardK">92.1</div>
+                    <div class="metric-unit">mg/kg (Đậu trái)</div>
+                </div>
+            </div>
+
+            <div class="card-header" style="margin-top: 10px;">
+                <span>🧠 Hệ Chuyên Gia Nông Học (Agronomic Engine)</span>
+            </div>
+
+            <div class="diagnosis-box" id="diagBox">
+                <div class="diagnosis-title" id="diagTitle">✅ Đất Đạt Độ Phì Nhiêu & Dinh Dưỡng Chuẩn</div>
+                <div class="diagnosis-desc" id="diagDesc">
+                    Độ ẩm và nồng độ ion khoáng hòa tan cân đối. Kết cấu keo đất tơi xốp, hệ vi sinh vật đất và dung tích hấp thu dưỡng chất đạt trạng thái tối ưu.
+                </div>
+            </div>
+        </div>
+
+        <!-- CỘT 3: NHẬT KÝ MQTT NETWORK TRAFFIC -->
+        <div class="card">
+            <div class="card-header">
+                <span>📡 Giao Thức MQTT (broker.emqx.io)</span>
+                <span style="font-size: 11px; color: #38bdf8;">WSS :8084</span>
+            </div>
+
+            <div class="terminal-log" id="terminalLog">
+                <div class="log-entry log-out">[SYS] Khởi động trình mô phỏng ESP32...</div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        Hệ Thống Dinh Dưỡng Đất Thông Minh IoT • Kết nối song song hai chiều với App Flutter qua HiveMQ / EMQX
+    </footer>
+
+    <script>
+        // CẤU HÌNH MQTT WEBSOCKET
+        const MQTT_HOST = "broker.emqx.io";
+        const MQTT_PORT = 8084; // WebSocket SSL port của EMQX
+        const CLIENT_ID = "web_esp32_sim_" + Math.floor(Math.random() * 100000);
+        const TOPIC_TELEMETRY = "soil_station/1/telemetry";
+        const TOPIC_COMMAND = "soil_station/1/command";
+        const TOPIC_STATUS = "soil_station/1/status";
+
+        let client;
+        let pumpActive = false;
+        let valveActive = false;
+
+        const ADC_DRY = 200;
+        const ADC_WET = 3000;
+
+        // Elements
+        const slider = document.getElementById("waterSlider");
+        const adcDisplay = document.getElementById("adcDisplay");
+        const moistDisplay = document.getElementById("moistDisplay");
+        const relayLed = document.getElementById("relayLed");
+        const relayToggleBtn = document.getElementById("relayToggleBtn");
+        const relayStateText = document.getElementById("relayStateText");
+
+        // Metrics elements
+        const cardMoist = document.getElementById("cardMoist");
+        const cardEc = document.getElementById("cardEc");
+        const cardPh = document.getElementById("cardPh");
+        const cardN = document.getElementById("cardN");
+        const cardP = document.getElementById("cardP");
+        const cardK = document.getElementById("cardK");
+
+        // OLED elements
+        const oledMoist = document.getElementById("oledMoist");
+        const oledEc = document.getElementById("oledEc");
+        const oledN = document.getElementById("oledN");
+        const oledP = document.getElementById("oledP");
+        const oledK = document.getElementById("oledK");
+        const oledPh = document.getElementById("oledPh");
+        const oledPump = document.getElementById("oledPump");
+        const oledTimer = document.getElementById("oledTimer");
+
+        const diagBox = document.getElementById("diagBox");
+        const diagTitle = document.getElementById("diagTitle");
+        const diagDesc = document.getElementById("diagDesc");
+        const terminalLog = document.getElementById("terminalLog");
+
+        function log(msg, type="out") {
+            const time = new Date().toTimeString().split(' ')[0];
+            const div = document.createElement("div");
+            div.className = "log-entry " + (type === "in" ? "log-in" : "log-out");
+            div.innerHTML = `<span class="log-time">[${time}]</span> ${msg}`;
+            terminalLog.appendChild(div);
+            terminalLog.scrollTop = terminalLog.scrollHeight;
+        }
+
+        // THUẬT TOÁN SUY DIỄN DINH DƯỠNG ĐẤT
+        function calculateNutrients(adc) {
+            let moisture = ((adc - ADC_DRY) / (ADC_WET - ADC_DRY)) * 100.0;
+            moisture = Math.max(0.0, Math.min(100.0, moisture));
+
+            let ec = (moisture * 13.5) + (Math.random() * 20 - 10);
+            ec = Math.max(150.0, Math.min(2200.0, ec));
+
+            let n = (ec * 0.085) + (Math.random() * 4 - 2);
+            let p = (ec * 0.042) + (Math.random() * 3 - 1.5);
+            let k = (ec * 0.115) + (Math.random() * 5 - 2.5);
+
+            let ph = 6.5 - ((moisture - 50.0) * 0.012) + (Math.random() * 0.2 - 0.1);
+            ph = Math.max(4.5, Math.min(8.5, ph));
+
+            return {
+                moisture: moisture.toFixed(1),
+                ec: Math.round(ec),
+                n: n.toFixed(1),
+                p: p.toFixed(1),
+                k: k.toFixed(1),
+                ph: ph.toFixed(1)
+            };
+        }
+
+        function updateUI() {
+            const adc = parseInt(slider.value);
+            adcDisplay.innerText = adc;
+
+            const res = calculateNutrients(adc);
+            moistDisplay.innerText = res.moisture + "%";
+
+            // Update cards
+            cardMoist.innerText = res.moisture + "%";
+            cardEc.innerText = res.ec;
+            cardPh.innerText = res.ph;
+            cardN.innerText = res.n;
+            cardP.innerText = res.p;
+            cardK.innerText = res.k;
+
+            // Update OLED
+            oledMoist.innerText = res.moisture + "%";
+            oledEc.innerText = res.ec;
+            oledN.innerText = res.n;
+            oledP.innerText = res.p;
+            oledK.innerText = res.k;
+            oledPh.innerText = res.ph;
+            oledPump.innerText = pumpActive ? "[ON]" : "[OFF]";
+            oledPump.style.color = pumpActive ? "#ef4444" : "#4ade80";
+
+            // Diagnosis
+            if (parseFloat(res.moisture) < 40) {
+                diagBox.className = "diagnosis-box warning";
+                diagTitle.innerHTML = "⚠️ CẢNH BÁO: Đất Khô Cằn Thiếu Nước";
+                diagDesc.innerText = "Độ ẩm đất thấp làm hạn chế quá trình hòa tan dinh dưỡng và khoáng chất của đất. Khuyến nghị kích hoạt máy bơm tưới bù ẩm.";
+            } else if (parseFloat(res.moisture) > 80) {
+                diagBox.className = "diagnosis-box danger";
+                diagTitle.innerHTML = "🚨 NGUY HIỂM: Đất Ngập Úng / Dư Nước";
+                diagDesc.innerText = "Độ ẩm quá cao làm đất yếm khí, giảm lượng oxy trong đất và phá vỡ cấu trúc keo đất. Ngừng tưới ngay lập tức và khơi rãnh thoát nước.";
+            } else if (res.ec > 1800) {
+                diagBox.className = "diagnosis-box danger";
+                diagTitle.innerHTML = "🚨 CẢNH BÁO: Đất Ngộ Độc Phân / Mặn Hóa";
+                diagDesc.innerText = "Nồng độ ion khoáng hòa tan vượt ngưỡng chịu đựng của đất. Cần xả nhiều nước ngọt để rửa bớt muối tồn dư.";
+            } else {
+                diagBox.className = "diagnosis-box";
+                diagTitle.innerHTML = "✅ Đất Đạt Độ Phì Nhiêu & Dinh Dưỡng Chuẩn";
+                diagDesc.innerText = "Độ ẩm và nồng độ ion khoáng hòa tan cân đối. Kết cấu keo đất tơi xốp, hệ vi sinh vật đất và dung tích hấp thu dưỡng chất đạt trạng thái tối ưu.";
+            }
+
+            return res;
+        }
+
+        function setPreset(val) {
+            slider.value = val;
+            updateUI();
+            publishTelemetry();
+        }
+
+        slider.addEventListener("input", updateUI);
+
+        function toggleRelay() {
+            setRelayState(!pumpActive);
+            // Gửi thông báo thay đổi
+            publishTelemetry();
+        }
+
+        function setRelayState(active) {
+            pumpActive = active;
+            if (pumpActive) {
+                relayLed.classList.add("active");
+                relayToggleBtn.classList.add("active");
+                relayToggleBtn.innerText = "TẮT BƠM";
+                relayStateText.innerText = "Trạng thái: BẬT (ĐANG BƠM)";
+                log("[RELAY] BẬT máy bơm nước (GPIO26 -> HIGH)", "out");
+            } else {
+                relayLed.classList.remove("active");
+                relayToggleBtn.classList.remove("active");
+                relayToggleBtn.innerText = "BẬT BƠM";
+                relayStateText.innerText = "Trạng thái: TẮT";
+                log("[RELAY] TẮT máy bơm nước (GPIO26 -> LOW)", "out");
+            }
+            updateUI();
+        }
+
+        // MQTT CLIENT SETUP
+        function initMQTT() {
+            client = new Paho.MQTT.Client(MQTT_HOST, MQTT_PORT, "/mqtt", CLIENT_ID);
+
+            client.onConnectionLost = function(responseObject) {
+                document.getElementById("statusDot").style.backgroundColor = "#ef4444";
+                document.getElementById("statusText").innerText = "Mất kết nối MQTT!";
+                log("[MQTT] Mất kết nối: " + responseObject.errorMessage, "in");
+                setTimeout(initMQTT, 3000);
+            };
+
+            client.onMessageArrived = function(message) {
+                try {
+                    const payload = JSON.parse(message.payloadString);
+                    log(`[MQTT NHẬN TỪ APP] Topic: ${message.destinationName} -> ${message.payloadString}`, "in");
+                    if (payload.action === "SET_PUMP") {
+                        setRelayState(payload.state === true);
+                    }
+                } catch(e) {
+                    log("[MQTT] Nhận payload: " + message.payloadString, "in");
+                }
+            };
+
+            client.connect({
+                useSSL: true,
+                onSuccess: function() {
+                    document.getElementById("statusDot").style.backgroundColor = "#34d399";
+                    document.getElementById("statusText").innerText = "Đã kết nối EMQX Cloud";
+                    log(`[MQTT] Đã kết nối Broker ${MQTT_HOST}:${MQTT_PORT}`, "out");
+
+                    client.subscribe(TOPIC_COMMAND);
+                    log(`[MQTT] Lắng nghe lệnh App tại: ${TOPIC_COMMAND}`, "out");
+
+                    // Bắt đầu gửi telemetry
+                    setInterval(publishTelemetry, 3500);
+                },
+                onFailure: function(e) {
+                    document.getElementById("statusDot").style.backgroundColor = "#ef4444";
+                    document.getElementById("statusText").innerText = "Lỗi kết nối MQTT";
+                    log("[MQTT] Lỗi kết nối Broker: " + JSON.stringify(e), "in");
+                    setTimeout(initMQTT, 5000);
+                }
+            });
+        }
+
+        function publishTelemetry() {
+            if (!client || !client.isConnected()) return;
+
+            // Nếu đang bật bơm -> tự động tăng độ ẩm lên một chút
+            if (pumpActive) {
+                let cur = parseInt(slider.value);
+                if (cur < 2900) {
+                    slider.value = cur + 30;
+                }
+            }
+
+            const data = updateUI();
+            const payload = {
+                device_id: "esp32_soil_station_01",
+                timestamp: Math.floor(Date.now() / 1000),
+                telemetry: {
+                    nitrogen: parseFloat(data.n),
+                    phosphorus: parseFloat(data.p),
+                    potassium: parseFloat(data.k),
+                    ph: parseFloat(data.ph),
+                    ec: parseFloat(data.ec),
+                    moisture: parseFloat(data.moisture),
+                    temperature: 27.5
+                },
+                actuators: {
+                    pump: pumpActive,
+                    nutrient_valve: valveActive
+                }
+            };
+
+            const msg = new Paho.MQTT.Message(JSON.stringify(payload));
+            msg.destinationName = TOPIC_TELEMETRY;
+            client.send(msg);
+
+            log(`[TELEMETRY] 💧${data.moisture}% | ⚡EC:${data.ec} | N:${data.n} P:${data.p} K:${data.k} | pH:${data.ph}`, "out");
+        }
+
+        // Đồng hồ OLED
+        setInterval(() => {
+            const now = new Date();
+            oledTimer.innerText = String(now.getMinutes()).padStart(2, '0') + ":" + String(now.getSeconds()).padStart(2, '0');
+        }, 1000);
+
+        // Khởi động
+        updateUI();
+        initMQTT();
+    </script>
+</body>
+</html>
