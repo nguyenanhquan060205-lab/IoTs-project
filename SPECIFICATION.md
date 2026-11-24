@@ -15,7 +15,7 @@
   - Ứng dụng **Thuật toán suy diễn thực nghiệm (Empirical Heuristic Estimation Algorithm)** chạy trực tiếp trên chip ESP32 (Edge Computing) để ước lượng các chỉ số: **Độ ẩm (%), EC (độ dẫn điện/độ phì), Đạm (N), Lân (P), Kali (K) và pH**.
   - Hiển thị thông số trực tiếp tại chỗ qua màn hình **OLED 0.96 inch SSD1306**.
   - Truyền dữ liệu hai chiều thời gian thực qua giao thức mạng **MQTT** với định dạng **JSON**.
-  - Tích hợp **Hệ chuyên gia Nông học (Rule-based Agronomic Engine)** trên ứng dụng di động **Flutter**: vẽ biểu đồ Radar NPK, chẩn đoán độ màu mỡ của đất và tự động xuất khuyến nghị cải tạo đất theo Ngưỡng Đất Màu Mỡ Chuẩn Nông Nghiệp.
+  - Tích hợp **Hệ chuyên gia Nông học (Rule-based Agronomic Engine)** trên ứng dụng di động **Flutter**: hiển thị N, P, K, độ ẩm, pH, EC so với mức chuẩn, chẩn đoán độ màu mỡ của đất và tự động xuất khuyến nghị cải tạo đất theo Ngưỡng Đất Màu Mỡ Chuẩn Nông Nghiệp.
   - Hỗ trợ **Điều khiển thiết bị ngoại vi hai chiều**: Bật/tắt máy bơm tưới nước và van xả dinh dưỡng từ xa qua điện thoại.
 
 ---
@@ -70,17 +70,17 @@ Thay vì dùng mô hình học máy "hộp đen" phức tạp đòi hỏi máy c
 
 ```mermaid
 flowchart TD
-    A[Tín hiệu Analog thô từ cảm biến GPIO34] --> B[Giai đoạn 1: Lọc trung bình trượt 20 mẫu Moving Average]
+    A[Tín hiệu Analog thô từ cảm biến GPIO34] --> B[Giai đoạn 1: Lọc trung bình cắt tỉa 21 mẫu]
     B --> C[Giai đoạn 2: Chuẩn hóa 2 điểm ADC_DRY và ADC_WET]
     C --> D[Tính toán Độ ẩm thực tế Moisture %]
     
     D --> E[Giai đoạn 3: Tính toán Độ dẫn điện tương quan EC]
-    E --> F1[Ước lượng Đạm Nitơ N theo hàm phi tuyến]
-    E --> F2[Ước lượng Lân Photpho P theo hàm phi tuyến]
-    E --> F3[Ước lượng Kali K theo hàm phi tuyến]
+    S[Loại đất chọn trên App] --> E
+    S --> F1[Đạm N, Lân P, Kali K theo loại đất]
     D --> F4[Ước lượng biến thiên pH theo độ bão hòa nước]
+    S --> F4
     
-    F1 & F2 & F3 & F4 & D & E --> G[Đóng gói JSON Telemetry]
+    F1 & F4 & D & E --> G[Đóng gói JSON Telemetry]
     G --> H1[Hiển thị OLED 0.96 inch]
     G --> H2[Gửi MQTT lên Cloud Broker]
     H2 --> I[App Mobile Flutter & Hệ chuyên gia Nông học]
@@ -88,49 +88,59 @@ flowchart TD
 
 #### Công thức toán học của Thuật toán:
 
-1. **Lọc nhiễu trung bình trượt (Moving Average Filter)**:
-   $$ADC_{filtered} = \frac{1}{N} \sum_{i=1}^{N=20} ADC_{raw}(i)$$
+1. **Lọc nhiễu trung bình cắt tỉa (Trimmed Mean Filter)**: Đọc 21 mẫu, sắp xếp tăng dần, bỏ 5 mẫu thấp nhất và 5 mẫu cao nhất rồi lấy trung bình 11 mẫu giữa, nhờ đó các gai nhiễu do chạm dây hay relay đóng cắt bị loại hẳn:
+   $$ADC_{filtered} = \frac{1}{11} \sum_{i=6}^{16} ADC_{sorted}(i)$$
+   Trạm gửi kèm độ lệch chuẩn của 21 mẫu thô (`adc.noise`) để đánh giá mức nhiễu thật khi đo ngoài đất.
 
 2. **Hiệu chuẩn độ ẩm thể tích $\theta$ (%)**:
    $$\theta = \text{constrain}\left( \frac{ADC_{filtered} - ADC_{DRY}}{ADC_{WET} - ADC_{DRY}} \times 100, \ 0, \ 100 \right)$$
-   *(Trong đó $ADC_{DRY} \approx 200$ là mốc khô trong không khí, $ADC_{WET} \approx 3000$ là mốc ngâm nước).*
+   *(Trong đó $ADC_{DRY}$ là mốc khô trong không khí, $ADC_{WET}$ là mốc ngâm nước. Giá trị mặc định 200 / 3000 chỉ để chạy thử; với cảm biến thật, hai mốc được đo lại bằng màn **Hiệu chuẩn** trên App (lệnh `CALIBRATE`) và lưu vào flash. Module LM393/FC-28 cho ADC giảm khi ướt nên $ADC_{DRY} > ADC_{WET}$, công thức tự đảo chiều).*
 
 3. **Ước lượng Độ dẫn điện dung dịch đất (Pore Solution EC - $\mu S/cm$)**:
-   Theo định luật vật lý đất, khi độ ẩm tăng, các muối khoáng ion hòa tan linh động hơn:
-   $$EC = (\theta \times 13.5) + \text{Noise}_{(-10, 10)}$$
+   Theo định luật vật lý đất, khi độ ẩm tăng, các muối khoáng ion hòa tan linh động hơn. Tốc độ tăng phụ thuộc loại đất đang đo (chọn trên App):
+   $$EC = \theta \times k_{EC}$$
 
-4. **Ước lượng nồng độ các ion N, P, K (mg/kg)**:
-   - **Đạm (Nitơ - N)**: Tương quan thuận mạnh với độ phì nhiêu EC:
-     $$N = (EC \times 0.085) + \delta_N$$
-   - **Lân (Photpho - P)**: Hòa tan chậm hơn, biên độ hẹp:
-     $$P = (EC \times 0.042) + \delta_P$$
-   - **Kali (Potassium - K)**: Ion linh động, dễ di chuyển theo nước:
-     $$K = (EC \times 0.115) + \delta_K$$
-   - **Độ chua (pH)**: Cân bằng quanh ngưỡng 6.2 - 6.6 khi đất đủ ẩm, hơi chua khi úng nước và kiềm hóa khi khô hạn:
-     $$pH = 6.5 - ((\theta - 50.0) \times 0.012) + \delta_{pH}$$
+   | Loại đất (mã MQTT) | Dự đoán dinh dưỡng | $k_{EC}$ ($\mu S/cm$ mỗi 1% ẩm) | $pH_{0}$ | $N_0$ | $P_0$ | $K_0$ (mg/kg) |
+   |---|---|---|---|---|---|---|
+   | Đất dinh dưỡng đóng bao (`potting`) | Cao | 20.0 | 6.2 | 95 | 50 | 135 |
+   | Đất vườn - đất thịt (`garden`, mặc định) | Trung bình | 13.5 | 6.5 | 65 | 33 | 90 |
+   | Đất bạc màu / bãi đất trống (`barren`) | Thấp | 4.0 | 5.8 | 20 | 10 | 30 |
+
+4. **Ước lượng N, P, K (mg/kg)**: N, P, K là lượng dinh dưỡng có sẵn trong mẫu đất, tưới thêm nước không làm đất giàu dinh dưỡng hơn, nên lấy theo loại đất và không phụ thuộc độ ẩm:
+   $$N = N_0, \quad P = P_0, \quad K = K_0$$
+   Vì loại đất là đầu vào quyết định N, P, K, kết quả Cao / Trung bình / Thấp của 3 mẫu đất là do loại đất được chọn, không phải số đo độc lập. Muốn có N, P, K đo thật cần cảm biến NPK chuyên dụng, nằm ngoài phạm vi đề tài (đề tài chọn hướng ước lượng bằng thuật toán).
+5. **Độ chua (pH)**: Dao động quanh $pH_{0}$ của loại đất, hơi chua khi úng nước và kiềm hóa khi khô hạn:
+   $$pH = pH_{0} - ((\theta - 50.0) \times 0.012)$$
 
 ---
 
 ### 4. GIAO THỨC TRUYỀN THÔNG MQTT CLOUD
 
-* **Broker**: `broker.emqx.io` (hoặc HiveMQ Cloud Free) - Port `1883` (TCP) / `8084` (WSS).
+* **Broker**: Mặc định `broker.emqx.io` cổng `8883` qua **TLS** (mã hóa đường truyền, ESP32 xác thực chứng chỉ broker bằng Root CA trong [`root_ca.h`](firmware/src/root_ca.h)). Broker công cộng không có tài khoản nên ai biết topic vẫn đọc hoặc gửi được; để chặn việc này, tạo broker riêng có tài khoản (ví dụ HiveMQ Cloud Free), điền vào `firmware/src/secrets.h` (mẫu: [`secrets.example.h`](firmware/src/secrets.example.h)) và `mobile/mqtt_config.json` (mẫu: [`mqtt_config.example.json`](mobile/mqtt_config.example.json)), rồi chạy App bằng `flutter run --dart-define-from-file=mqtt_config.json`. Hai file thật đã nằm trong `.gitignore`.
 * **Topic Telemetry** (`soil_station/1/telemetry`): ESP32 gửi dữ liệu định kỳ mỗi 3–5 giây.
-* **Topic Command** (`soil_station/1/command`): App Mobile gửi lệnh bật/tắt Relay (`{"action": "SET_PUMP", "state": true}`).
+* **Topic Command** (`soil_station/1/command`): Lệnh bật/tắt Relay (`{"action": "SET_PUMP", "state": true}`), lệnh chọn loại đất đang đo (`{"action": "SET_SOIL_TYPE", "soil_type": "garden"}`, giá trị `potting` / `garden` / `barren`) và lệnh hiệu chuẩn (`{"action": "CALIBRATE", "point": "dry"}` hoặc `"wet"`: trạm lấy ADC đang đọc làm mốc, từ chối nếu hai mốc cách nhau dưới 300). ESP32 lưu loại đất và mốc hiệu chuẩn vào flash (NVS) nên khởi động lại vẫn giữ.
 * **Topic Status** (`soil_station/1/status`): Bản tin LWT kiểm tra trạng thái Online/Offline của thiết bị.
 
 #### Cấu trúc Payload mẫu (JSON):
+`timestamp` là giờ thực Unix lấy từ NTP (`pool.ntp.org`, múi giờ UTC+7); khi trạm chưa đồng bộ được giờ thì bỏ trống và App dùng giờ nhận bản tin. Trạm chưa có cảm biến nhiệt nên không gửi `temperature`. Khối `adc` phục vụ màn Hiệu chuẩn.
 ```json
 {
   "device_id": "esp32_soil_station_01",
-  "timestamp": 1718005200,
+  "timestamp": 1764000000,
+  "soil_type": "garden",
   "telemetry": {
-    "nitrogen": 68.2,
-    "phosphorus": 33.5,
-    "potassium": 92.1,
+    "nitrogen": 65.0,
+    "phosphorus": 33.0,
+    "potassium": 90.0,
     "ph": 6.4,
-    "ec": 750.0,
-    "moisture": 51.7,
-    "temperature": 27.5
+    "ec": 742.5,
+    "moisture": 55.0
+  },
+  "adc": {
+    "raw": 1740,
+    "noise": 6.2,
+    "dry": 200,
+    "wet": 3000
   },
   "actuators": {
     "pump": false,
@@ -149,6 +159,8 @@ Hệ chuyên gia được tích hợp sẵn trong Mobile App Flutter ([`Agronomi
 * **Đất ngộ độc muối ($EC > 1800 \ \mu S/cm$)**: Cảnh báo cháy rễ $\rightarrow$ Khuyến nghị ngừng bón phân, tưới xả nước ngọt.
 * **Đất khô cằn ($\theta < 40\%$)**: Cảnh báo thiếu ẩm $\rightarrow$ Tự động đề xuất kích hoạt bơm tưới.
 * **Thiếu Đạm/Lân/Kali**: Tính độ chênh lệch $\Delta N, \Delta P, \Delta K$ và gợi ý công thức phân bón tương ứng (Urê, Super Lân, Kali Sunfat hoặc NPK cân đối).
+
+**Lịch sử đo**: App lưu số đo vào SQLite trên điện thoại ([`HistoryRepository`](mobile/lib/services/history_repository.dart)), mỗi phút 1 bản ghi, giữ 30 ngày. Màn Lịch sử vẽ biểu đồ từng chỉ số theo 24 giờ / 7 ngày / 30 ngày (kèm dải ngưỡng chuẩn) và bảng trung bình theo ngày, tách theo loại đất. App chỉ ghi khi đang mở và nhận được dữ liệu; muốn ghi liên tục 24/7 cần một máy chủ đăng ký topic telemetry và lưu vào CSDL.
 
 ---
 

@@ -50,3 +50,17 @@ Bạn mở hộp kit Starter Kit / ESP32 có sẵn ra và sử dụng đúng cá
 > **2 NGUYÊN TẮC BẢO VỆ CHIP**:
 > 1. Dây VCC của cảm biến độ ẩm **CHỈ NỐI VÀO CHÂN 3V3** của ESP32. Nếu cắm vào chân 5V sẽ gây quá áp làm cháy cổng đọc Analog ADC của ESP32!
 > 2. Luôn cắm cảm biến vào chân **GPIO34** (thuộc bộ ADC1). Tuyệt đối không cắm vào các chân thuộc ADC2 (GPIO2, 4, 12, 13, 14, 15, 25, 26, 27) để tránh bị vô hiệu hóa khi bật WiFi.
+
+---
+
+### PHẦN 3: NÂNG CẤP ĐỢT 2
+
+#### 3.1. Quy trình đo trên đất thật
+1. Mở App, vào **Hiệu chuẩn**. Bước 1: rút đầu dò khỏi đất, lau khô, chờ số tín hiệu đứng yên rồi bấm **Lưu mốc khô**.
+2. Bước 2: nhúng đầu dò vào cốc nước tới vạch giới hạn, chờ số tín hiệu đứng yên rồi bấm **Lưu mốc ướt**.
+3. Xem dòng trạng thái tín hiệu: "Tín hiệu ổn định" là đạt; "Nhiễu nhiều" thì kiểm tra lại dây cắm và nguồn.
+4. Ở màn hình chính, chọn đúng loại đất, cắm đầu dò ngập vào mẫu đất, chờ khoảng 1 phút. Mỗi mẫu đo ít nhất 3 vị trí.
+5. Xem lại kết quả theo ngày ở màn **Lịch sử đo** (App chỉ ghi khi đang mở).
+
+#### 3.2. Bảo mật broker (tùy chọn)
+Mặc định trạm và App đã kết nối qua TLS cổng 8883 (có mã hóa). Muốn có tài khoản riêng: tạo cluster HiveMQ Cloud Free, tạo 2 tài khoản (trạm và App), chép `firmware/src/secrets.example.h` thành `secrets.h`, chép `mobile/mqtt_config.example.json` thành `mqtt_config.json`, điền thông tin rồi chạy App bằng `flutter run --dart-define-from-file=mqtt_config.json`.
