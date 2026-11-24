@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'core/constants/app_colors.dart';
 import 'providers/soil_data_provider.dart';
-import 'screens/dashboard_screen.dart';
+import 'screens/home_shell.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,6 +12,70 @@ void main() {
 class SoilNutrientApp extends StatelessWidget {
   const SoilNutrientApp({super.key});
 
+  // Giao diện sáng để đọc rõ ngoài trời, dùng phông mặc định của máy (có đủ dấu tiếng Việt)
+  static ThemeData buildTheme() {
+    final buttonShape = RoundedRectangleBorder(borderRadius: BorderRadius.circular(15));
+    // Lấy kiểu chữ gốc của Material để mọi style dưới đây giữ phông hệ thống của từng máy
+    final base = ThemeData(useMaterial3: true, brightness: Brightness.light).textTheme;
+    final buttonText = base.labelLarge!.copyWith(fontSize: 16, fontWeight: FontWeight.w700);
+
+    return ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.light,
+      scaffoldBackgroundColor: AppColors.page,
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: AppColors.accent,
+        primary: AppColors.accent,
+        onPrimary: AppColors.accentInk,
+        surface: AppColors.surface,
+        onSurface: AppColors.ink,
+        error: AppColors.danger,
+      ),
+      appBarTheme: AppBarTheme(
+        backgroundColor: AppColors.page,
+        surfaceTintColor: Colors.transparent,
+        foregroundColor: AppColors.ink,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        titleTextStyle: base.titleLarge!.copyWith(fontSize: 19, fontWeight: FontWeight.w800, color: AppColors.ink),
+      ),
+      filledButtonTheme: FilledButtonThemeData(
+        style: FilledButton.styleFrom(
+          minimumSize: const Size.fromHeight(50),
+          shape: buttonShape,
+          textStyle: buttonText,
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          minimumSize: const Size.fromHeight(50),
+          shape: buttonShape,
+          backgroundColor: AppColors.surface,
+          foregroundColor: AppColors.ink,
+          side: const BorderSide(color: AppColors.line2),
+          textStyle: buttonText,
+        ),
+      ),
+      chipTheme: ChipThemeData(
+        backgroundColor: AppColors.surface,
+        selectedColor: AppColors.ink,
+        labelStyle: base.labelLarge!.copyWith(fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.ink),
+        secondaryLabelStyle: base.labelLarge!.copyWith(fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.page),
+        side: const BorderSide(color: AppColors.line2),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),
+        showCheckmark: false,
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+      ),
+      snackBarTheme: SnackBarThemeData(
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: AppColors.ink,
+        contentTextStyle: base.bodyMedium!.copyWith(fontSize: 15, color: AppColors.page),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+      ),
+      dividerTheme: const DividerThemeData(color: AppColors.line, thickness: 1),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -19,21 +83,10 @@ class SoilNutrientApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => SoilDataProvider()),
       ],
       child: MaterialApp(
-        title: 'Hệ Thống Dinh Dưỡng Đất IoT',
+        title: 'Trạm đo đất',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          brightness: Brightness.dark,
-          scaffoldBackgroundColor: AppColors.background,
-          primaryColor: AppColors.primary,
-          colorScheme: const ColorScheme.dark(
-            primary: AppColors.primary,
-            secondary: AppColors.accent,
-            surface: AppColors.surface,
-          ),
-          fontFamily: 'Roboto',
-          useMaterial3: true,
-        ),
-        home: const DashboardScreen(),
+        theme: buildTheme(),
+        home: const HomeShell(),
       ),
     );
   }

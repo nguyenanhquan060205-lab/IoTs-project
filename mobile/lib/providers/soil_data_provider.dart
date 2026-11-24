@@ -1,24 +1,36 @@
 import 'package:flutter/material.dart';
 import '../models/soil_telemetry.dart';
+import '../models/soil_type.dart';
 import '../services/agronomic_engine.dart';
+import '../services/history_repository.dart';
 import '../services/mqtt_service.dart';
 
 class SoilDataProvider extends ChangeNotifier {
   final MqttService _mqttService = MqttService();
+  final HistoryRepository historyRepository;
 
   SoilTelemetry _currentTelemetry = SoilTelemetry.initial();
   final List<SoilTelemetry> _history = [];
   AppMqttState _connectionState = AppMqttState.disconnected;
+  SoilType? _pendingSoilType; // Loại đất vừa chọn trên App, đang chờ trạm xác nhận
 
   SoilTelemetry get currentTelemetry => _currentTelemetry;
   List<SoilTelemetry> get history => _history;
   AppMqttState get connectionState => _connectionState;
 
+  /// Loại đất hiển thị là đang chọn: ưu tiên lựa chọn chờ xác nhận, sau đó tới loại trạm báo về
+  SoilType get selectedSoilType =>
+      _pendingSoilType ?? _currentTelemetry.soilType ?? SoilType.garden;
+
+  /// true khi trạm chưa gửi về số liệu đo theo loại đất vừa chọn
+  bool get isSoilTypeSyncing => _pendingSoilType != null;
+
   AgronomicDiagnosis get currentDiagnosis => AgronomicEngine.evaluate(
         telemetry: _currentTelemetry,
       );
 
-  SoilDataProvider() {
+  SoilDataProvider({HistoryRepository? historyRepository})
+      : historyRepository = historyRepository ?? HistoryRepository() {
     _history.add(_currentTelemetry);
     _initMqtt();
   }
@@ -26,15 +38,24 @@ class SoilDataProvider extends ChangeNotifier {
   void _initMqtt() {
     _mqttService.stateStream.listen((state) {
       _connectionState = state;
+      // Mất mạng lúc vừa chọn loại đất thì gửi lại khi kết nối xong
+      if (state == AppMqttState.connected && _pendingSoilType != null) {
+        _publishSoilType(_pendingSoilType!);
+      }
       notifyListeners();
     });
 
     _mqttService.telemetryStream.listen((telemetry) {
       _currentTelemetry = telemetry;
+      if (telemetry.soilType == _pendingSoilType) {
+        _pendingSoilType = null;
+      }
       _history.add(telemetry);
       if (_history.length > 30) {
         _history.removeAt(0);
       }
+      // Chỉ lưu số đo thật từ trạm, không lưu dữ liệu nút Demo
+      historyRepository.save(telemetry);
       notifyListeners();
     });
 
@@ -42,21 +63,19 @@ class SoilDataProvider extends ChangeNotifier {
     _mqttService.connect();
   }
 
-  Future<void> togglePump() async {
-    final newState = !_currentTelemetry.pumpActive;
-    _currentTelemetry = _currentTelemetry.copyWith(pumpActive: newState);
+  void selectSoilType(SoilType type) {
+    if (type == selectedSoilType) return;
+    _pendingSoilType = type;
     notifyListeners();
-
-    await _mqttService.publishCommand(action: 'SET_PUMP', state: newState);
+    _publishSoilType(type);
   }
 
-  Future<void> toggleValve() async {
-    final newState = !_currentTelemetry.valveActive;
-    _currentTelemetry = _currentTelemetry.copyWith(valveActive: newState);
-    notifyListeners();
+  bool _publishSoilType(SoilType type) =>
+      _mqttService.publishCommand({'action': 'SET_SOIL_TYPE', 'soil_type': type.code});
 
-    await _mqttService.publishCommand(action: 'SET_VALVE', state: newState);
-  }
+  /// Yêu cầu trạm lấy ADC hiện tại làm mốc khô / ướt. Trả về false nếu chưa kết nối MQTT.
+  bool calibrate(CalibrationPoint point) =>
+      _mqttService.publishCommand({'action': 'CALIBRATE', 'point': point.code});
 
   void reconnect() {
     _mqttService.connect();
@@ -73,8 +92,7 @@ class SoilDataProvider extends ChangeNotifier {
       moisture: (45 + (DateTime.now().second % 30)).toDouble(),
       temperature: (25 + ((DateTime.now().second % 50) / 10)).toDouble(),
       timestamp: DateTime.now(),
-      pumpActive: _currentTelemetry.pumpActive,
-      valveActive: _currentTelemetry.valveActive,
+      soilType: _currentTelemetry.soilType,
     );
     _history.add(_currentTelemetry);
     if (_history.length > 30) {
@@ -86,6 +104,7 @@ class SoilDataProvider extends ChangeNotifier {
   @override
   void dispose() {
     _mqttService.dispose();
+    historyRepository.close();
     super.dispose();
   }
 }

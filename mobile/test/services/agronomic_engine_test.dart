@@ -60,7 +60,7 @@ void main() {
       expect(issue.recommendation, contains('TẠM NGỪNG BÓN PHÂN'));
     });
 
-    test('Detects low moisture (drought) and suggests pump activation', () {
+    test('Detects low moisture (drought) and suggests watering', () {
       final telemetry = SoilTelemetry(
         nitrogen: 65.0,
         phosphorus: 45.0,
@@ -75,7 +75,7 @@ void main() {
       final diag = AgronomicEngine.evaluate(telemetry: telemetry);
 
       expect(diag.issues.any((i) => i.title.contains('Đất khô hạn')), isTrue);
-      expect(diag.issues.firstWhere((i) => i.title.contains('Đất khô hạn')).recommendation, contains('máy bơm'));
+      expect(diag.issues.firstWhere((i) => i.title.contains('Đất khô hạn')).recommendation, contains('Tưới thêm nước'));
     });
 
     test('Detects waterlogged soil when moisture is too high (> 80%)', () {

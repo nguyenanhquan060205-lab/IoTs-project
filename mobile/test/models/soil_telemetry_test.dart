@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:soil_nutrient_app/models/soil_telemetry.dart';
+import 'package:soil_nutrient_app/models/soil_type.dart';
 
 void main() {
   group('SoilTelemetry Model Tests', () {
@@ -15,10 +16,6 @@ void main() {
           "ec": 850.0,
           "moisture": 62.3,
           "temperature": 28.1
-        },
-        "actuators": {
-          "pump": true,
-          "nutrient_valve": false
         }
       };
 
@@ -31,8 +28,6 @@ void main() {
       expect(telemetry.ec, 850.0);
       expect(telemetry.moisture, 62.3);
       expect(telemetry.temperature, 28.1);
-      expect(telemetry.pumpActive, true);
-      expect(telemetry.valveActive, false);
       expect(telemetry.timestamp.millisecondsSinceEpoch, 1729150000 * 1000);
     });
 
@@ -46,10 +41,49 @@ void main() {
       expect(telemetry.ph, 7.0); // default neutral pH
       expect(telemetry.ec, 0.0);
       expect(telemetry.moisture, 0.0);
-      expect(telemetry.temperature, 0.0);
-      expect(telemetry.pumpActive, false);
-      expect(telemetry.valveActive, false);
+      expect(telemetry.temperature, isNull); // The station has no temperature sensor
       expect(telemetry.timestamp, isNotNull);
+      expect(telemetry.soilType, isNull);
+      expect(telemetry.adc, isNull);
+    });
+
+    test('SoilTelemetry.fromJson falls back to receive time when the station sends uptime instead of Unix time', () {
+      final before = DateTime.now();
+      final telemetry = SoilTelemetry.fromJson({"timestamp": 4821, "telemetry": {"moisture": 50.0}});
+
+      expect(telemetry.timestamp.isBefore(before), isFalse);
+    });
+
+    test('SoilTelemetry.fromJson reads real time and the ADC calibration block', () {
+      final json = {
+        "timestamp": 1764000000,
+        "telemetry": {"nitrogen": 64.0, "moisture": 45.6},
+        "adc": {"raw": 1850, "noise": 12.3, "dry": 3950, "wet": 1320}
+      };
+      final telemetry = SoilTelemetry.fromJson(json);
+
+      expect(telemetry.timestamp.millisecondsSinceEpoch, 1764000000 * 1000);
+      expect(telemetry.adc!.raw, 1850);
+      expect(telemetry.adc!.noise, 12.3);
+      expect(telemetry.adc!.dry, 3950);
+      expect(telemetry.adc!.wet, 1320);
+    });
+
+    test('SoilTelemetry.fromJson reads the soil type reported by the station', () {
+      final json = {
+        "device_id": "esp32_soil_station_01",
+        "timestamp": 1729150000,
+        "soil_type": "barren",
+        "telemetry": {"nitrogen": 20.4, "moisture": 60.0}
+      };
+
+      expect(SoilTelemetry.fromJson(json).soilType, SoilType.barren);
+    });
+
+    test('SoilTelemetry.fromJson ignores an unknown soil type code', () {
+      final json = {"soil_type": "clay", "telemetry": {"nitrogen": 50.0}};
+
+      expect(SoilTelemetry.fromJson(json).soilType, isNull);
     });
 
     test('SoilTelemetry.initial provides reasonable default baseline values', () {
@@ -62,18 +96,16 @@ void main() {
       expect(initial.ec, 620.0);
       expect(initial.moisture, 48.5);
       expect(initial.temperature, 26.5);
-      expect(initial.pumpActive, false);
-      expect(initial.valveActive, false);
     });
 
     test('SoilTelemetry.copyWith updates specified fields only', () {
       final initial = SoilTelemetry.initial();
       final updated = initial.copyWith(
-        pumpActive: true,
+        temperature: 30.0,
         moisture: 70.0,
       );
 
-      expect(updated.pumpActive, true);
+      expect(updated.temperature, 30.0);
       expect(updated.moisture, 70.0);
       expect(updated.nitrogen, initial.nitrogen);
       expect(updated.ph, initial.ph);

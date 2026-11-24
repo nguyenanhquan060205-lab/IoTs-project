@@ -148,7 +148,7 @@ class AgronomicEngine {
         title: 'Đất khô hạn (Độ ẩm ${telemetry.moisture.toStringAsFixed(1)}%)',
         message: 'Đất thiếu ẩm làm hạn chế quá trình hòa tan và hấp thu dinh dưỡng khoáng chất.',
         severity: AlertSeverity.warning,
-        recommendation: 'Kích hoạt máy bơm tưới nước để duy trì độ ẩm đất tối ưu (50% - 70%).',
+        recommendation: 'Tưới thêm nước cho đất để duy trì độ ẩm tối ưu (50% - 70%).',
       ));
     } else if (telemetry.moisture > targetMoistMax + 10) {
       penaltyPoints += 15;

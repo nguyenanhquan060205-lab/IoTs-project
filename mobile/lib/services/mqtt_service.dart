@@ -34,15 +34,20 @@ class MqttService {
     _client!.keepAlivePeriod = 20;
     _client!.logging(on: false);
     _client!.autoReconnect = true;
+    // TLS: mã hóa đường truyền và xác thực chứng chỉ broker bằng kho CA của hệ điều hành
+    _client!.secure = MqttConstants.useTls;
 
-    final connMessage = MqttConnectMessage()
+    var connMessage = MqttConnectMessage()
         .withClientIdentifier(clientId)
         .startClean();
+    if (MqttConstants.username.isNotEmpty) {
+      connMessage = connMessage.authenticateAs(MqttConstants.username, MqttConstants.password);
+    }
     _client!.connectionMessage = connMessage;
 
 
     try {
-      debugPrint('[MQTT] Đang kết nối tới $broker:$port...');
+      debugPrint('[MQTT] Đang kết nối tới $broker:$port${MqttConstants.useTls ? ' (TLS)' : ''}...');
       await _client!.connect();
     } catch (e) {
       debugPrint('[MQTT] Lỗi kết nối: $e');
@@ -89,18 +94,16 @@ class MqttService {
     }
   }
 
-  Future<void> publishCommand({
-    required String action, // e.g. "SET_PUMP" hoặc "SET_VALVE"
-    required bool state,
-  }) async {
+  /// Gửi lệnh xuống trạm ESP32, ví dụ {'action': 'SET_SOIL_TYPE', 'soil_type': 'garden'}.
+  /// Trả về false nếu chưa kết nối MQTT.
+  bool publishCommand(Map<String, dynamic> command) {
     if (_client?.connectionStatus?.state != MqttConnectionState.connected) {
-      debugPrint('[MQTT] Chưa kết nối, không thể gửi lệnh');
-      return;
+      debugPrint('[MQTT] Chưa kết nối, chưa gửi được lệnh ${command['action']}');
+      return false;
     }
 
     final payload = jsonEncode({
-      'action': action,
-      'state': state,
+      ...command,
       'timestamp': DateTime.now().millisecondsSinceEpoch ~/ 1000,
     });
 
@@ -113,6 +116,7 @@ class MqttService {
       builder.payload!,
     );
     debugPrint('[MQTT] Đã gửi lệnh tới ${MqttConstants.commandTopic}: $payload');
+    return true;
   }
 
   void disconnect() {
