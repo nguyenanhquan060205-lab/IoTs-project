@@ -67,6 +67,7 @@ int adcDry = DEFAULT_ADC_DRY;
 int adcWet = DEFAULT_ADC_WET;
 
 WiFiClientSecure secureClient;
+WiFiClient plainClient;  // Chỉ dùng khi chạy mô phỏng trên Wokwi
 PubSubClient mqttClient(secureClient);
 
 // Loại đất và mốc hiệu chuẩn lưu vào flash (NVS) để khởi động lại vẫn giữ
@@ -83,8 +84,9 @@ const unsigned long TELEMETRY_INTERVAL = 4000;   // 4 giây gửi 1 lần
 const unsigned long MQTT_RETRY_INTERVAL = 5000;  // Mất kết nối broker thì 5 giây thử lại 1 lần
 const time_t VALID_EPOCH = 1700000000;           // Đồng hồ chưa qua mốc 11/2023 nghĩa là chưa đồng bộ NTP
 
-float round1(float value) {
-    return roundf(value * 10.0f) / 10.0f;
+// Làm tròn 1 chữ số lẻ bằng double: kết quả float như 7.1f khi ghi ra JSON sẽ thành 7.099999905
+double round1(float value) {
+    return round(value * 10.0) / 10.0;
 }
 
 // -------------------------------------------------------------
@@ -247,13 +249,19 @@ void setupWiFi() {
 
 // Thử kết nối broker 1 lần, không chặn vòng lặp để OLED và LED vẫn chạy khi broker lỗi
 void tryConnectMqtt() {
-    Serial.printf("Dang ket noi MQTT %s:%d (TLS)...", MQTT_HOST, MQTT_PORT);
+    // Mạng ảo Wokwi-GUEST không bắt tay TLS được (thử cả www.google.com:443 cũng bị ngắt),
+    // nên khi chạy mô phỏng thì dùng MQTT không mã hóa cổng 1883. Ở mạng thật luôn dùng TLS.
+    bool useTls = WiFi.SSID() != WOKWI_SSID;
+    uint16_t port = useTls ? MQTT_PORT : 1883;
+    mqttClient.setClient(useTls ? static_cast<Client&>(secureClient) : static_cast<Client&>(plainClient));
+    mqttClient.setServer(MQTT_HOST, port);
+    Serial.printf("Dang ket noi MQTT %s:%u (%s)...", MQTT_HOST, port, useTls ? "TLS" : "khong ma hoa, mo phong Wokwi");
     String clientId = "ESP32_Soil_" + String(random(0xffff), HEX);
     bool connected = strlen(MQTT_USERNAME) > 0
                          ? mqttClient.connect(clientId.c_str(), MQTT_USERNAME, MQTT_PASSWORD)
                          : mqttClient.connect(clientId.c_str());
     if (!connected) {
-        // rc = -2: không mở được kết nối TLS (sai host/cổng, chứng chỉ), rc = 4/5: sai tài khoản
+        // rc = -2: không mở được kết nối (sai host/cổng, chứng chỉ TLS), rc = 4/5: sai tài khoản
         Serial.printf(" That bai, rc=%d. Thu lai sau %lu giay...\n", mqttClient.state(), MQTT_RETRY_INTERVAL / 1000);
         return;
     }
@@ -330,7 +338,6 @@ void setup() {
     // MQTT qua TLS: xác thực chứng chỉ broker bằng Root CA, chống kết nối nhầm máy chủ giả
     secureClient.setCACert(ROOT_CA_BUNDLE);
     secureClient.setHandshakeTimeout(10);
-    mqttClient.setServer(MQTT_HOST, MQTT_PORT);
     mqttClient.setCallback(onMqttMessage);
     // Bộ đệm mặc định 256 byte không đủ chứa topic + JSON telemetry (~350 byte) -> nâng lên 512
     mqttClient.setBufferSize(512);
