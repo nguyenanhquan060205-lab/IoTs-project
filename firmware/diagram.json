@@ -23,7 +23,7 @@
       "id": "relay1",
       "top": -90,
       "left": -180,
-      "attrs": { "label": "Ro-le Bom Nuoc" }
+      "attrs": { "label": "Ro-le Bom Nuoc", "transistor": "pnp" }
     },
     {
       "type": "wokwi-led",
