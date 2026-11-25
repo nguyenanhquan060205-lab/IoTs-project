@@ -17,13 +17,31 @@ enum class SoilType {
  * Hệ số nông học riêng của từng loại đất
  */
 struct SoilProfile {
-    const char* code;     // Mã loại đất trong bản tin MQTT (khớp với Mobile App)
-    const char* label;    // Nhãn không dấu hiển thị trên OLED
-    float ecPerMoisture;  // Mỗi 1% độ ẩm làm EC tăng thêm bao nhiêu µS/cm
-    float phBase;         // pH của mẫu đất khi độ ẩm 50%
-    float nitrogen;       // Hàm lượng Đạm điển hình của loại đất (mg/kg)
-    float phosphorus;     // Hàm lượng Lân điển hình (mg/kg)
-    float potassium;      // Hàm lượng Kali điển hình (mg/kg)
+    const char* code;         // Mã loại đất trong bản tin MQTT (khớp với Mobile App)
+    const char* label;        // Nhãn không dấu hiển thị trên OLED
+    float ecPerMoisture;      // Mỗi 1% độ ẩm làm EC tăng thêm bao nhiêu µS/cm
+    float phBase;             // pH của mẫu đất khi độ ẩm 50%
+    // Mức N, P, K bình thường của loại đất (mg/kg). Không phải số đo: chỉ dùng để so sánh và thông báo
+    // N, P, K tính được đang thấp, bình thường hay cao so với loại đất này
+    float nitrogenNormal;
+    float phosphorusNormal;
+    float potassiumNormal;
+};
+
+/**
+ * So sánh một chỉ số với mức bình thường của loại đất.
+ * Không đặt tên LOW / HIGH vì Arduino đã định nghĩa 2 tên đó cho mức điện áp chân GPIO.
+ */
+enum class NutrientLevel {
+    BELOW = 0,   // Thấp hơn mức bình thường quá 20%
+    NORMAL = 1,  // Trong khoảng ±20% quanh mức bình thường
+    ABOVE = 2    // Cao hơn mức bình thường quá 20%
+};
+
+struct NpkLevels {
+    NutrientLevel nitrogen;
+    NutrientLevel phosphorus;
+    NutrientLevel potassium;
 };
 
 /**
@@ -41,9 +59,19 @@ struct SoilNutrientData {
 /**
  * Bộ suy diễn nông học thực nghiệm (Low-cost Heuristic Agronomic Estimation)
  * Trạm chỉ có cảm biến độ ẩm: độ ẩm đo được + loại đất App chọn -> 6 chỉ số đất.
+ * Chuỗi tính: ADC -> độ ẩm -> EC -> N, P, K. Mọi chỉ số trừ độ ẩm đều là số ước lượng.
  */
 class SoilEstimator {
 public:
+    // N, P, K dễ tiêu (mg/kg) trên mỗi 1 µS/cm EC, dùng chung cho mọi loại đất.
+    // Chọn sao cho ở độ ẩm lý tưởng 60% (giữa khoảng 50 - 70%) mỗi loại đất cho đúng mức bình thường của nó,
+    // ví dụ đất vườn: EC = 60 x 13.5 = 810 -> N = 64.8, P = 32.4, K = 89.1 (mức bình thường 65 / 33 / 90)
+    static constexpr float N_PER_EC = 0.08f;
+    static constexpr float P_PER_EC = 0.04f;
+    static constexpr float K_PER_EC = 0.11f;
+    // Lệch quá 20% so với mức bình thường của loại đất thì báo thấp / cao
+    static constexpr float NORMAL_TOLERANCE = 0.20f;
+
     /**
      * Chuyển đổi giá trị ADC thô sang % Độ ẩm với hỗ trợ cả 2 chiều tín hiệu:
      * - Đầu dò cho ADC tăng khi ướt (Dry ADC < Wet ADC)
@@ -63,8 +91,8 @@ public:
     }
 
     /**
-     * Hệ số theo loại đất: đất đóng bao nhiều phân hữu cơ nên giàu N-P-K và EC tăng nhanh theo độ ẩm,
-     * đất bạc màu ít ion khoáng hòa tan nên nghèo N-P-K, EC tăng chậm và hơi chua.
+     * Hệ số theo loại đất: đất đóng bao nhiều phân hữu cơ nên EC tăng nhanh theo độ ẩm và mức N-P-K bình thường cao,
+     * đất bạc màu ít ion khoáng hòa tan nên EC tăng chậm, mức N-P-K bình thường thấp và hơi chua.
      */
     static SoilProfile profile(SoilType type) {
         switch (type) {
@@ -105,15 +133,15 @@ public:
         if (data.ec < 150.0f) data.ec = 150.0f;
         if (data.ec > 2200.0f) data.ec = 2200.0f;
 
-        // 2-4. N, P, K (mg/kg đất): Là lượng dinh dưỡng có sẵn trong mẫu đất,
-        // tưới thêm nước không làm đất giàu dinh dưỡng hơn nên không phụ thuộc độ ẩm
-        data.nitrogen = soil.nitrogen + (noiseRandom * 0.08f);
+        // 2-4. N, P, K dễ tiêu (mg/kg đất): dinh dưỡng phải hòa tan vào nước trong đất thì cây mới hút được,
+        // và chính lượng ion hòa tan đó làm EC tăng. Nên N, P, K tính từ EC, tức là đổi theo độ ẩm đo được
+        data.nitrogen = data.ec * N_PER_EC;
         if (data.nitrogen < 10.0f) data.nitrogen = 10.0f;
 
-        data.phosphorus = soil.phosphorus + (noiseRandom * 0.04f);
+        data.phosphorus = data.ec * P_PER_EC;
         if (data.phosphorus < 5.0f) data.phosphorus = 5.0f;
 
-        data.potassium = soil.potassium + (noiseRandom * 0.09f);
+        data.potassium = data.ec * K_PER_EC;
         if (data.potassium < 15.0f) data.potassium = 15.0f;
 
         // 5. pH: Dao động quanh pH gốc của loại đất, hơi chua dần khi đất ẩm lên
@@ -122,6 +150,60 @@ public:
         if (data.ph > 8.5f) data.ph = 8.5f;
 
         return data;
+    }
+
+    /**
+     * Một chỉ số so với mức bình thường: thấp hơn 80% là BELOW, cao hơn 120% là ABOVE
+     */
+    static NutrientLevel compareToNormal(float value, float normal) {
+        if (value < normal * (1.0f - NORMAL_TOLERANCE)) return NutrientLevel::BELOW;
+        if (value > normal * (1.0f + NORMAL_TOLERANCE)) return NutrientLevel::ABOVE;
+        return NutrientLevel::NORMAL;
+    }
+
+    /**
+     * N, P, K tính được so với mức bình thường của loại đất đang đo
+     */
+    static NpkLevels compareNpk(const SoilNutrientData& data, SoilType type) {
+        const SoilProfile soil = profile(type);
+        return {compareToNormal(data.nitrogen, soil.nitrogenNormal),
+                compareToNormal(data.phosphorus, soil.phosphorusNormal),
+                compareToNormal(data.potassium, soil.potassiumNormal)};
+    }
+
+    /**
+     * Gộp 3 chỉ số thành 1 để báo trên OLED và đèn: có chỉ số thấp thì báo thấp (thiếu dinh dưỡng quan trọng hơn),
+     * không thì có chỉ số cao thì báo cao, còn lại là bình thường
+     */
+    static NutrientLevel overallLevel(const NpkLevels& levels) {
+        const NutrientLevel all[] = {levels.nitrogen, levels.phosphorus, levels.potassium};
+        for (NutrientLevel level : all) {
+            if (level == NutrientLevel::BELOW) return NutrientLevel::BELOW;
+        }
+        for (NutrientLevel level : all) {
+            if (level == NutrientLevel::ABOVE) return NutrientLevel::ABOVE;
+        }
+        return NutrientLevel::NORMAL;
+    }
+
+    // Mã gửi trong bản tin MQTT
+    static const char* levelCode(NutrientLevel level) {
+        switch (level) {
+            case NutrientLevel::BELOW: return "low";
+            case NutrientLevel::ABOVE: return "high";
+            case NutrientLevel::NORMAL:
+            default:                   return "normal";
+        }
+    }
+
+    // Nhãn ngắn không dấu cho OLED (tối đa 21 ký tự mỗi dòng) và Serial
+    static const char* levelLabel(NutrientLevel level) {
+        switch (level) {
+            case NutrientLevel::BELOW: return "THAP";
+            case NutrientLevel::ABOVE: return "CAO";
+            case NutrientLevel::NORMAL:
+            default:                   return "OK";
+        }
     }
 };
 

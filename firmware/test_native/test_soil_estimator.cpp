@@ -2,6 +2,7 @@
 #include <cassert>
 #include <cmath>
 #include <iomanip>
+#include <string>
 #include "../src/soil_estimator.h"
 #include "../src/adc_filter.h"
 
@@ -156,23 +157,84 @@ void testParseSoilType() {
     std::cout << "  -> Passed soil type parsing tests!\n";
 }
 
-void testWateringDoesNotRaiseNPK() {
-    std::cout << "[TEST] Running Watering vs N-P-K Test...\n";
+void testNpkFollowsEc() {
+    std::cout << "[TEST] Running N-P-K from EC Test...\n";
     const SoilType types[] = {SoilType::POTTING, SoilType::GARDEN, SoilType::BARREN};
 
     for (SoilType type : types) {
         SoilNutrientData dry = SoilEstimator::estimate(30.0f, 0.0f, type);
         SoilNutrientData wet = SoilEstimator::estimate(80.0f, 0.0f, type);
 
-        // N, P, K are what the soil sample contains, adding water must not change them
-        assert(dry.nitrogen == wet.nitrogen);
-        assert(dry.phosphorus == wet.phosphorus);
-        assert(dry.potassium == wet.potassium);
-
-        // EC still rises with moisture because water dissolves the salts already in the soil
+        // N, P, K are computed from EC, so they rise with moisture together with EC
         assert(wet.ec > dry.ec);
+        assert(wet.nitrogen > dry.nitrogen);
+        assert(wet.phosphorus > dry.phosphorus);
+        assert(wet.potassium > dry.potassium);
+
+        // and follow the shared coefficients exactly
+        assert(std::fabs(wet.nitrogen - wet.ec * SoilEstimator::N_PER_EC) < 0.01f);
+        assert(std::fabs(wet.phosphorus - wet.ec * SoilEstimator::P_PER_EC) < 0.01f);
+        assert(std::fabs(wet.potassium - wet.ec * SoilEstimator::K_PER_EC) < 0.01f);
     }
-    std::cout << "  -> Passed watering vs N-P-K tests!\n";
+
+    // Garden soil at the ideal 60% moisture lands on its normal level: EC 810 -> N 64.8, P 32.4, K 89.1
+    SoilNutrientData garden = SoilEstimator::estimate(60.0f, 0.0f, SoilType::GARDEN);
+    assert(std::fabs(garden.ec - 810.0f) < 0.1f);
+    assert(std::fabs(garden.nitrogen - 64.8f) < 0.1f);
+    assert(std::fabs(garden.phosphorus - 32.4f) < 0.1f);
+    assert(std::fabs(garden.potassium - 89.1f) < 0.1f);
+    std::cout << "  -> Passed N-P-K from EC tests!\n";
+}
+
+void testNpkComparedToNormal() {
+    std::cout << "[TEST] Running N-P-K vs Soil Normal Level Test...\n";
+    const SoilType types[] = {SoilType::POTTING, SoilType::GARDEN, SoilType::BARREN};
+
+    // +-20% band around the normal level
+    assert(SoilEstimator::compareToNormal(65.0f, 65.0f) == NutrientLevel::NORMAL);
+    assert(SoilEstimator::compareToNormal(52.0f, 65.0f) == NutrientLevel::NORMAL);   // exactly -20%
+    assert(SoilEstimator::compareToNormal(78.0f, 65.0f) == NutrientLevel::NORMAL);   // exactly +20%
+    assert(SoilEstimator::compareToNormal(51.0f, 65.0f) == NutrientLevel::BELOW);
+    assert(SoilEstimator::compareToNormal(79.0f, 65.0f) == NutrientLevel::ABOVE);
+
+    std::cout << std::fixed << "  " << std::setw(9) << "Soil" << std::setw(6) << "M(%)"
+              << std::setw(8) << "N" << std::setw(8) << "P" << std::setw(8) << "K" << "  Level\n";
+    for (SoilType type : types) {
+        // Ideal moisture: every soil type sits on its own normal level
+        SoilNutrientData ideal = SoilEstimator::estimate(60.0f, 0.0f, type);
+        NpkLevels idealLevels = SoilEstimator::compareNpk(ideal, type);
+        assert(idealLevels.nitrogen == NutrientLevel::NORMAL);
+        assert(idealLevels.phosphorus == NutrientLevel::NORMAL);
+        assert(idealLevels.potassium == NutrientLevel::NORMAL);
+        assert(SoilEstimator::overallLevel(idealLevels) == NutrientLevel::NORMAL);
+
+        // Dry soil holds too little dissolved nutrient, very wet soil too much
+        SoilNutrientData dry = SoilEstimator::estimate(30.0f, 0.0f, type);
+        SoilNutrientData wet = SoilEstimator::estimate(90.0f, 0.0f, type);
+        assert(SoilEstimator::overallLevel(SoilEstimator::compareNpk(dry, type)) == NutrientLevel::BELOW);
+        assert(SoilEstimator::overallLevel(SoilEstimator::compareNpk(wet, type)) == NutrientLevel::ABOVE);
+
+        const SoilNutrientData rows[] = {dry, ideal, wet};
+        for (const SoilNutrientData& row : rows) {
+            std::cout << "  " << std::setw(9) << SoilEstimator::profile(type).label
+                      << std::setprecision(0) << std::setw(6) << row.moisture
+                      << std::setprecision(1) << std::setw(8) << row.nitrogen << std::setw(8) << row.phosphorus
+                      << std::setw(8) << row.potassium << "  "
+                      << SoilEstimator::levelLabel(SoilEstimator::overallLevel(SoilEstimator::compareNpk(row, type)))
+                      << "\n";
+        }
+    }
+
+    // One low nutrient makes the overall level low, even if another one is high
+    NpkLevels mixed = {NutrientLevel::ABOVE, NutrientLevel::BELOW, NutrientLevel::NORMAL};
+    assert(SoilEstimator::overallLevel(mixed) == NutrientLevel::BELOW);
+    NpkLevels highOnly = {NutrientLevel::NORMAL, NutrientLevel::ABOVE, NutrientLevel::NORMAL};
+    assert(SoilEstimator::overallLevel(highOnly) == NutrientLevel::ABOVE);
+
+    assert(std::string(SoilEstimator::levelCode(NutrientLevel::BELOW)) == "low");
+    assert(std::string(SoilEstimator::levelCode(NutrientLevel::NORMAL)) == "normal");
+    assert(std::string(SoilEstimator::levelCode(NutrientLevel::ABOVE)) == "high");
+    std::cout << "  -> Passed N-P-K vs soil normal level tests!\n";
 }
 
 void testTrimmedMeanFilter() {
@@ -215,7 +277,8 @@ int main() {
     testAgronomicEstimationBounds();
     testSoilTypeProfiles();
     testParseSoilType();
-    testWateringDoesNotRaiseNPK();
+    testNpkFollowsEc();
+    testNpkComparedToNormal();
     testTrimmedMeanFilter();
 
     std::cout << "\n✅ ALL C++ ESTIMATOR UNIT TESTS PASSED!\n";

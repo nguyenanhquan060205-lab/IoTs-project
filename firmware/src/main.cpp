@@ -15,8 +15,12 @@
 
 #if __has_include("secrets.h")
 #include "secrets.h"
+#define HAS_SECRETS 1
 #else
-// Chưa tạo secrets.h (ví dụ chạy trên Wokwi): dùng broker công cộng qua TLS, có mã hóa nhưng chưa có tài khoản
+// Chưa tạo secrets.h (ví dụ chạy trên Wokwi): dùng broker công cộng qua TLS, có mã hóa nhưng chưa có tài khoản.
+// Trên mạch thật thì phải tạo secrets.h, nếu không trạm chỉ thử WiFi mẫu "iPhone" / "password" bên dưới.
+#warning "Chua co firmware/src/secrets.h: tram se dung WiFi mau 'iPhone'. Chep secrets.example.h thanh secrets.h va dien WiFi that truoc khi nap vao mach that."
+#define HAS_SECRETS 0
 #define WIFI_SSID      "iPhone"
 #define WIFI_PASSWORD  "password"
 #define MQTT_HOST      "broker.emqx.io"
@@ -28,7 +32,7 @@
 /* ====================================================================
  * CẤU HÌNH HỆ THỐNG GIÁM SÁT DINH DƯỠNG ĐẤT IOT (ESP32)
  * Cấu hình Tối Giản: Chỉ Điện Thoại + ESP32 + Cảm Biến Nước/Độ Ẩm ADC
- * N, P, K, EC, pH ước lượng từ độ ẩm theo loại đất do App chọn
+ * EC, pH ước lượng từ độ ẩm theo loại đất do App chọn; N, P, K tính từ EC và so với mức bình thường của loại đất
  * Tùy chọn cắm thêm: OLED 0.96" I2C, Relay 5V điều khiển bơm
  * ==================================================================== */
 
@@ -45,7 +49,7 @@ const char* TOPIC_STATUS    = "soil_station/1/status";
 #define PIN_WATER_SENSOR  34   // Chân ADC1 (GPIO34) đọc cảm biến độ ẩm/nước (Cấp nguồn 3.3V!)
 #define PIN_RELAY_PUMP    26   // Chân điều khiển Rơ-le máy bơm nước
 #define PIN_RELAY_VALVE   27   // Chân điều khiển Rơ-le van dinh dưỡng (dự phòng)
-#define PIN_BUZZER        25   // Còi cảnh báo
+#define PIN_BUZZER        25   // Còi cảnh báo (chủ động hay thụ động đều kêu vì được phát bằng PWM)
 #define PIN_LED_ALERT     32   // LED đỏ (Báo động nguy hiểm: Khô cằn / Ngập úng / Chua phèn / Mặn)
 #define PIN_LED_WARNING   19   // LED vàng (Cảnh báo nhẹ / Đang tưới / Cần theo dõi)
 #define PIN_LED_NORMAL    33   // LED xanh (Đất màu mỡ, dinh dưỡng & độ ẩm chuẩn)
@@ -65,6 +69,17 @@ const int DEFAULT_ADC_WET = 3000;
 const int MIN_CALIBRATION_GAP = 300;  // Hai mốc khô/ướt quá gần nhau thì độ ẩm tính ra không còn ý nghĩa
 int adcDry = DEFAULT_ADC_DRY;
 int adcWet = DEFAULT_ADC_WET;
+// Mốc đã được đo thật (có trong NVS) hay vẫn là số mặc định ở trên
+bool dryCalibrated = false;
+bool wetCalibrated = false;
+
+// 5. Còi: kêu vài tiếng ngắn khi đất vừa chuyển sang quá khô hoặc ngập úng
+const uint32_t BUZZER_FREQ = 2700;  // Hz, gần tần số cộng hưởng của đa số còi nhỏ
+const uint8_t BUZZER_CHANNEL = 0;   // Kênh LEDC, chỉ cần cho Arduino-ESP32 bản 2.x
+const float DRY_ALARM = 35.0f;      // Dưới ngưỡng này là quá khô (trùng đèn đỏ)
+const float WET_ALARM = 80.0f;      // Trên ngưỡng này là ngập úng (trùng đèn đỏ)
+const float ALARM_HYSTERESIS = 3.0f; // Phải về trong khoảng 38 - 77% mới hết báo, tránh kêu liên tục quanh ngưỡng
+bool moistureAlarm = false;
 
 WiFiClientSecure secureClient;
 WiFiClient plainClient;  // Chỉ dùng khi chạy mô phỏng trên Wokwi
@@ -80,8 +95,17 @@ bool valveActive = false;
 bool hasOLED = false;
 unsigned long lastTelemetryTime = 0;
 unsigned long lastMqttAttempt = 0;
+unsigned long lastWifiAttempt = 0;
+unsigned long lastStatusPublish = 0;
+String mqttClientId;
 const unsigned long TELEMETRY_INTERVAL = 4000;   // 4 giây gửi 1 lần
+// Gửi lại "online" (giữ lại trên broker) 30 giây 1 lần. Trạm khởi động lại thì phiên MQTT cũ còn treo trên broker
+// khoảng 22 giây (1,5 lần keep-alive 15 giây) rồi broker mới đăng LWT "offline" của phiên cũ, đè lên "online"
+// của phiên mới. Gửi lại định kỳ để topic status trở về "online" sau tối đa 30 giây.
+const unsigned long STATUS_REFRESH_INTERVAL = 30000;
 const unsigned long MQTT_RETRY_INTERVAL = 5000;  // Mất kết nối broker thì 5 giây thử lại 1 lần
+// Mất WiFi thì 15 giây mới dò lại 1 lần: mỗi lần dò chặn vài giây, giữa các lần trạm vẫn đo và báo đèn
+const unsigned long WIFI_RETRY_INTERVAL = 15000;
 const time_t VALID_EPOCH = 1700000000;           // Đồng hồ chưa qua mốc 11/2023 nghĩa là chưa đồng bộ NTP
 
 // Làm tròn 1 chữ số lẻ bằng double: kết quả float như 7.1f khi ghi ra JSON sẽ thành 7.099999905
@@ -90,9 +114,40 @@ double round1(float value) {
 }
 
 // -------------------------------------------------------------
+// Còi phát bằng PWM (LEDC): còi thụ động cần sóng vuông để kêu, còi chủ động cũng kêu được với sóng này
+// -------------------------------------------------------------
+void buzzerTone(uint32_t freq) {
+#if ESP_ARDUINO_VERSION_MAJOR >= 3
+    ledcWriteTone(PIN_BUZZER, freq);
+#else
+    ledcWriteTone(BUZZER_CHANNEL, freq);
+#endif
+}
+
+void setupBuzzer() {
+#if ESP_ARDUINO_VERSION_MAJOR >= 3
+    ledcAttach(PIN_BUZZER, BUZZER_FREQ, 10);
+#else
+    ledcSetup(BUZZER_CHANNEL, BUZZER_FREQ, 10);
+    ledcAttachPin(PIN_BUZZER, BUZZER_CHANNEL);
+#endif
+    buzzerTone(0);  // Tần số 0 = tắt còi
+}
+
+// Kêu `count` tiếng ngắn (3 tiếng mất khoảng 0,6 giây)
+void beep(int count) {
+    for (int i = 0; i < count; i++) {
+        buzzerTone(BUZZER_FREQ);
+        delay(120);
+        buzzerTone(0);
+        if (i + 1 < count) delay(100);
+    }
+}
+
+// -------------------------------------------------------------
 // Hàm hiển thị thông số lên màn hình OLED (Tự động bỏ qua nếu không cắm OLED)
 // -------------------------------------------------------------
-void updateOLED(const char* soilLabel, const SoilNutrientData& soil) {
+void updateOLED(const SoilProfile& soilProfile, const SoilNutrientData& soil, NutrientLevel npkLevel) {
     if (!hasOLED) return; // Không cắm OLED thì bỏ qua, không bao giờ bị đơ treo I2C
     display.clearDisplay();
     display.setTextColor(SSD1306_WHITE);
@@ -100,19 +155,24 @@ void updateOLED(const char* soilLabel, const SoilNutrientData& soil) {
 
     // Tiêu đề: Loại đất đang đo + trạng thái WiFi
     display.setCursor(0, 0);
-    display.printf("%-9s %s", soilLabel, WiFi.status() == WL_CONNECTED ? "WIFI OK" : "NO WIFI");
+    display.printf("%-9s %s", soilProfile.label, WiFi.status() == WL_CONNECTED ? "WIFI OK" : "NO WIFI");
     display.drawLine(0, 10, 127, 10, SSD1306_WHITE);
 
     // Dòng 1: Độ ẩm & EC
-    display.setCursor(0, 14);
+    display.setCursor(0, 13);
     display.printf("Am: %.1f%%  EC: %.0f", soil.moisture, soil.ec);
 
-    // Dòng 2: NPK
-    display.setCursor(0, 26);
+    // Dòng 2: N, P, K tính từ EC
+    display.setCursor(0, 23);
     display.printf("N:%.0f  P:%.0f  K:%.0f", soil.nitrogen, soil.phosphorus, soil.potassium);
 
-    // Dòng 3: pH + nhãn nhắc N-P-K, EC, pH là số ước lượng
-    display.setCursor(0, 38);
+    // Dòng 3: Mức N/P/K bình thường của loại đất và N-P-K đang thấp / OK / cao so với mức đó
+    display.setCursor(0, 33);
+    display.printf("Chuan:%.0f/%.0f/%.0f %s", soilProfile.nitrogenNormal, soilProfile.phosphorusNormal,
+                   soilProfile.potassiumNormal, SoilEstimator::levelLabel(npkLevel));
+
+    // Dòng 4: pH + nhãn nhắc N-P-K, EC, pH là số ước lượng
+    display.setCursor(0, 43);
     display.printf("pH: %.1f  UOC LUONG", soil.ph);
 
     // Dòng 4: Trạng thái bơm, MQTT và giờ thực lấy từ NTP
@@ -123,8 +183,8 @@ void updateOLED(const char* soilLabel, const SoilNutrientData& soil) {
         localtime_r(&epoch, &timeinfo);
         strftime(clock, sizeof(clock), "%H:%M", &timeinfo);
     }
-    display.drawLine(0, 50, 127, 50, SSD1306_WHITE);
-    display.setCursor(0, 54);
+    display.drawLine(0, 52, 127, 52, SSD1306_WHITE);
+    display.setCursor(0, 55);
     display.printf("BOM:%-3s  %s  %s", pumpActive ? "ON" : "OFF", mqttClient.connected() ? "MQTT" : "----", clock);
 
     display.display();
@@ -155,17 +215,24 @@ void calibrate(const char* point) {
     }
 
     AdcReading reading = readFilteredADC(PIN_WATER_SENSOR);
+    // Chỉ so với mốc còn lại khi mốc đó đã được đo thật. Mốc mặc định (200 / 3000) chưa phải số đo:
+    // so với nó sẽ chặn nhầm đầu dò điện dung có ADC lúc khô khoảng 2800 ngay ở bước đầu tiên.
+    bool otherCalibrated = isDry ? wetCalibrated : dryCalibrated;
     int otherPoint = isDry ? adcWet : adcDry;
-    if (abs(reading.value - otherPoint) < MIN_CALIBRATION_GAP) {
-        Serial.printf("=> Bo qua: ADC %d qua gan moc con lai (%d)\n", reading.value, otherPoint);
+    if (otherCalibrated && abs(reading.value - otherPoint) < MIN_CALIBRATION_GAP) {
+        Serial.printf("=> Bo qua: ADC %d qua gan moc %s da luu (%d). Dau do da %s chua?\n",
+                      reading.value, isDry ? "uot" : "kho", otherPoint,
+                      isDry ? "duoc lau kho" : "nhung vao nuoc");
         return;
     }
 
     if (isDry) {
         adcDry = reading.value;
+        dryCalibrated = true;
         prefs.putInt("adc_dry", adcDry);
     } else {
         adcWet = reading.value;
+        wetCalibrated = true;
         prefs.putInt("adc_wet", adcWet);
     }
     lastTelemetryTime = 0; // Gửi ngay số liệu theo mốc mới để App xác nhận
@@ -197,11 +264,13 @@ void onMqttMessage(char* topic, byte* payload, unsigned int length) {
     if (strcmp(action, "SET_PUMP") == 0) {
         pumpActive = state;
         digitalWrite(PIN_RELAY_PUMP, pumpActive ? RELAY_ON : RELAY_OFF);
-        Serial.printf("=> RƠ-LE BƠM NƯỚC: %s\n", pumpActive ? "DA BAT (ON)" : "DA TAT (OFF)");
+        lastTelemetryTime = 0; // Gửi ngay trạng thái bơm để App xác nhận (kể cả khi bị tự ngắt vì đất quá ẩm)
+        Serial.printf("=> RO-LE BOM NUOC: %s\n", pumpActive ? "DA BAT (ON)" : "DA TAT (OFF)");
     } else if (strcmp(action, "SET_VALVE") == 0) {
         valveActive = state;
         digitalWrite(PIN_RELAY_VALVE, valveActive ? RELAY_ON : RELAY_OFF);
-        Serial.printf("=> RƠ-LE VAN DINH DƯỠNG: %s\n", valveActive ? "MO" : "DONG");
+        lastTelemetryTime = 0;
+        Serial.printf("=> RO-LE VAN DINH DUONG: %s\n", valveActive ? "MO" : "DONG");
     } else if (strcmp(action, "SET_SOIL_TYPE") == 0) {
         SoilType newType;
         if (SoilEstimator::parseSoilType(doc["soil_type"], newType)) {
@@ -228,12 +297,11 @@ void setupWiFi() {
     wifiMulti.addAP(WOKWI_SSID, "");
     wifiMulti.addAP(WIFI_SSID, WIFI_PASSWORD);
 
-    Serial.print("Dang ket noi WiFi");
-    int attempts = 0;
-    while (wifiMulti.run() != WL_CONNECTED && attempts < 20) {
-        delay(500);
+    // Mỗi lần run() dò sóng một lượt rồi chờ kết nối tối đa 8 giây. Chỉ thử 2 lần để sai mật khẩu
+    // hay không có mạng cũng chỉ chặn khoảng 25 giây lúc khởi động, sau đó loop() tự dò lại
+    Serial.printf("Dang ket noi WiFi \"%s\" (hoac \"%s\" khi mo phong)", WIFI_SSID, WOKWI_SSID);
+    for (int attempt = 0; attempt < 2 && wifiMulti.run(8000) != WL_CONNECTED; attempt++) {
         Serial.print(".");
-        attempts++;
     }
 
     if (WiFi.status() == WL_CONNECTED) {
@@ -243,8 +311,22 @@ void setupWiFi() {
         Serial.print("   Dia chi IP: ");
         Serial.println(WiFi.localIP());
     } else {
-        Serial.println("\n⚠️ Chua bat duoc WiFi, he thong se tu dong thu lai lien tuc trong loop().");
+        Serial.println(F("\n⚠️ Chua vao duoc WiFi. Kiem tra ten mang, mat khau trong secrets.h va mang phai la 2.4 GHz."));
+        Serial.printf("   Tram van do va bao den binh thuong, %lu giay se do tim WiFi lai 1 lan.\n",
+                      WIFI_RETRY_INTERVAL / 1000);
     }
+    lastWifiAttempt = millis();
+}
+
+// Báo Online (giữ lại trên broker để ai đăng ký sau cũng biết trạm đang chạy, đè lên bản tin offline)
+void publishOnlineStatus() {
+    StaticJsonDocument<128> statusDoc;
+    statusDoc["status"] = "online";
+    statusDoc["device"] = mqttClientId.c_str();
+    char buffer[128];
+    serializeJson(statusDoc, buffer);
+    mqttClient.publish(TOPIC_STATUS, buffer, true);
+    lastStatusPublish = millis();
 }
 
 // Thử kết nối broker 1 lần, không chặn vòng lặp để OLED và LED vẫn chạy khi broker lỗi
@@ -256,10 +338,13 @@ void tryConnectMqtt() {
     mqttClient.setClient(useTls ? static_cast<Client&>(secureClient) : static_cast<Client&>(plainClient));
     mqttClient.setServer(MQTT_HOST, port);
     Serial.printf("Dang ket noi MQTT %s:%u (%s)...", MQTT_HOST, port, useTls ? "TLS" : "khong ma hoa, mo phong Wokwi");
-    String clientId = "ESP32_Soil_" + String(random(0xffff), HEX);
-    bool connected = strlen(MQTT_USERNAME) > 0
-                         ? mqttClient.connect(clientId.c_str(), MQTT_USERNAME, MQTT_PASSWORD)
-                         : mqttClient.connect(clientId.c_str());
+    mqttClientId = "ESP32_Soil_" + String(random(0xffff), HEX);
+    // LWT: trạm rút điện hay mất mạng đột ngột thì broker tự đăng "offline" (giữ lại) lên topic status
+    bool hasAccount = strlen(MQTT_USERNAME) > 0;
+    bool connected = mqttClient.connect(mqttClientId.c_str(),
+                                        hasAccount ? MQTT_USERNAME : nullptr,
+                                        hasAccount ? MQTT_PASSWORD : nullptr,
+                                        TOPIC_STATUS, 1, true, "{\"status\":\"offline\"}");
     if (!connected) {
         // rc = -2: không mở được kết nối (sai host/cổng, chứng chỉ TLS), rc = 4/5: sai tài khoản
         Serial.printf(" That bai, rc=%d. Thu lai sau %lu giay...\n", mqttClient.state(), MQTT_RETRY_INTERVAL / 1000);
@@ -269,14 +354,7 @@ void tryConnectMqtt() {
     Serial.println(" Thanh cong!");
     mqttClient.subscribe(TOPIC_COMMAND);
     Serial.printf("Da dang ky lang nghe: %s\n", TOPIC_COMMAND);
-
-    // Báo Online
-    StaticJsonDocument<128> statusDoc;
-    statusDoc["status"] = "online";
-    statusDoc["device"] = clientId;
-    char buffer[128];
-    serializeJson(statusDoc, buffer);
-    mqttClient.publish(TOPIC_STATUS, buffer);
+    publishOnlineStatus();
 }
 
 // -------------------------------------------------------------
@@ -289,11 +367,19 @@ void setup() {
     Serial.println("  HE THONG DINH DUONG DAT IOT (ESP32)");
     Serial.println("==============================================");
 
-    // Cấu hình chân vào/ra (I/O)
+#if !HAS_SECRETS
+    Serial.println(F("[CANH BAO] Chua co secrets.h: dang thu WiFi mau \"iPhone\". Tao secrets.h roi nap lai."));
+#endif
+
+    // Cấu hình chân vào/ra (I/O). Chốt mức TẮT cho rơ-le trước khi chuyển sang OUTPUT, vì chân OUTPUT mới bật
+    // ở mức LOW sẽ làm rơ-le kích mức thấp đóng thoáng qua lúc khởi động. Dùng gpio_set_level của ESP-IDF
+    // vì digitalWrite của Arduino-ESP32 3.x bỏ qua chân chưa gọi pinMode.
+    gpio_set_level((gpio_num_t)PIN_RELAY_PUMP, RELAY_OFF);
+    gpio_set_level((gpio_num_t)PIN_RELAY_VALVE, RELAY_OFF);
     pinMode(PIN_WATER_SENSOR, INPUT);
     pinMode(PIN_RELAY_PUMP, OUTPUT);
     pinMode(PIN_RELAY_VALVE, OUTPUT);
-    pinMode(PIN_BUZZER, OUTPUT);
+    setupBuzzer();
     pinMode(PIN_LED_ALERT, OUTPUT);
     pinMode(PIN_LED_WARNING, OUTPUT);
     pinMode(PIN_LED_NORMAL, OUTPUT);
@@ -309,10 +395,14 @@ void setup() {
     prefs.begin("soil", false);
     uint8_t savedType = prefs.getUChar("type", (uint8_t)SoilType::GARDEN);
     currentSoilType = savedType <= (uint8_t)SoilType::BARREN ? (SoilType)savedType : SoilType::GARDEN;
+    dryCalibrated = prefs.isKey("adc_dry");
+    wetCalibrated = prefs.isKey("adc_wet");
     adcDry = prefs.getInt("adc_dry", DEFAULT_ADC_DRY);
     adcWet = prefs.getInt("adc_wet", DEFAULT_ADC_WET);
-    Serial.printf("Loai dat dang do: %s | Hieu chuan ADC: kho=%d, uot=%d\n",
-                  SoilEstimator::profile(currentSoilType).label, adcDry, adcWet);
+    Serial.printf("Loai dat dang do: %s | Hieu chuan ADC: kho=%d%s, uot=%d%s\n",
+                  SoilEstimator::profile(currentSoilType).label,
+                  adcDry, dryCalibrated ? "" : " (mac dinh)",
+                  adcWet, wetCalibrated ? "" : " (mac dinh)");
 
     // Khởi động OLED I2C (địa chỉ 0x3C)
     if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
@@ -339,21 +429,32 @@ void setup() {
     secureClient.setCACert(ROOT_CA_BUNDLE);
     secureClient.setHandshakeTimeout(10);
     mqttClient.setCallback(onMqttMessage);
-    // Bộ đệm mặc định 256 byte không đủ chứa topic + JSON telemetry (~350 byte) -> nâng lên 512
-    mqttClient.setBufferSize(512);
+    // Bộ đệm mặc định 256 byte không đủ chứa topic + JSON telemetry (~450 byte) -> nâng lên 768
+    mqttClient.setBufferSize(768);
 }
 
 // -------------------------------------------------------------
 // VÒNG LẶP CHÍNH (LOOP)
 // -------------------------------------------------------------
 void loop() {
-    // Duy trì kết nối WiFi Multi & MQTT
-    if (wifiMulti.run() == WL_CONNECTED) {
+    // Duy trì kết nối WiFi Multi & MQTT. Đang có WiFi thì không gọi wifiMulti.run() (lệnh dò sóng chặn vài giây),
+    // mất WiFi thì WIFI_RETRY_INTERVAL mới dò lại 1 lần để vẫn đo, báo đèn và còi đúng nhịp 4 giây
+    bool wifiUp = WiFi.status() == WL_CONNECTED;
+    if (!wifiUp && millis() - lastWifiAttempt >= WIFI_RETRY_INTERVAL) {
+        Serial.println(F("[WIFI] Mat ket noi, dang do tim lai..."));
+        wifiUp = wifiMulti.run(8000) == WL_CONNECTED;
+        lastWifiAttempt = millis();
+        if (wifiUp) Serial.printf("[WIFI] Da ket noi lai \"%s\"\n", WiFi.SSID().c_str());
+    }
+    if (wifiUp) {
         if (!mqttClient.connected() && millis() - lastMqttAttempt >= MQTT_RETRY_INTERVAL) {
             lastMqttAttempt = millis();
             tryConnectMqtt();
         }
         mqttClient.loop();
+        if (mqttClient.connected() && millis() - lastStatusPublish >= STATUS_REFRESH_INTERVAL) {
+            publishOnlineStatus();
+        }
     }
 
     unsigned long now = millis();
@@ -363,10 +464,12 @@ void loop() {
         // 1. Đọc cảm biến nước qua bộ lọc trung bình cắt tỉa
         AdcReading adc = readFilteredADC(PIN_WATER_SENSOR);
 
-        // 2. Chuyển đổi ADC -> % Độ ẩm & Ước lượng chỉ số dinh dưỡng theo loại đất đang đo
+        // 2. Chuyển đổi ADC -> % Độ ẩm -> EC -> N, P, K, rồi so N, P, K với mức bình thường của loại đất đang đo
         float moisture = SoilEstimator::calculateMoisture(adc.value, adcDry, adcWet);
         SoilNutrientData soil = SoilEstimator::estimate(moisture, 0.0f, currentSoilType);
         const SoilProfile soilProfile = SoilEstimator::profile(currentSoilType);
+        const NpkLevels npkLevels = SoilEstimator::compareNpk(soil, currentSoilType);
+        const NutrientLevel npkLevel = SoilEstimator::overallLevel(npkLevels);
 
         // Cơ chế bảo vệ nông học tự động: Nếu đất đã úng nước (> 85%) mà bơm đang bật -> tự động ngắt
         if (soil.moisture > 85.0f && pumpActive) {
@@ -377,11 +480,12 @@ void loop() {
 
         // Hệ thống Đèn LED 3 Cấp Độ (Đỏ - Vàng - Xanh):
         // 🔴 ĐỎ (Nguy hiểm): Khô cằn < 35%, Ngập úng > 80%, Mặn EC > 1800, Nghèo kiệt EC < 300, Chua pH < 5.5
-        // 🟡 VÀNG (Cảnh báo nhẹ / Đang tưới): Hơi khô (35 - 49%), Hơi ẩm (71 - 80%), Thiếu N/P/K hoặc Bơm đang chạy
+        // 🟡 VÀNG (Cảnh báo nhẹ / Đang tưới): Hơi khô (35 - 49%), Hơi ẩm (71 - 80%), N/P/K thấp hơn mức bình thường
+        //    của loại đất hoặc Bơm đang chạy
         // 🟢 XANH (Lý tưởng): Đất màu mỡ, ẩm 50 - 70%, pH, EC và N-P-K cân đối
         bool isDanger = (soil.moisture < 35.0f || soil.moisture > 80.0f ||
                          soil.ec > 1800.0f || soil.ec < 300.0f || soil.ph < 5.5f);
-        bool lacksNPK = (soil.nitrogen < 50.0f || soil.phosphorus < 30.0f || soil.potassium < 80.0f);
+        bool lacksNPK = (npkLevel == NutrientLevel::BELOW);
         bool isWarning = (!isDanger && (soil.moisture < 50.0f || soil.moisture > 70.0f || lacksNPK || pumpActive));
         bool isOptimal = (!isDanger && !isWarning);
 
@@ -390,16 +494,19 @@ void loop() {
         digitalWrite(PIN_LED_NORMAL,  isOptimal ? HIGH : LOW);
 
         // 3. Cập nhật màn hình OLED (Tự động bỏ qua nếu không cắm OLED)
-        updateOLED(soilProfile.label, soil);
+        updateOLED(soilProfile, soil, npkLevel);
 
         // 4. In ra Serial Monitor để kiểm tra và lấy số liệu hiệu chuẩn
-        Serial.printf("[SENSOR] Dat: %-8s | ADC: %4d (+-%.1f) | Am: %5.1f%% | EC: %5.0f | N: %4.1f | P: %4.1f | K: %4.1f | pH: %3.1f | Bom: %s\n",
+        Serial.printf("[SENSOR] Dat: %-8s | ADC: %4d (+-%.1f) | Am: %5.1f%% | EC: %5.0f | N: %4.1f | P: %4.1f | K: %4.1f"
+                      " (chuan %.0f/%.0f/%.0f: %s) | pH: %3.1f | Bom: %s\n",
                       soilProfile.label, adc.value, adc.noise, soil.moisture,
-                      soil.ec, soil.nitrogen, soil.phosphorus, soil.potassium, soil.ph, pumpActive ? "ON" : "OFF");
+                      soil.ec, soil.nitrogen, soil.phosphorus, soil.potassium,
+                      soilProfile.nitrogenNormal, soilProfile.phosphorusNormal, soilProfile.potassiumNormal,
+                      SoilEstimator::levelLabel(npkLevel), soil.ph, pumpActive ? "ON" : "OFF");
 
         // 5. Đóng gói JSON và gửi MQTT lên Cloud cho Mobile App
         if (mqttClient.connected()) {
-            StaticJsonDocument<512> doc;
+            StaticJsonDocument<768> doc;
             doc["device_id"] = "esp32_soil_station_01";
             // Giờ thực từ NTP (Unix epoch). Chưa đồng bộ được thì bỏ trống để App dùng giờ nhận bản tin
             time_t epoch = time(nullptr);
@@ -414,6 +521,17 @@ void loop() {
             telemetry["ec"]         = round1(soil.ec);
             telemetry["moisture"]   = round1(soil.moisture);
 
+            // Mức N, P, K bình thường của loại đất và N, P, K đang thấp / bình thường / cao so với mức đó
+            JsonObject npkNormalInfo = doc.createNestedObject("npk_normal");
+            npkNormalInfo["nitrogen"]   = soilProfile.nitrogenNormal;
+            npkNormalInfo["phosphorus"] = soilProfile.phosphorusNormal;
+            npkNormalInfo["potassium"]  = soilProfile.potassiumNormal;
+
+            JsonObject npkLevelInfo = doc.createNestedObject("npk_level");
+            npkLevelInfo["nitrogen"]   = SoilEstimator::levelCode(npkLevels.nitrogen);
+            npkLevelInfo["phosphorus"] = SoilEstimator::levelCode(npkLevels.phosphorus);
+            npkLevelInfo["potassium"]  = SoilEstimator::levelCode(npkLevels.potassium);
+
             JsonObject adcInfo = doc.createNestedObject("adc");
             adcInfo["raw"]   = adc.value;
             adcInfo["noise"] = round1(adc.noise);
@@ -424,13 +542,30 @@ void loop() {
             actuators["pump"]           = pumpActive;
             actuators["nutrient_valve"] = valveActive;
 
-            char jsonBuffer[512];
-            serializeJson(doc, jsonBuffer);
+            char jsonBuffer[640];
+            serializeJson(doc, jsonBuffer, sizeof(jsonBuffer));
+            if (doc.overflowed()) {
+                Serial.println(F("=> [LOI] Bo nho JSON khong du, ban tin bi thieu truong"));
+            }
             if (mqttClient.publish(TOPIC_TELEMETRY, jsonBuffer)) {
                 Serial.println("=> Da gui MQTT thanh cong len topic: " + String(TOPIC_TELEMETRY));
             } else {
                 Serial.println(F("=> Gui MQTT that bai (ban tin vuot bo dem hoac mat ket noi)"));
             }
+        }
+
+        // 6. Còi kêu 3 tiếng khi đất VỪA chuyển sang quá khô hoặc ngập úng (để sau khi gửi MQTT cho số liệu đi đúng giờ).
+        // Hết báo khi độ ẩm về hẳn khoảng 38 - 77%, nên độ ẩm dao động quanh ngưỡng không làm còi kêu liên tục
+        bool moistureExtreme = soil.moisture < DRY_ALARM || soil.moisture > WET_ALARM;
+        bool moistureBackToNormal = soil.moisture >= DRY_ALARM + ALARM_HYSTERESIS &&
+                                    soil.moisture <= WET_ALARM - ALARM_HYSTERESIS;
+        if (!moistureAlarm && moistureExtreme) {
+            moistureAlarm = true;
+            Serial.printf("[CANH BAO] Dat %s (%.1f%%) -> coi bao 3 tieng\n",
+                          soil.moisture < DRY_ALARM ? "qua kho" : "ngap ung", soil.moisture);
+            beep(3);
+        } else if (moistureAlarm && moistureBackToNormal) {
+            moistureAlarm = false;
         }
     }
 }
