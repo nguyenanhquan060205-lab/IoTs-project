@@ -1,4 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- App nối tới broker MQTT qua Internet; thiếu quyền này thì bản APK release không kết nối được -->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:label="soil_nutrient_app"
         android:name="${applicationName}"

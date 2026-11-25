@@ -10,8 +10,15 @@ import '../models/soil_telemetry.dart';
 enum AppMqttState { disconnected, connecting, connected, error }
 
 class MqttService {
+  /// Kết nối lần đầu thất bại (chưa có mạng, broker lỗi) thì chờ bao lâu rồi thử lại
+  final Duration retryDelay;
+
+  MqttService({this.retryDelay = const Duration(seconds: 5)});
+
   MqttServerClient? _client;
   AppMqttState _state = AppMqttState.disconnected;
+  Timer? _retryTimer;
+  bool _disposed = false;
 
   final StreamController<SoilTelemetry> _telemetryController =
       StreamController<SoilTelemetry>.broadcast();
@@ -26,16 +33,33 @@ class MqttService {
     String broker = MqttConstants.defaultBroker,
     int port = MqttConstants.defaultPort,
   }) async {
+    _retryTimer?.cancel();
+    _retryTimer = null;
+    if (_disposed) return;
+
+    // Bỏ kết nối cũ (nếu có) để không có 2 client cùng nhận một bản tin
+    final previous = _client;
+    _client = null;
+    previous?.disconnect();
+
     _updateState(AppMqttState.connecting);
 
     final clientId = '${MqttConstants.clientIdPrefix}${Random().nextInt(100000)}';
-    _client = MqttServerClient(broker, clientId);
-    _client!.port = port;
-    _client!.keepAlivePeriod = 20;
-    _client!.logging(on: false);
-    _client!.autoReconnect = true;
+    final client = MqttServerClient(broker, clientId);
+    _client = client;
+    client.port = port;
+    client.keepAlivePeriod = 20;
+    client.logging(on: false);
+    // Rớt mạng sau khi đã kết nối thì thư viện tự nối lại và đăng ký lại topic
+    client.autoReconnect = true;
+    client.onAutoReconnect = () {
+      if (identical(_client, client)) _updateState(AppMqttState.connecting);
+    };
+    client.onAutoReconnected = () {
+      if (identical(_client, client)) _updateState(AppMqttState.connected);
+    };
     // TLS: mã hóa đường truyền và xác thực chứng chỉ broker bằng kho CA của hệ điều hành
-    _client!.secure = MqttConstants.useTls;
+    client.secure = MqttConstants.useTls;
 
     var connMessage = MqttConnectMessage()
         .withClientIdentifier(clientId)
@@ -43,20 +67,21 @@ class MqttService {
     if (MqttConstants.username.isNotEmpty) {
       connMessage = connMessage.authenticateAs(MqttConstants.username, MqttConstants.password);
     }
-    _client!.connectionMessage = connMessage;
-
+    client.connectionMessage = connMessage;
 
     try {
       debugPrint('[MQTT] Đang kết nối tới $broker:$port${MqttConstants.useTls ? ' (TLS)' : ''}...');
-      await _client!.connect();
+      await client.connect();
     } catch (e) {
       debugPrint('[MQTT] Lỗi kết nối: $e');
-      _updateState(AppMqttState.error);
-      _client?.disconnect();
+      _failAndRetry(client, broker, port);
       return;
     }
 
-    if (_client?.connectionStatus?.state == MqttConnectionState.connected) {
+    // Trong lúc chờ đã có lệnh connect() / dispose() khác thay client này
+    if (!identical(_client, client)) return;
+
+    if (client.connectionStatus?.state == MqttConnectionState.connected) {
       debugPrint('[MQTT] Đã kết nối thành công!');
       _updateState(AppMqttState.connected);
 
@@ -64,11 +89,21 @@ class MqttService {
       _subscribe(MqttConstants.telemetryTopic);
 
       // Lắng nghe bản tin
-      _client!.updates?.listen(_onMessageReceived);
+      client.updates?.listen(_onMessageReceived);
     } else {
-      debugPrint('[MQTT] Kết nối thất bại: ${_client?.connectionStatus?.returnCode}');
-      _updateState(AppMqttState.error);
+      debugPrint('[MQTT] Kết nối thất bại: ${client.connectionStatus?.returnCode}');
+      _failAndRetry(client, broker, port);
     }
+  }
+
+  // Lần kết nối đầu chưa thành công thì thư viện không tự nối lại, nên tự hẹn giờ thử lại
+  void _failAndRetry(MqttServerClient client, String broker, int port) {
+    if (!identical(_client, client)) return;
+    client.disconnect();
+    _updateState(AppMqttState.error);
+    if (_disposed) return;
+    debugPrint('[MQTT] Thử kết nối lại sau ${retryDelay.inSeconds} giây');
+    _retryTimer = Timer(retryDelay, () => connect(broker: broker, port: port));
   }
 
   void _subscribe(String topic) {
@@ -87,7 +122,7 @@ class MqttService {
       try {
         final Map<String, dynamic> data = jsonDecode(payload);
         final telemetry = SoilTelemetry.fromJson(data);
-        _telemetryController.add(telemetry);
+        if (!_telemetryController.isClosed) _telemetryController.add(telemetry);
       } catch (e) {
         debugPrint('[MQTT] Lỗi parse JSON telemetry: $e');
       }
@@ -120,18 +155,24 @@ class MqttService {
   }
 
   void disconnect() {
-    _client?.disconnect();
+    _retryTimer?.cancel();
+    _retryTimer = null;
+    final client = _client;
+    _client = null;
+    client?.disconnect();
     _updateState(AppMqttState.disconnected);
   }
 
   void _updateState(AppMqttState newState) {
     _state = newState;
-    _stateController.add(newState);
+    if (!_stateController.isClosed) _stateController.add(newState);
   }
 
   void dispose() {
+    _disposed = true;
+    // Đóng stream trước để lúc ngắt kết nối không báo trạng thái tới provider đã bị hủy
     _telemetryController.close();
     _stateController.close();
-    _client?.disconnect();
+    disconnect();
   }
 }

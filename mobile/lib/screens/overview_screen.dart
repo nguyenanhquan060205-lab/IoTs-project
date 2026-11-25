@@ -6,6 +6,7 @@ import '../models/soil_standard.dart';
 import '../providers/soil_data_provider.dart';
 import '../services/agronomic_engine.dart';
 import '../services/soil_status.dart';
+import '../widgets/actuator_controls.dart';
 import '../widgets/common.dart';
 import '../widgets/inline_alert.dart';
 import '../widgets/soil_gauges.dart';
@@ -132,6 +133,8 @@ class OverviewScreen extends StatelessWidget {
               ],
             ),
           ),
+          const SectionTitle('Điều khiển trạm'),
+          ActuatorControls(provider: provider),
           SectionTitle(
             'Việc nên làm',
             hint: diagnosis.issues.isEmpty ? null : '${diagnosis.issues.length} việc',

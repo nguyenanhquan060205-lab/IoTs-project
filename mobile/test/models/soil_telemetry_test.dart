@@ -80,6 +80,20 @@ void main() {
       expect(SoilTelemetry.fromJson(json).soilType, SoilType.barren);
     });
 
+    test('SoilTelemetry.fromJson reads the pump and valve relay states', () {
+      final json = {
+        "telemetry": {"moisture": 50.0},
+        "actuators": {"pump": true, "nutrient_valve": false}
+      };
+      final telemetry = SoilTelemetry.fromJson(json);
+
+      expect(telemetry.pump, isTrue);
+      expect(telemetry.valve, isFalse);
+      // Older payloads without the actuators block leave both states unknown
+      expect(SoilTelemetry.fromJson({"telemetry": {"moisture": 50.0}}).pump, isNull);
+      expect(telemetry.copyWith(moisture: 60.0).pump, isTrue);
+    });
+
     test('SoilTelemetry.fromJson ignores an unknown soil type code', () {
       final json = {"soil_type": "clay", "telemetry": {"nitrogen": 50.0}};
 

@@ -48,6 +48,8 @@ class SoilTelemetry {
   final DateTime timestamp;
   final SoilType? soilType; // Loại đất trạm đang áp dụng (null nếu trạm không báo)
   final AdcInfo? adc;
+  final bool? pump; // Rơ-le máy bơm đang bật (null nếu trạm không báo)
+  final bool? valve; // Rơ-le van dinh dưỡng đang mở (null nếu trạm không báo)
 
   SoilTelemetry({
     required this.nitrogen,
@@ -60,11 +62,14 @@ class SoilTelemetry {
     required this.timestamp,
     this.soilType,
     this.adc,
+    this.pump,
+    this.valve,
   });
 
   factory SoilTelemetry.fromJson(Map<String, dynamic> json) {
     final telemetry = json['telemetry'] as Map<String, dynamic>? ?? json;
     final epochSeconds = (json['timestamp'] as num?)?.toInt();
+    final actuators = json['actuators'] as Map<String, dynamic>?;
 
     return SoilTelemetry(
       nitrogen: (telemetry['nitrogen'] as num?)?.toDouble() ?? 0.0,
@@ -80,6 +85,8 @@ class SoilTelemetry {
           : DateTime.now(),
       soilType: SoilType.fromCode(json['soil_type'] as String?),
       adc: AdcInfo.fromJson(json['adc'] as Map<String, dynamic>?),
+      pump: actuators?['pump'] as bool?,
+      valve: actuators?['nutrient_valve'] as bool?,
     );
   }
 
@@ -108,6 +115,8 @@ class SoilTelemetry {
     DateTime? timestamp,
     SoilType? soilType,
     AdcInfo? adc,
+    bool? pump,
+    bool? valve,
   }) {
     return SoilTelemetry(
       nitrogen: nitrogen ?? this.nitrogen,
@@ -120,6 +129,8 @@ class SoilTelemetry {
       timestamp: timestamp ?? this.timestamp,
       soilType: soilType ?? this.soilType,
       adc: adc ?? this.adc,
+      pump: pump ?? this.pump,
+      valve: valve ?? this.valve,
     );
   }
 }

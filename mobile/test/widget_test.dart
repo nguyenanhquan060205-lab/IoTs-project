@@ -42,6 +42,24 @@ void main() {
     expect(find.text('Trạm đo đất'), findsOneWidget);
   });
 
+  testWidgets('Overview shows pump and valve switches that stay disabled until the station is connected', (WidgetTester tester) async {
+    await pumpApp(tester);
+
+    await tester.scrollUntilVisible(find.text('Van dinh dưỡng'), 300);
+    expect(find.text('Điều khiển trạm'), findsOneWidget);
+    expect(find.text('Máy bơm tưới'), findsOneWidget);
+    expect(find.text('Chưa rõ trạng thái'), findsNWidgets(2));
+    expect(find.text('Cần kết nối với trạm để bật hoặc tắt.'), findsOneWidget);
+
+    // No broker in widget tests: the switches are off and cannot be toggled
+    final switches = tester.widgetList<SwitchListTile>(find.byType(SwitchListTile));
+    expect(switches.length, 2);
+    for (final tile in switches) {
+      expect(tile.value, isFalse);
+      expect(tile.onChanged, isNull);
+    }
+  });
+
   testWidgets('Bottom navigation opens every function on its own page', (WidgetTester tester) async {
     await pumpApp(tester);
 
