@@ -9,7 +9,7 @@
 ## 📌 Tổng quan kiến trúc 3 tầng (3-Tier IoT Architecture)
 
 1. **Tầng Thiết bị (Perception Layer)**:
-   - Vi điều khiển **ESP32** đọc **cảm biến độ ẩm đất** (ADC) và ước lượng N, P, K, pH, EC theo loại đất được chọn trên App.
+   - Vi điều khiển **ESP32** đọc **cảm biến độ ẩm đất** (ADC) và ước lượng EC, pH theo loại đất được chọn trên App; N, P, K tính từ EC rồi so với mức bình thường của loại đất.
    - Hiển thị trực tiếp tại trạm đo qua **OLED 0.96" I2C**.
    - Cảnh báo tại chỗ bằng **Buzzer/LED** và điều khiển thiết bị qua **Relay 2 kênh**.
    - Cấp nguồn độc lập bằng **Sạc dự phòng** (Powerbank).

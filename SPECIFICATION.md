@@ -28,8 +28,8 @@
 | 1 | **Board ESP32-WROOM-32** (30/38 chân) | Bộ xử lý trung tâm (Edge Node): Đọc ADC, chạy giải thuật ước lượng, phát WiFi/MQTT | Cấp nguồn qua cổng USB 5V |
 | 2 | **Cảm biến độ ẩm đất / Cảm biến nước** | Đầu dò cảm biến đo điện trở/điện dung đất | **Cấp nguồn 3V3** (TUYỆT ĐỐI không cắm 5V vào chân ADC) |
 | 3 | **Màn hình OLED 0.96 inch I2C** (SSD1306) | Hiển thị thông số đất tức thời tại trạm đo | Giao tiếp I2C (địa chỉ `0x3C`) |
-| 4 | **Module Relay 2 kênh 5V** | Đóng ngắt thiết bị ngoại vi (Mô phỏng máy bơm tưới / van dinh dưỡng) | Kích hoạt mức Cao (High) hoặc Thấp (Low) |
-| 5 | **Còi Buzzer + LED đỏ/xanh** | Cảnh báo ngưỡng nguy hiểm (đất khô cằn / ngập úng / ngộ độc phân) | Nối chân GPIO25 và GPIO32 |
+| 4 | **Module Relay 2 kênh 5V** | Đóng ngắt thiết bị ngoại vi (Mô phỏng máy bơm tưới / van dinh dưỡng) | Kích mức THẤP (LOW = đóng), giữ jumper JD-VCC; firmware chốt mức tắt trước khi bật chân OUTPUT |
+| 5 | **Còi Buzzer + LED đỏ/vàng/xanh** | Đèn báo 3 mức; còi kêu 3 tiếng khi đất vừa chuyển sang quá khô (< 35%) hoặc ngập úng (> 80%) | Còi GPIO25 (phát PWM, còi chủ động hay thụ động đều được), LED GPIO32 / GPIO19 / GPIO33 |
 | 6 | **Breadboard MB102 & Dây cắm đực-cái** | Kết nối mạch cắm không cần dùng mỏ hàn | Dễ tháo lắp khi thử nghiệm |
 
 #### 2.2. Sơ đồ kết nối chân vi điều khiển (ESP32 Pinout Mapping)
@@ -53,7 +53,8 @@
             |
             | GPIO25        ---->  Cực Dương (+) Còi Buzzer (Cực âm nối GND)
             | GPIO32        ---->  LED Đỏ cảnh báo (qua điện trở 220Ω, âm nối GND)
-            | GPIO33        ---->  LED Xanh báo bình thường
+            | GPIO19        ---->  LED Vàng cần chú ý (qua điện trở 220Ω, âm nối GND)
+            | GPIO33        ---->  LED Xanh báo bình thường (qua điện trở 220Ω, âm nối GND)
             +----------------------------------------------------+
 ```
 
@@ -76,11 +77,13 @@ flowchart TD
     
     D --> E[Giai đoạn 3: Tính toán Độ dẫn điện tương quan EC]
     S[Loại đất chọn trên App] --> E
-    S --> F1[Đạm N, Lân P, Kali K theo loại đất]
+    E --> F1[Giai đoạn 4: Đạm N, Lân P, Kali K dễ tiêu tính từ EC]
+    S --> F2[Mức N, P, K bình thường của loại đất]
+    F1 & F2 --> F3[So sánh: Thấp / Bình thường / Cao]
     D --> F4[Ước lượng biến thiên pH theo độ bão hòa nước]
     S --> F4
     
-    F1 & F4 & D & E --> G[Đóng gói JSON Telemetry]
+    F1 & F3 & F4 & D & E --> G[Đóng gói JSON Telemetry]
     G --> H1[Hiển thị OLED 0.96 inch]
     G --> H2[Gửi MQTT lên Cloud Broker]
     H2 --> I[App Mobile Flutter & Hệ chuyên gia Nông học]
@@ -100,15 +103,19 @@ flowchart TD
    Theo định luật vật lý đất, khi độ ẩm tăng, các muối khoáng ion hòa tan linh động hơn. Tốc độ tăng phụ thuộc loại đất đang đo (chọn trên App):
    $$EC = \theta \times k_{EC}$$
 
-   | Loại đất (mã MQTT) | Dự đoán dinh dưỡng | $k_{EC}$ ($\mu S/cm$ mỗi 1% ẩm) | $pH_{0}$ | $N_0$ | $P_0$ | $K_0$ (mg/kg) |
+   | Loại đất (mã MQTT) | Dự đoán dinh dưỡng | $k_{EC}$ ($\mu S/cm$ mỗi 1% ẩm) | $pH_{0}$ | $N_0$ | $P_0$ | $K_0$ (mg/kg, mức bình thường) |
    |---|---|---|---|---|---|---|
    | Đất dinh dưỡng đóng bao (`potting`) | Cao | 20.0 | 6.2 | 95 | 50 | 135 |
    | Đất vườn - đất thịt (`garden`, mặc định) | Trung bình | 13.5 | 6.5 | 65 | 33 | 90 |
    | Đất bạc màu / bãi đất trống (`barren`) | Thấp | 4.0 | 5.8 | 20 | 10 | 30 |
 
-4. **Ước lượng N, P, K (mg/kg)**: N, P, K là lượng dinh dưỡng có sẵn trong mẫu đất, tưới thêm nước không làm đất giàu dinh dưỡng hơn, nên lấy theo loại đất và không phụ thuộc độ ẩm:
-   $$N = N_0, \quad P = P_0, \quad K = K_0$$
-   Vì loại đất là đầu vào quyết định N, P, K, kết quả Cao / Trung bình / Thấp của 3 mẫu đất là do loại đất được chọn, không phải số đo độc lập. Muốn có N, P, K đo thật cần cảm biến NPK chuyên dụng, nằm ngoài phạm vi đề tài (đề tài chọn hướng ước lượng bằng thuật toán).
+4. **Ước lượng N, P, K dễ tiêu (mg/kg)**: cây chỉ hút được phần dinh dưỡng đã hòa tan vào nước trong đất, và chính lượng ion hòa tan đó làm EC tăng. Vì vậy N, P, K được tính từ EC (tức là đổi theo độ ẩm đo được), với hệ số chung cho mọi loại đất:
+   $$N = 0.08 \times EC, \quad P = 0.04 \times EC, \quad K = 0.11 \times EC$$
+   Hệ số được chọn sao cho ở độ ẩm lý tưởng 60% (giữa khoảng 50 - 70%), mỗi loại đất cho đúng mức bình thường $N_0, P_0, K_0$ của nó. Ví dụ đất vườn ẩm 60%: $EC = 60 \times 13.5 = 810$, suy ra $N = 64.8$, $P = 32.4$, $K = 89.1$.
+
+   **So với mức bình thường của loại đất**: $N_0, P_0, K_0$ trong bảng trên không phải số đo mà là mức N, P, K bình thường của loại đất, dùng để thông báo. Mỗi chỉ số lệch dưới 20% so với mức này là *bình thường*, thấp hơn 80% là *thấp*, cao hơn 120% là *cao*. OLED hiện `Chuan:65/33/90 OK` (hoặc `THAP` / `CAO`), bản tin MQTT có thêm `npk_normal` và `npk_level`, đèn vàng sáng khi có chỉ số *thấp*.
+
+   Trạm chỉ đo thật độ ẩm, nên N, P, K vẫn là số ước lượng: đất khô thì báo thấp, đất rất ẩm thì báo cao, kể cả khi lượng phân trong đất không đổi. Muốn có N, P, K đo thật cần cảm biến NPK chuyên dụng, nằm ngoài phạm vi đề tài (đề tài chọn hướng ước lượng bằng thuật toán).
 5. **Độ chua (pH)**: Dao động quanh $pH_{0}$ của loại đất, hơi chua khi úng nước và kiềm hóa khi khô hạn:
    $$pH = pH_{0} - ((\theta - 50.0) \times 0.012)$$
 
@@ -117,24 +124,34 @@ flowchart TD
 ### 4. GIAO THỨC TRUYỀN THÔNG MQTT CLOUD
 
 * **Broker**: Mặc định `broker.emqx.io` cổng `8883` qua **TLS** (mã hóa đường truyền, ESP32 xác thực chứng chỉ broker bằng Root CA trong [`root_ca.h`](firmware/src/root_ca.h)). Broker công cộng không có tài khoản nên ai biết topic vẫn đọc hoặc gửi được; để chặn việc này, tạo broker riêng có tài khoản (ví dụ HiveMQ Cloud Free), điền vào `firmware/src/secrets.h` (mẫu: [`secrets.example.h`](firmware/src/secrets.example.h)) và `mobile/mqtt_config.json` (mẫu: [`mqtt_config.example.json`](mobile/mqtt_config.example.json)), rồi chạy App bằng `flutter run --dart-define-from-file=mqtt_config.json`. Hai file thật đã nằm trong `.gitignore`. Riêng khi chạy mô phỏng trên Wokwi (mạng `Wokwi-GUEST`), trạm tự dùng cổng `1883` không mã hóa vì mạng ảo của Wokwi không bắt tay TLS được (đã thử cả `www.google.com:443` cũng bị ngắt); ở mạng WiFi thật trạm luôn dùng TLS.
-* **Topic Telemetry** (`soil_station/1/telemetry`): ESP32 gửi dữ liệu định kỳ mỗi 3–5 giây.
-* **Topic Command** (`soil_station/1/command`): Lệnh bật/tắt Relay (`{"action": "SET_PUMP", "state": true}`), lệnh chọn loại đất đang đo (`{"action": "SET_SOIL_TYPE", "soil_type": "garden"}`, giá trị `potting` / `garden` / `barren`) và lệnh hiệu chuẩn (`{"action": "CALIBRATE", "point": "dry"}` hoặc `"wet"`: trạm lấy ADC đang đọc làm mốc, từ chối nếu hai mốc cách nhau dưới 300). ESP32 lưu loại đất và mốc hiệu chuẩn vào flash (NVS) nên khởi động lại vẫn giữ.
-* **Topic Status** (`soil_station/1/status`): Bản tin LWT kiểm tra trạng thái Online/Offline của thiết bị.
+* **Topic Telemetry** (`soil_station/1/telemetry`): ESP32 gửi dữ liệu định kỳ mỗi 4 giây.
+* **Topic Command** (`soil_station/1/command`): Lệnh bật/tắt Relay (`{"action": "SET_PUMP", "state": true}`), lệnh chọn loại đất đang đo (`{"action": "SET_SOIL_TYPE", "soil_type": "garden"}`, giá trị `potting` / `garden` / `barren`) và lệnh hiệu chuẩn (`{"action": "CALIBRATE", "point": "dry"}` hoặc `"wet"`: trạm lấy ADC đang đọc làm mốc, từ chối nếu cách mốc còn lại dưới 300 khi mốc đó đã được đo thật; không so với số mặc định 200 / 3000). Sau mỗi lệnh trạm gửi ngay một bản tin telemetry để App xác nhận. ESP32 lưu loại đất và mốc hiệu chuẩn vào flash (NVS) nên khởi động lại vẫn giữ.
+* **Topic Status** (`soil_station/1/status`): Trạm kết nối xong thì đăng `{"status": "online", "device": ...}` (giữ lại trên broker) và gửi lại 30 giây 1 lần; mất kết nối đột ngột thì broker tự đăng `{"status": "offline"}` qua LWT. Gửi lại định kỳ vì khi trạm khởi động lại, phiên cũ còn treo trên broker khoảng 22 giây rồi LWT `offline` của nó mới được đăng, đè lên `online` của phiên mới.
 
 #### Cấu trúc Payload mẫu (JSON):
-`timestamp` là giờ thực Unix lấy từ NTP (`pool.ntp.org`, múi giờ UTC+7); khi trạm chưa đồng bộ được giờ thì bỏ trống và App dùng giờ nhận bản tin. Trạm chưa có cảm biến nhiệt nên không gửi `temperature`. Khối `adc` phục vụ màn Hiệu chuẩn.
+`timestamp` là giờ thực Unix lấy từ NTP (`pool.ntp.org`, múi giờ UTC+7); khi trạm chưa đồng bộ được giờ thì bỏ trống và App dùng giờ nhận bản tin. Trạm chưa có cảm biến nhiệt nên không gửi `temperature`. Khối `npk_normal` là mức N, P, K bình thường của loại đất, `npk_level` cho biết từng chỉ số đang `low` / `normal` / `high` so với mức đó. Khối `adc` phục vụ màn Hiệu chuẩn.
 ```json
 {
   "device_id": "esp32_soil_station_01",
   "timestamp": 1764000000,
   "soil_type": "garden",
   "telemetry": {
-    "nitrogen": 65.0,
-    "phosphorus": 33.0,
-    "potassium": 90.0,
+    "nitrogen": 59.4,
+    "phosphorus": 29.7,
+    "potassium": 81.7,
     "ph": 6.4,
     "ec": 742.5,
     "moisture": 55.0
+  },
+  "npk_normal": {
+    "nitrogen": 65,
+    "phosphorus": 33,
+    "potassium": 90
+  },
+  "npk_level": {
+    "nitrogen": "normal",
+    "phosphorus": "normal",
+    "potassium": "normal"
   },
   "adc": {
     "raw": 1740,
