@@ -1,0 +1,2 @@
+# Script shell luôn dùng LF: checkout bằng CRLF trên Windows làm bash trong WSL/Linux báo lỗi "\r: command not found"
+*.sh text eol=lf

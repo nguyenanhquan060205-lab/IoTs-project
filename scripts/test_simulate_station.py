@@ -106,19 +106,46 @@ class TestSimulateStation(unittest.TestCase):
                 self.assertGreater(potting[idx], garden[idx], f"potting <= garden at index {idx}, moisture {m}")
                 self.assertGreater(garden[idx], barren[idx], f"garden <= barren at index {idx}, moisture {m}")
 
-    def test_watering_does_not_raise_npk(self):
-        """N, P, K belong to the soil sample: wet and dry readings stay in the same band."""
+    def test_npk_follows_ec(self):
+        """N, P, K are computed from EC (like the firmware), so they rise with moisture."""
+        coefficients = (simulate_station.N_PER_EC, simulate_station.P_PER_EC, simulate_station.K_PER_EC)
         for soil in simulate_station.SOIL_PROFILES:
             dry = simulate_station.calculate_nutrients_from_moisture(35.0, soil)
             wet = simulate_station.calculate_nutrients_from_moisture(85.0, soil)
-            for idx, spread in ((0, 6.0), (1, 4.0), (2, 8.0)):  # Only the random jitter may differ
-                self.assertLessEqual(abs(dry[idx] - wet[idx]), spread, f"{soil} index {idx}")
-            self.assertGreater(wet[4], dry[4], f"EC should still rise with moisture for {soil}")
+            self.assertGreater(wet[4], dry[4], f"EC should rise with moisture for {soil}")
+            for idx, coef in enumerate(coefficients):
+                self.assertGreater(wet[idx], dry[idx], f"{soil} index {idx} should rise with moisture")
+                # Values are rounded to 1 decimal, EC included
+                self.assertAlmostEqual(wet[idx], wet[4] * coef, delta=0.1, msg=f"{soil} index {idx}")
+
+    def test_npk_level_against_soil_normal(self):
+        """Each soil type is on its normal N-P-K level at 60% moisture, low when dry and high when very wet."""
+        for soil in simulate_station.SOIL_PROFILES:
+            for moisture, expected in ((30.0, "low"), (60.0, "normal"), (90.0, "high")):
+                n, p, k, _, _ = simulate_station.calculate_nutrients_from_moisture(moisture, soil)
+                levels = simulate_station.npk_levels(n, p, k, soil)
+                self.assertEqual(set(levels.values()), {expected}, f"{soil} at {moisture}%: {levels}")
+
+        # +-20% band, same as the firmware
+        self.assertEqual(simulate_station.compare_to_normal(52.0, 65.0), "normal")
+        self.assertEqual(simulate_station.compare_to_normal(78.0, 65.0), "normal")
+        self.assertEqual(simulate_station.compare_to_normal(51.0, 65.0), "low")
+        self.assertEqual(simulate_station.compare_to_normal(79.0, 65.0), "high")
+
+    def test_payload_reports_soil_normal_npk(self):
+        """The payload carries the soil type's normal N-P-K level and how each nutrient compares to it."""
+        payload = simulate_station.build_payload(60.0, "potting")
+        self.assertEqual(payload["npk_normal"], {"nitrogen": 95.0, "phosphorus": 50.0, "potassium": 135.0})
+        self.assertEqual(set(payload["npk_level"]), {"nitrogen", "phosphorus", "potassium"})
+        for level in payload["npk_level"].values():
+            self.assertIn(level, ("low", "normal", "high"))
 
     def test_command_handling_calibrate(self):
         """CALIBRATE stores the current ADC as the dry or wet point and rejects points too close together."""
         simulate_station.adc_dry = simulate_station.PROBE_DRY_ADC
         simulate_station.adc_wet = simulate_station.PROBE_WET_ADC
+        simulate_station.dry_calibrated = False
+        simulate_station.wet_calibrated = False
         simulate_station.current_moisture = 2.0  # Probe almost dry
 
         class MockMsg:
@@ -127,11 +154,29 @@ class TestSimulateStation(unittest.TestCase):
 
         simulate_station.on_message(None, None, MockMsg())
         self.assertAlmostEqual(simulate_station.adc_dry, 256, delta=10)
+        self.assertTrue(simulate_station.dry_calibrated)
 
         # Saving the wet point while the probe is still dry is rejected
         MockMsg.payload = json.dumps({"action": "CALIBRATE", "point": "wet"}).encode('utf-8')
         simulate_station.on_message(None, None, MockMsg())
         self.assertEqual(simulate_station.adc_wet, simulate_station.PROBE_WET_ADC)
+        self.assertFalse(simulate_station.wet_calibrated)
+
+    def test_calibrate_first_point_ignores_default_other_point(self):
+        """The first point is never compared with a default value: a capacitive probe reads ~2800 dry, near the default wet 3000."""
+        simulate_station.adc_dry = simulate_station.PROBE_DRY_ADC
+        simulate_station.adc_wet = simulate_station.PROBE_WET_ADC
+        simulate_station.dry_calibrated = False
+        simulate_station.wet_calibrated = False
+        simulate_station.current_moisture = 93.0  # Virtual probe reads ~2800, within 300 of the default wet point
+
+        class MockMsg:
+            topic = simulate_station.COMMAND_TOPIC
+            payload = json.dumps({"action": "CALIBRATE", "point": "dry"}).encode('utf-8')
+
+        simulate_station.on_message(None, None, MockMsg())
+        self.assertAlmostEqual(simulate_station.adc_dry, 2804, delta=10)
+        self.assertTrue(simulate_station.dry_calibrated)
 
     def test_command_handling_set_soil_type(self):
         """Test on_message handler with SET_SOIL_TYPE action, rejecting unknown codes."""
