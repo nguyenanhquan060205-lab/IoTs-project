@@ -33,7 +33,7 @@
  * CẤU HÌNH HỆ THỐNG GIÁM SÁT DINH DƯỠNG ĐẤT IOT (ESP32)
  * Cấu hình Tối Giản: Chỉ Điện Thoại + ESP32 + Cảm Biến Nước/Độ Ẩm ADC
  * EC, pH ước lượng từ độ ẩm theo loại đất do App chọn; N, P, K tính từ EC và so với mức bình thường của loại đất
- * Tùy chọn cắm thêm: OLED 0.96" I2C, Relay 5V điều khiển bơm
+ * Tùy chọn cắm thêm: OLED 0.96" I2C
  * ==================================================================== */
 
 // 1. Cấu hình WiFi (Tự động thử WiFi trong secrets.h và Wokwi-GUEST)
@@ -47,16 +47,10 @@ const char* TOPIC_STATUS    = "soil_station/1/status";
 
 // 3. Định nghĩa chân GPIO phần cứng (Đảm bảo an toàn, không xung đột WiFi)
 #define PIN_WATER_SENSOR  34   // Chân ADC1 (GPIO34) đọc cảm biến độ ẩm/nước (Cấp nguồn 3.3V!)
-#define PIN_RELAY_PUMP    26   // Chân điều khiển Rơ-le máy bơm nước
-#define PIN_RELAY_VALVE   27   // Chân điều khiển Rơ-le van dinh dưỡng (dự phòng)
 #define PIN_BUZZER        25   // Còi cảnh báo (chủ động hay thụ động đều kêu vì được phát bằng PWM)
 #define PIN_LED_ALERT     32   // LED đỏ (Báo động nguy hiểm: Khô cằn / Ngập úng / Chua phèn / Mặn)
-#define PIN_LED_WARNING   19   // LED vàng (Cảnh báo nhẹ / Đang tưới / Cần theo dõi)
+#define PIN_LED_WARNING   19   // LED vàng (Cảnh báo nhẹ / Cần theo dõi)
 #define PIN_LED_NORMAL    33   // LED xanh (Đất màu mỡ, dinh dưỡng & độ ẩm chuẩn)
-
-// Module rơ-le 2 kênh có opto và jumper JD-VCC kích ở mức THẤP: LOW = rơ-le đóng, HIGH = rơ-le nhả
-#define RELAY_ON   LOW
-#define RELAY_OFF  HIGH
 
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
@@ -90,8 +84,6 @@ Preferences prefs;
 SoilType currentSoilType = SoilType::GARDEN;
 
 // Biến lưu trạng thái hoạt động
-bool pumpActive = false;
-bool valveActive = false;
 bool hasOLED = false;
 unsigned long lastTelemetryTime = 0;
 unsigned long lastMqttAttempt = 0;
@@ -175,7 +167,7 @@ void updateOLED(const SoilProfile& soilProfile, const SoilNutrientData& soil, Nu
     display.setCursor(0, 43);
     display.printf("pH: %.1f  UOC LUONG", soil.ph);
 
-    // Dòng 4: Trạng thái bơm, MQTT và giờ thực lấy từ NTP
+    // Dòng 5: Trạng thái MQTT và giờ thực lấy từ NTP
     char clock[6] = "--:--";
     time_t epoch = time(nullptr);
     if (epoch > VALID_EPOCH) {
@@ -185,7 +177,7 @@ void updateOLED(const SoilProfile& soilProfile, const SoilNutrientData& soil, Nu
     }
     display.drawLine(0, 52, 127, 52, SSD1306_WHITE);
     display.setCursor(0, 55);
-    display.printf("BOM:%-3s  %s  %s", pumpActive ? "ON" : "OFF", mqttClient.connected() ? "MQTT" : "----", clock);
+    display.printf("%s  %s", mqttClient.connected() ? "MQTT" : "----", clock);
 
     display.display();
 }
@@ -259,19 +251,8 @@ void onMqttMessage(char* topic, byte* payload, unsigned int length) {
 
     const char* action = doc["action"];
     if (action == nullptr) return;
-    bool state = doc["state"];
 
-    if (strcmp(action, "SET_PUMP") == 0) {
-        pumpActive = state;
-        digitalWrite(PIN_RELAY_PUMP, pumpActive ? RELAY_ON : RELAY_OFF);
-        lastTelemetryTime = 0; // Gửi ngay trạng thái bơm để App xác nhận (kể cả khi bị tự ngắt vì đất quá ẩm)
-        Serial.printf("=> RO-LE BOM NUOC: %s\n", pumpActive ? "DA BAT (ON)" : "DA TAT (OFF)");
-    } else if (strcmp(action, "SET_VALVE") == 0) {
-        valveActive = state;
-        digitalWrite(PIN_RELAY_VALVE, valveActive ? RELAY_ON : RELAY_OFF);
-        lastTelemetryTime = 0;
-        Serial.printf("=> RO-LE VAN DINH DUONG: %s\n", valveActive ? "MO" : "DONG");
-    } else if (strcmp(action, "SET_SOIL_TYPE") == 0) {
+    if (strcmp(action, "SET_SOIL_TYPE") == 0) {
         SoilType newType;
         if (SoilEstimator::parseSoilType(doc["soil_type"], newType)) {
             currentSoilType = newType;
@@ -371,22 +352,14 @@ void setup() {
     Serial.println(F("[CANH BAO] Chua co secrets.h: dang thu WiFi mau \"iPhone\". Tao secrets.h roi nap lai."));
 #endif
 
-    // Cấu hình chân vào/ra (I/O). Chốt mức TẮT cho rơ-le trước khi chuyển sang OUTPUT, vì chân OUTPUT mới bật
-    // ở mức LOW sẽ làm rơ-le kích mức thấp đóng thoáng qua lúc khởi động. Dùng gpio_set_level của ESP-IDF
-    // vì digitalWrite của Arduino-ESP32 3.x bỏ qua chân chưa gọi pinMode.
-    gpio_set_level((gpio_num_t)PIN_RELAY_PUMP, RELAY_OFF);
-    gpio_set_level((gpio_num_t)PIN_RELAY_VALVE, RELAY_OFF);
+    // Cấu hình chân vào/ra (I/O)
     pinMode(PIN_WATER_SENSOR, INPUT);
-    pinMode(PIN_RELAY_PUMP, OUTPUT);
-    pinMode(PIN_RELAY_VALVE, OUTPUT);
     setupBuzzer();
     pinMode(PIN_LED_ALERT, OUTPUT);
     pinMode(PIN_LED_WARNING, OUTPUT);
     pinMode(PIN_LED_NORMAL, OUTPUT);
 
-    // Mặc định tắt các relay và đèn cảnh báo
-    digitalWrite(PIN_RELAY_PUMP, RELAY_OFF);
-    digitalWrite(PIN_RELAY_VALVE, RELAY_OFF);
+    // Mặc định tắt đèn cảnh báo
     digitalWrite(PIN_LED_ALERT, LOW);
     digitalWrite(PIN_LED_WARNING, LOW);
     digitalWrite(PIN_LED_NORMAL, HIGH);
@@ -471,22 +444,15 @@ void loop() {
         const NpkLevels npkLevels = SoilEstimator::compareNpk(soil, currentSoilType);
         const NutrientLevel npkLevel = SoilEstimator::overallLevel(npkLevels);
 
-        // Cơ chế bảo vệ nông học tự động: Nếu đất đã úng nước (> 85%) mà bơm đang bật -> tự động ngắt
-        if (soil.moisture > 85.0f && pumpActive) {
-            pumpActive = false;
-            digitalWrite(PIN_RELAY_PUMP, RELAY_OFF);
-            Serial.println(F("⚠️ [TỰ ĐỘNG BẢO VỆ NÔNG HỌC] Đất đã úng nước (> 85%) -> Tự động ngắt bơm an toàn!"));
-        }
-
         // Hệ thống Đèn LED 3 Cấp Độ (Đỏ - Vàng - Xanh):
         // 🔴 ĐỎ (Nguy hiểm): Khô cằn < 35%, Ngập úng > 80%, Mặn EC > 1800, Nghèo kiệt EC < 300, Chua pH < 5.5
-        // 🟡 VÀNG (Cảnh báo nhẹ / Đang tưới): Hơi khô (35 - 49%), Hơi ẩm (71 - 80%), N/P/K thấp hơn mức bình thường
-        //    của loại đất hoặc Bơm đang chạy
+        // 🟡 VÀNG (Cảnh báo nhẹ): Hơi khô (35 - 49%), Hơi ẩm (71 - 80%), N/P/K thấp hơn mức bình thường
+        //    của loại đất
         // 🟢 XANH (Lý tưởng): Đất màu mỡ, ẩm 50 - 70%, pH, EC và N-P-K cân đối
         bool isDanger = (soil.moisture < 35.0f || soil.moisture > 80.0f ||
                          soil.ec > 1800.0f || soil.ec < 300.0f || soil.ph < 5.5f);
         bool lacksNPK = (npkLevel == NutrientLevel::BELOW);
-        bool isWarning = (!isDanger && (soil.moisture < 50.0f || soil.moisture > 70.0f || lacksNPK || pumpActive));
+        bool isWarning = (!isDanger && (soil.moisture < 50.0f || soil.moisture > 70.0f || lacksNPK));
         bool isOptimal = (!isDanger && !isWarning);
 
         digitalWrite(PIN_LED_ALERT,   isDanger  ? HIGH : LOW);
@@ -498,11 +464,11 @@ void loop() {
 
         // 4. In ra Serial Monitor để kiểm tra và lấy số liệu hiệu chuẩn
         Serial.printf("[SENSOR] Dat: %-8s | ADC: %4d (+-%.1f) | Am: %5.1f%% | EC: %5.0f | N: %4.1f | P: %4.1f | K: %4.1f"
-                      " (chuan %.0f/%.0f/%.0f: %s) | pH: %3.1f | Bom: %s\n",
+                      " (chuan %.0f/%.0f/%.0f: %s) | pH: %3.1f\n",
                       soilProfile.label, adc.value, adc.noise, soil.moisture,
                       soil.ec, soil.nitrogen, soil.phosphorus, soil.potassium,
                       soilProfile.nitrogenNormal, soilProfile.phosphorusNormal, soilProfile.potassiumNormal,
-                      SoilEstimator::levelLabel(npkLevel), soil.ph, pumpActive ? "ON" : "OFF");
+                      SoilEstimator::levelLabel(npkLevel), soil.ph);
 
         // 5. Đóng gói JSON và gửi MQTT lên Cloud cho Mobile App
         if (mqttClient.connected()) {
@@ -537,10 +503,6 @@ void loop() {
             adcInfo["noise"] = round1(adc.noise);
             adcInfo["dry"]   = adcDry;
             adcInfo["wet"]   = adcWet;
-
-            JsonObject actuators = doc.createNestedObject("actuators");
-            actuators["pump"]           = pumpActive;
-            actuators["nutrient_valve"] = valveActive;
 
             char jsonBuffer[640];
             serializeJson(doc, jsonBuffer, sizeof(jsonBuffer));

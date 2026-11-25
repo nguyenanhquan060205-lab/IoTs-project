@@ -14,7 +14,7 @@ struct AdcReading {
 /**
  * Bộ lọc trung bình cắt tỉa (Trimmed Mean): sắp xếp các mẫu, bỏ `trim` mẫu thấp nhất
  * và `trim` mẫu cao nhất rồi lấy trung bình phần còn lại. Khác trung bình thường,
- * vài mẫu gai nhiễu (chạm dây, nhiễu WiFi/relay) bị loại bỏ hẳn thay vì kéo lệch kết quả.
+ * vài mẫu gai nhiễu (chạm dây, nhiễu WiFi) bị loại bỏ hẳn thay vì kéo lệch kết quả.
  */
 class AdcFilter {
 public:

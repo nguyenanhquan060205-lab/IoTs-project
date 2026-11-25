@@ -240,7 +240,7 @@ void testNpkComparedToNormal() {
 void testTrimmedMeanFilter() {
     std::cout << "[TEST] Running ADC Trimmed Mean Filter Test...\n";
 
-    // Steady signal around 1500 with 4 spikes (loose wire, relay switching)
+    // Steady signal around 1500 with 4 spikes (loose wire, WiFi bursts)
     int samples[21] = {1500, 1502, 4095, 1498, 1501, 1499, 0, 1500, 1503, 1497,
                        1500, 4095, 1501, 1499, 1500, 1502, 1498, 0, 1500, 1501, 1499};
     long plainSum = 0;
