@@ -13,7 +13,6 @@ class SoilDataProvider extends ChangeNotifier {
   final List<SoilTelemetry> _history = [];
   AppMqttState _connectionState = AppMqttState.disconnected;
   SoilType? _pendingSoilType; // Loại đất vừa chọn trên App, đang chờ trạm xác nhận
-  final Map<Actuator, _PendingSwitch> _pendingSwitches = {}; // Lệnh bật/tắt rơ-le đang chờ trạm xác nhận
 
   SoilTelemetry get currentTelemetry => _currentTelemetry;
   List<SoilTelemetry> get history => _history;
@@ -25,16 +24,6 @@ class SoilDataProvider extends ChangeNotifier {
 
   /// true khi trạm chưa gửi về số liệu đo theo loại đất vừa chọn
   bool get isSoilTypeSyncing => _pendingSoilType != null;
-
-  /// Trạng thái rơ-le đang hiển thị: ưu tiên lệnh vừa gửi, sau đó tới trạng thái trạm báo về
-  bool actuatorState(Actuator actuator) =>
-      _pendingSwitches[actuator]?.state ?? _reportedState(_currentTelemetry, actuator) ?? false;
-
-  /// true khi đã gửi lệnh bật/tắt nhưng trạm chưa báo lại trạng thái mới
-  bool isActuatorSyncing(Actuator actuator) => _pendingSwitches.containsKey(actuator);
-
-  /// true khi trạm đã từng báo trạng thái rơ-le (firmware cũ hoặc chưa có số đo thật thì false)
-  bool get hasActuatorReport => _currentTelemetry.pump != null;
 
   AgronomicDiagnosis get currentDiagnosis => AgronomicEngine.evaluate(
         telemetry: _currentTelemetry,
@@ -61,7 +50,6 @@ class SoilDataProvider extends ChangeNotifier {
       if (telemetry.soilType == _pendingSoilType) {
         _pendingSoilType = null;
       }
-      _settlePendingSwitches(telemetry);
       _history.add(telemetry);
       if (_history.length > 30) {
         _history.removeAt(0);
@@ -85,33 +73,6 @@ class SoilDataProvider extends ChangeNotifier {
   bool _publishSoilType(SoilType type) =>
       _mqttService.publishCommand({'action': 'SET_SOIL_TYPE', 'soil_type': type.code});
 
-  /// Gửi lệnh bật/tắt rơ-le bơm hoặc van. Trả về false nếu chưa kết nối MQTT.
-  bool setActuator(Actuator actuator, bool on) {
-    final sent = _mqttService.publishCommand({'action': actuator.command, 'state': on});
-    if (sent) {
-      _pendingSwitches[actuator] = _PendingSwitch(on, DateTime.now());
-      notifyListeners();
-    }
-    return sent;
-  }
-
-  static bool? _reportedState(SoilTelemetry telemetry, Actuator actuator) =>
-      actuator == Actuator.pump ? telemetry.pump : telemetry.valve;
-
-  // Trạm gửi số đo ngay sau khi nhận lệnh. Bản tin khớp lệnh thì xác nhận; quá [_switchConfirmWindow]
-  // mà vẫn khác thì trạm đã từ chối hoặc tự ngắt (bơm khi đất quá ẩm), hiển thị theo trạm.
-  // Không xóa ngay ở bản tin khác đầu tiên vì bản tin đó có thể được gửi trước lúc trạm nhận lệnh.
-  static const Duration _switchConfirmWindow = Duration(seconds: 6);
-
-  void _settlePendingSwitches(SoilTelemetry telemetry) {
-    _pendingSwitches.removeWhere((actuator, pending) {
-      final reported = _reportedState(telemetry, actuator);
-      if (reported == null) return false;
-      return reported == pending.state ||
-          DateTime.now().difference(pending.sentAt) > _switchConfirmWindow;
-    });
-  }
-
   /// Yêu cầu trạm lấy ADC hiện tại làm mốc khô / ướt. Trả về false nếu chưa kết nối MQTT.
   bool calibrate(CalibrationPoint point) =>
       _mqttService.publishCommand({'action': 'CALIBRATE', 'point': point.code});
@@ -132,8 +93,6 @@ class SoilDataProvider extends ChangeNotifier {
       temperature: (25 + ((DateTime.now().second % 50) / 10)).toDouble(),
       timestamp: DateTime.now(),
       soilType: _currentTelemetry.soilType,
-      pump: _currentTelemetry.pump,
-      valve: _currentTelemetry.valve,
     );
     _history.add(_currentTelemetry);
     if (_history.length > 30) {
@@ -148,20 +107,4 @@ class SoilDataProvider extends ChangeNotifier {
     historyRepository.close();
     super.dispose();
   }
-}
-
-/// Rơ-le trên trạm điều khiển được từ App, [command] khớp tên lệnh trong firmware
-enum Actuator {
-  pump('SET_PUMP'),
-  valve('SET_VALVE');
-
-  const Actuator(this.command);
-  final String command;
-}
-
-class _PendingSwitch {
-  final bool state;
-  final DateTime sentAt;
-
-  const _PendingSwitch(this.state, this.sentAt);
 }

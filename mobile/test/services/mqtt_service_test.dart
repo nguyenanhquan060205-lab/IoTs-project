@@ -19,6 +19,6 @@ void main() {
     expect(states.where((s) => s == AppMqttState.error).length, greaterThanOrEqualTo(2),
         reason: 'states seen: $states');
     expect(states.length, countAtDispose, reason: 'no retry may run after dispose');
-    expect(service.publishCommand({'action': 'SET_PUMP', 'state': true}), isFalse);
+    expect(service.publishCommand({'action': 'SET_SOIL_TYPE', 'soil_type': 'garden'}), isFalse);
   });
 }
