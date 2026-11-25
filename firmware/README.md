@@ -8,7 +8,7 @@ Chỉ độ ẩm là số đo thật. EC, N, P, K, pH là số ước lượng (
 
 | File | Nội dung |
 |---|---|
-| `src/main.cpp` | WiFi, MQTT, đọc cảm biến, đèn LED, còi, OLED, rơ-le, xử lý lệnh từ App |
+| `src/main.cpp` | WiFi, MQTT, đọc cảm biến, đèn LED, còi, OLED, xử lý lệnh từ App |
 | `src/soil_estimator.h` | Đổi ADC → % độ ẩm (2 mốc), ước lượng EC, pH, tính N, P, K từ EC (`N = 0.08 × EC`, `P = 0.04 × EC`, `K = 0.11 × EC`) và so với mức bình thường của loại đất (±20%) |
 | `src/adc_filter.h` | Lọc trung bình cắt tỉa: 21 mẫu, bỏ 5 thấp nhất và 5 cao nhất |
 | `src/root_ca.h` | Root CA để xác thực broker TLS (DigiCert Global Root G2, ISRG Root X1) |
@@ -22,7 +22,6 @@ Chỉ độ ẩm là số đo thật. EC, N, P, K, pH là số ước lượng (
 |---|---|
 | GPIO34 | AO của cảm biến độ ẩm (VCC cảm biến nối **3V3**, không nối 5V) |
 | GPIO21 / GPIO22 | SDA / SCL của OLED SSD1306 (0x3C), không cắm thì firmware tự bỏ qua |
-| GPIO26 / GPIO27 | IN1 (bơm) / IN2 (van) của module rơ-le 2 kênh kích mức THẤP |
 | GPIO32 / GPIO19 / GPIO33 | LED đỏ / vàng / xanh, mỗi LED qua điện trở 220Ω xuống GND |
 | GPIO25 | Còi (+). Còi chủ động hay thụ động đều kêu vì được phát bằng PWM |
 
@@ -42,9 +41,8 @@ Lần đầu build, PlatformIO tải toolchain ESP32 (chiếm khoảng 4 GB ổ 
 
 - **WiFi**: lúc khởi động thử tối đa 2 lần (khoảng 25 giây). Mất WiFi thì cứ 15 giây dò lại 1 lần; giữa các lần trạm vẫn đo, báo đèn, còi và OLED bình thường.
 - **MQTT**: broker trong `secrets.h`, mất kết nối thì 5 giây thử lại. Topic `soil_station/1/status` nhận `online` (giữ lại trên broker) khi trạm kết nối và cứ 30 giây gửi lại 1 lần, và `offline` qua LWT khi trạm mất kết nối đột ngột. Trên mạng ảo `Wokwi-GUEST` trạm dùng cổng 1883 không mã hóa.
-- **Lệnh từ App** (`soil_station/1/command`): `SET_SOIL_TYPE`, `CALIBRATE` (`dry` / `wet`), `SET_PUMP`, `SET_VALVE`. Sau mỗi lệnh trạm gửi ngay một bản tin để App xác nhận.
+- **Lệnh từ App** (`soil_station/1/command`): `SET_SOIL_TYPE`, `CALIBRATE` (`dry` / `wet`). Sau mỗi lệnh trạm gửi ngay một bản tin để App xác nhận.
 - **Hiệu chuẩn**: loại đất và 2 mốc lưu trong NVS, rút điện vẫn giữ. Mốc mới bị từ chối nếu cách mốc còn lại dưới 300 ADC, nhưng chỉ khi mốc còn lại đã được đo thật (không so với số mặc định 200 / 3000).
-- **Bảo vệ**: độ ẩm trên 85% mà bơm đang bật thì tự ngắt bơm. Rơ-le được chốt mức TẮT trước khi bật chân OUTPUT nên không đóng thoáng qua lúc khởi động.
 - **Còi**: kêu 3 tiếng ngắn khi đất vừa chuyển sang quá khô (dưới 35%) hoặc ngập úng (trên 80%). Phải về hẳn khoảng 38 - 77% mới hết báo, nên độ ẩm dao động quanh ngưỡng không làm còi kêu liên tục. Trước khi hiệu chuẩn, còi có thể kêu một lần lúc khởi động vì độ ẩm tính theo mốc mặc định.
 
 ## Lỗi thường gặp

@@ -11,7 +11,7 @@
 1. **Tầng Thiết bị (Perception Layer)**:
    - Vi điều khiển **ESP32** đọc **cảm biến độ ẩm đất** (ADC) và ước lượng EC, pH theo loại đất được chọn trên App; N, P, K tính từ EC rồi so với mức bình thường của loại đất.
    - Hiển thị trực tiếp tại trạm đo qua **OLED 0.96" I2C**.
-   - Cảnh báo tại chỗ bằng **Buzzer/LED** và điều khiển thiết bị qua **Relay 2 kênh**.
+   - Cảnh báo tại chỗ bằng **Buzzer/LED**.
    - Cấp nguồn độc lập bằng **Sạc dự phòng** (Powerbank).
 
 2. **Tầng Truyền thông (Network Layer)**:
@@ -22,7 +22,6 @@
    - **Ứng dụng di động (Flutter Mobile App)**:
      - Giám sát thời gian thực: điểm sức khỏe đất, N-P-K, độ ẩm, pH, EC so với mức chuẩn; lịch sử đo theo ngày; hiệu chuẩn cảm biến từng bước.
      - Tích hợp **Hệ chuyên gia Nông học (Rule Engine)**: Chẩn đoán điểm sức khỏe đất (Soil Health Score) và xuất khuyến nghị cải tạo đất theo chuẩn thổ nhưỡng nông nghiệp.
-     - Điều khiển Relay máy bơm/van xả trực tiếp từ điện thoại với độ trễ < 1 giây.
 
 ---
 

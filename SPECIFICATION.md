@@ -16,7 +16,6 @@
   - Hiển thị thông số trực tiếp tại chỗ qua màn hình **OLED 0.96 inch SSD1306**.
   - Truyền dữ liệu hai chiều thời gian thực qua giao thức mạng **MQTT** với định dạng **JSON**.
   - Tích hợp **Hệ chuyên gia Nông học (Rule-based Agronomic Engine)** trên ứng dụng di động **Flutter**: hiển thị N, P, K, độ ẩm, pH, EC so với mức chuẩn, chẩn đoán độ màu mỡ của đất và tự động xuất khuyến nghị cải tạo đất theo Ngưỡng Đất Màu Mỡ Chuẩn Nông Nghiệp.
-  - Hỗ trợ **Điều khiển thiết bị ngoại vi hai chiều**: Bật/tắt máy bơm tưới nước và van xả dinh dưỡng từ xa qua điện thoại.
 
 ---
 
@@ -28,9 +27,8 @@
 | 1 | **Board ESP32-WROOM-32** (30/38 chân) | Bộ xử lý trung tâm (Edge Node): Đọc ADC, chạy giải thuật ước lượng, phát WiFi/MQTT | Cấp nguồn qua cổng USB 5V |
 | 2 | **Cảm biến độ ẩm đất / Cảm biến nước** | Đầu dò cảm biến đo điện trở/điện dung đất | **Cấp nguồn 3V3** (TUYỆT ĐỐI không cắm 5V vào chân ADC) |
 | 3 | **Màn hình OLED 0.96 inch I2C** (SSD1306) | Hiển thị thông số đất tức thời tại trạm đo | Giao tiếp I2C (địa chỉ `0x3C`) |
-| 4 | **Module Relay 2 kênh 5V** | Đóng ngắt thiết bị ngoại vi (Mô phỏng máy bơm tưới / van dinh dưỡng) | Kích mức THẤP (LOW = đóng), giữ jumper JD-VCC; firmware chốt mức tắt trước khi bật chân OUTPUT |
-| 5 | **Còi Buzzer + LED đỏ/vàng/xanh** | Đèn báo 3 mức; còi kêu 3 tiếng khi đất vừa chuyển sang quá khô (< 35%) hoặc ngập úng (> 80%) | Còi GPIO25 (phát PWM, còi chủ động hay thụ động đều được), LED GPIO32 / GPIO19 / GPIO33 |
-| 6 | **Breadboard MB102 & Dây cắm đực-cái** | Kết nối mạch cắm không cần dùng mỏ hàn | Dễ tháo lắp khi thử nghiệm |
+| 4 | **Còi Buzzer + LED đỏ/vàng/xanh** | Đèn báo 3 mức; còi kêu 3 tiếng khi đất vừa chuyển sang quá khô (< 35%) hoặc ngập úng (> 80%) | Còi GPIO25 (phát PWM, còi chủ động hay thụ động đều được), LED GPIO32 / GPIO19 / GPIO33 |
+| 5 | **Breadboard MB102 & Dây cắm đực-cái** | Kết nối mạch cắm không cần dùng mỏ hàn | Dễ tháo lắp khi thử nghiệm |
 
 #### 2.2. Sơ đồ kết nối chân vi điều khiển (ESP32 Pinout Mapping)
 
@@ -46,10 +44,6 @@
             | GPIO21 (SDA)  <--->  SDA (Màn hình OLED 0.96" I2C)
             | GPIO22 (SCL)  ---->  SCL (Màn hình OLED 0.96" I2C)
             | 3V3 / GND     ---->  Cấp nguồn nuôi OLED
-            |
-            | GPIO26        ---->  IN1 (Module Relay) -> Điều khiển Máy bơm
-            | GPIO27        ---->  IN2 (Module Relay) -> Điều khiển Van dinh dưỡng
-            | 5V (Vin) / GND---->  Cấp nguồn nuôi Module Relay
             |
             | GPIO25        ---->  Cực Dương (+) Còi Buzzer (Cực âm nối GND)
             | GPIO32        ---->  LED Đỏ cảnh báo (qua điện trở 220Ω, âm nối GND)
@@ -91,7 +85,7 @@ flowchart TD
 
 #### Công thức toán học của Thuật toán:
 
-1. **Lọc nhiễu trung bình cắt tỉa (Trimmed Mean Filter)**: Đọc 21 mẫu, sắp xếp tăng dần, bỏ 5 mẫu thấp nhất và 5 mẫu cao nhất rồi lấy trung bình 11 mẫu giữa, nhờ đó các gai nhiễu do chạm dây hay relay đóng cắt bị loại hẳn:
+1. **Lọc nhiễu trung bình cắt tỉa (Trimmed Mean Filter)**: Đọc 21 mẫu, sắp xếp tăng dần, bỏ 5 mẫu thấp nhất và 5 mẫu cao nhất rồi lấy trung bình 11 mẫu giữa, nhờ đó các gai nhiễu do chạm dây bị loại hẳn:
    $$ADC_{filtered} = \frac{1}{11} \sum_{i=6}^{16} ADC_{sorted}(i)$$
    Trạm gửi kèm độ lệch chuẩn của 21 mẫu thô (`adc.noise`) để đánh giá mức nhiễu thật khi đo ngoài đất.
 
@@ -125,7 +119,7 @@ flowchart TD
 
 * **Broker**: Mặc định `broker.emqx.io` cổng `8883` qua **TLS** (mã hóa đường truyền, ESP32 xác thực chứng chỉ broker bằng Root CA trong [`root_ca.h`](firmware/src/root_ca.h)). Broker công cộng không có tài khoản nên ai biết topic vẫn đọc hoặc gửi được; để chặn việc này, tạo broker riêng có tài khoản (ví dụ HiveMQ Cloud Free), điền vào `firmware/src/secrets.h` (mẫu: [`secrets.example.h`](firmware/src/secrets.example.h)) và `mobile/mqtt_config.json` (mẫu: [`mqtt_config.example.json`](mobile/mqtt_config.example.json)), rồi chạy App bằng `flutter run --dart-define-from-file=mqtt_config.json`. Hai file thật đã nằm trong `.gitignore`. Riêng khi chạy mô phỏng trên Wokwi (mạng `Wokwi-GUEST`), trạm tự dùng cổng `1883` không mã hóa vì mạng ảo của Wokwi không bắt tay TLS được (đã thử cả `www.google.com:443` cũng bị ngắt); ở mạng WiFi thật trạm luôn dùng TLS.
 * **Topic Telemetry** (`soil_station/1/telemetry`): ESP32 gửi dữ liệu định kỳ mỗi 4 giây.
-* **Topic Command** (`soil_station/1/command`): Lệnh bật/tắt Relay (`{"action": "SET_PUMP", "state": true}`), lệnh chọn loại đất đang đo (`{"action": "SET_SOIL_TYPE", "soil_type": "garden"}`, giá trị `potting` / `garden` / `barren`) và lệnh hiệu chuẩn (`{"action": "CALIBRATE", "point": "dry"}` hoặc `"wet"`: trạm lấy ADC đang đọc làm mốc, từ chối nếu cách mốc còn lại dưới 300 khi mốc đó đã được đo thật; không so với số mặc định 200 / 3000). Sau mỗi lệnh trạm gửi ngay một bản tin telemetry để App xác nhận. ESP32 lưu loại đất và mốc hiệu chuẩn vào flash (NVS) nên khởi động lại vẫn giữ.
+* **Topic Command** (`soil_station/1/command`): Lệnh chọn loại đất đang đo (`{"action": "SET_SOIL_TYPE", "soil_type": "garden"}`, giá trị `potting` / `garden` / `barren`) và lệnh hiệu chuẩn (`{"action": "CALIBRATE", "point": "dry"}` hoặc `"wet"`: trạm lấy ADC đang đọc làm mốc, từ chối nếu cách mốc còn lại dưới 300 khi mốc đó đã được đo thật; không so với số mặc định 200 / 3000). Sau mỗi lệnh trạm gửi ngay một bản tin telemetry để App xác nhận. ESP32 lưu loại đất và mốc hiệu chuẩn vào flash (NVS) nên khởi động lại vẫn giữ.
 * **Topic Status** (`soil_station/1/status`): Trạm kết nối xong thì đăng `{"status": "online", "device": ...}` (giữ lại trên broker) và gửi lại 30 giây 1 lần; mất kết nối đột ngột thì broker tự đăng `{"status": "offline"}` qua LWT. Gửi lại định kỳ vì khi trạm khởi động lại, phiên cũ còn treo trên broker khoảng 22 giây rồi LWT `offline` của nó mới được đăng, đè lên `online` của phiên mới.
 
 #### Cấu trúc Payload mẫu (JSON):
@@ -158,10 +152,6 @@ flowchart TD
     "noise": 6.2,
     "dry": 200,
     "wet": 3000
-  },
-  "actuators": {
-    "pump": false,
-    "nutrient_valve": false
   }
 }
 ```
@@ -174,7 +164,7 @@ Hệ chuyên gia được tích hợp sẵn trong Mobile App Flutter ([`Agronomi
 
 * **Đất chua phèn ($pH < 5.5$)**: Cảnh báo rễ khó hấp thu Lân $\rightarrow$ Gợi ý bón vôi nông nghiệp / dolomite.
 * **Đất ngộ độc muối ($EC > 1800 \ \mu S/cm$)**: Cảnh báo cháy rễ $\rightarrow$ Khuyến nghị ngừng bón phân, tưới xả nước ngọt.
-* **Đất khô cằn ($\theta < 40\%$)**: Cảnh báo thiếu ẩm $\rightarrow$ Tự động đề xuất kích hoạt bơm tưới.
+* **Đất khô cằn ($\theta < 40\%$)**: Cảnh báo thiếu ẩm $\rightarrow$ Gợi ý tưới thêm nước để giữ độ ẩm 50 - 70%.
 * **Thiếu Đạm/Lân/Kali**: Tính độ chênh lệch $\Delta N, \Delta P, \Delta K$ và gợi ý công thức phân bón tương ứng (Urê, Super Lân, Kali Sunfat hoặc NPK cân đối).
 
 **Lịch sử đo**: App lưu số đo vào SQLite trên điện thoại ([`HistoryRepository`](mobile/lib/services/history_repository.dart)), mỗi phút 1 bản ghi, giữ 30 ngày. Màn Lịch sử vẽ biểu đồ từng chỉ số theo 24 giờ / 7 ngày / 30 ngày (kèm dải ngưỡng chuẩn) và bảng trung bình theo ngày, tách theo loại đất. App chỉ ghi khi đang mở và nhận được dữ liệu; muốn ghi liên tục 24/7 cần một máy chủ đăng ký topic telemetry và lưu vào CSDL.
@@ -194,7 +184,7 @@ soil-nutrient-analysis-system/
 │   ├── diagram.json       # Sơ đồ mạch ảo mô phỏng trên Wokwi
 │   └── wokwi.toml         # Cấu hình Wokwi
 ├── simulator/             # Trình giả lập trạm đo Web UI chạy trực tiếp trên máy
-│   └── index.html         # Giao diện OLED ảo + Cảm biến nước Slider + Relay
+│   └── index.html         # Giao diện OLED ảo + Cảm biến nước Slider
 ├── scripts/               # Script giả lập Python kiểm thử mạng MQTT
 │   └── simulate_station.py
 └── mobile/                # Ứng dụng di động Flutter (Android, iOS, macOS)
