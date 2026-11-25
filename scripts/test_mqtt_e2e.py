@@ -46,7 +46,7 @@ class TestMqttEndToEnd(unittest.TestCase):
         time.sleep(1.0) # Wait for subscription to establish
 
         # 1. Publish test command
-        cmd_payload = {"action": "SET_PUMP", "state": True, "source": "test_e2e"}
+        cmd_payload = {"action": "SET_SOIL_TYPE", "soil_type": "garden", "source": "test_e2e"}
         pub_client.publish(COMMAND_TOPIC, json.dumps(cmd_payload), qos=1)
 
         # 2. Publish test telemetry
@@ -61,8 +61,7 @@ class TestMqttEndToEnd(unittest.TestCase):
                 "ec": 850.0,
                 "moisture": 60.0,
                 "temperature": 27.5
-            },
-            "actuators": {"pump": True, "nutrient_valve": False}
+            }
         }
         pub_client.publish(TELEMETRY_TOPIC, json.dumps(telemetry_payload), qos=1)
 
@@ -79,12 +78,11 @@ class TestMqttEndToEnd(unittest.TestCase):
         pub_client.disconnect()
 
         self.assertGreater(len(received_command), 0, "Did not receive command on COMMAND_TOPIC")
-        self.assertEqual(received_command[0].get("action"), "SET_PUMP")
-        self.assertEqual(received_command[0].get("state"), True)
+        self.assertEqual(received_command[0].get("action"), "SET_SOIL_TYPE")
+        self.assertEqual(received_command[0].get("soil_type"), "garden")
 
         self.assertGreater(len(received_telemetry), 0, "Did not receive telemetry on TELEMETRY_TOPIC")
         self.assertEqual(received_telemetry[0]["telemetry"]["moisture"], 60.0)
-        self.assertEqual(received_telemetry[0]["actuators"]["pump"], True)
         print("✅ Live MQTT roundtrip verified successfully on broker.emqx.io!")
 
 if __name__ == '__main__':

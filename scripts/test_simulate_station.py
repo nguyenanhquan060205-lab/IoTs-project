@@ -42,7 +42,6 @@ class TestSimulateStation(unittest.TestCase):
         parsed = json.loads(json_str)
 
         self.assertIn("telemetry", parsed)
-        self.assertIn("actuators", parsed)
         self.assertEqual(parsed["soil_type"], "garden")
         self.assertGreater(parsed["timestamp"], 1700000000)  # Real Unix time, not seconds since boot
         tel = parsed["telemetry"]
@@ -55,44 +54,6 @@ class TestSimulateStation(unittest.TestCase):
         adc = parsed["adc"]
         for key in ["raw", "noise", "dry", "wet"]:
             self.assertIsInstance(adc[key], (int, float))
-
-        act = parsed["actuators"]
-        self.assertIn("pump", act)
-        self.assertIn("nutrient_valve", act)
-        self.assertIsInstance(act["pump"], bool)
-        self.assertIsInstance(act["nutrient_valve"], bool)
-
-    def test_command_handling_set_pump(self):
-        """Test on_message handler with SET_PUMP action."""
-        simulate_station.pump_state = False
-
-        class MockMsg:
-            topic = simulate_station.COMMAND_TOPIC
-            payload = json.dumps({"action": "SET_PUMP", "state": True}).encode('utf-8')
-
-        simulate_station.on_message(None, None, MockMsg())
-        self.assertTrue(simulate_station.pump_state)
-
-        # Toggle off
-        MockMsg.payload = json.dumps({"action": "SET_PUMP", "state": False}).encode('utf-8')
-        simulate_station.on_message(None, None, MockMsg())
-        self.assertFalse(simulate_station.pump_state)
-
-    def test_command_handling_set_valve(self):
-        """Test on_message handler with SET_VALVE action."""
-        simulate_station.valve_state = False
-
-        class MockMsg:
-            topic = simulate_station.COMMAND_TOPIC
-            payload = json.dumps({"action": "SET_VALVE", "state": True}).encode('utf-8')
-
-        simulate_station.on_message(None, None, MockMsg())
-        self.assertTrue(simulate_station.valve_state)
-
-        # Toggle off
-        MockMsg.payload = json.dumps({"action": "SET_VALVE", "state": False}).encode('utf-8')
-        simulate_station.on_message(None, None, MockMsg())
-        self.assertFalse(simulate_station.valve_state)
 
     def test_soil_type_orders_nutrients(self):
         """At the same moisture, potting mix > garden soil > barren soil for EC and N, P, K."""

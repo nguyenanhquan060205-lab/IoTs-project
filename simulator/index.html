@@ -254,54 +254,6 @@
             color: #fff;
         }
 
-        /* RELAY & ACTUATORS */
-        .actuator-box {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: rgba(0,0,0,0.25);
-            padding: 14px 18px;
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.05);
-            margin-bottom: 12px;
-        }
-
-        .relay-status {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .relay-led {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: #475569;
-            transition: all 0.3s;
-        }
-
-        .relay-led.active {
-            background: var(--danger);
-            box-shadow: 0 0 14px var(--danger);
-        }
-
-        .relay-switch-btn {
-            background: #334155;
-            color: #fff;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .relay-switch-btn.active {
-            background: var(--danger);
-            box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
-        }
-
         /* TELEMETRY CARDS IN CENTER */
         .metrics-grid {
             display: grid;
@@ -445,7 +397,6 @@
                         <div>pH: <span id="oledPh">6.4</span>  Nhiet: 27.5C</div>
                     </div>
                     <div class="oled-footer">
-                        <div>BOM: <span id="oledPump" style="color: #4ade80;">[OFF]</span></div>
                         <div>MQTT: OK</div>
                     </div>
                 </div>
@@ -476,23 +427,6 @@
                     <button class="preset-btn" onclick="setPreset(250)">🌵 Khô cằn</button>
                     <button class="preset-btn" onclick="setPreset(1700)">🌿 Lý tưởng</button>
                     <button class="preset-btn" onclick="setPreset(3100)">🌊 Ngập úng</button>
-                </div>
-            </div>
-
-            <!-- ACTUATOR (RELAY) -->
-            <div style="margin-top: 16px;">
-                <div class="card-header">
-                    <span>🔌 Rơ-le Máy Bơm (GPIO26)</span>
-                </div>
-                <div class="actuator-box">
-                    <div class="relay-status">
-                        <div class="relay-led" id="relayLed"></div>
-                        <div>
-                            <div style="font-size: 13px; font-weight: 600;">Máy Bơm Tưới</div>
-                            <div style="font-size: 11px; color: #64748b;" id="relayStateText">Trạng thái: TẮT</div>
-                        </div>
-                    </div>
-                    <button class="relay-switch-btn" id="relayToggleBtn" onclick="toggleRelay()">BẬT BƠM</button>
                 </div>
             </div>
         </div>
@@ -576,8 +510,6 @@
         const TOPIC_STATUS = "soil_station/1/status";
 
         let client;
-        let pumpActive = false;
-        let valveActive = false;
 
         const ADC_DRY = 200;
         const ADC_WET = 3000;
@@ -586,9 +518,6 @@
         const slider = document.getElementById("waterSlider");
         const adcDisplay = document.getElementById("adcDisplay");
         const moistDisplay = document.getElementById("moistDisplay");
-        const relayLed = document.getElementById("relayLed");
-        const relayToggleBtn = document.getElementById("relayToggleBtn");
-        const relayStateText = document.getElementById("relayStateText");
 
         // Metrics elements
         const cardMoist = document.getElementById("cardMoist");
@@ -605,7 +534,6 @@
         const oledP = document.getElementById("oledP");
         const oledK = document.getElementById("oledK");
         const oledPh = document.getElementById("oledPh");
-        const oledPump = document.getElementById("oledPump");
         const oledTimer = document.getElementById("oledTimer");
 
         const diagBox = document.getElementById("diagBox");
@@ -669,14 +597,12 @@
             oledP.innerText = res.p;
             oledK.innerText = res.k;
             oledPh.innerText = res.ph;
-            oledPump.innerText = pumpActive ? "[ON]" : "[OFF]";
-            oledPump.style.color = pumpActive ? "#ef4444" : "#4ade80";
 
             // Diagnosis
             if (parseFloat(res.moisture) < 40) {
                 diagBox.className = "diagnosis-box warning";
                 diagTitle.innerHTML = "⚠️ CẢNH BÁO: Đất Khô Cằn Thiếu Nước";
-                diagDesc.innerText = "Độ ẩm đất thấp làm hạn chế quá trình hòa tan dinh dưỡng và khoáng chất của đất. Khuyến nghị kích hoạt máy bơm tưới bù ẩm.";
+                diagDesc.innerText = "Độ ẩm đất thấp làm hạn chế quá trình hòa tan dinh dưỡng và khoáng chất của đất. Khuyến nghị tưới bù ẩm.";
             } else if (parseFloat(res.moisture) > 80) {
                 diagBox.className = "diagnosis-box danger";
                 diagTitle.innerHTML = "🚨 NGUY HIỂM: Đất Ngập Úng / Dư Nước";
@@ -702,30 +628,6 @@
 
         slider.addEventListener("input", updateUI);
 
-        function toggleRelay() {
-            setRelayState(!pumpActive);
-            // Gửi thông báo thay đổi
-            publishTelemetry();
-        }
-
-        function setRelayState(active) {
-            pumpActive = active;
-            if (pumpActive) {
-                relayLed.classList.add("active");
-                relayToggleBtn.classList.add("active");
-                relayToggleBtn.innerText = "TẮT BƠM";
-                relayStateText.innerText = "Trạng thái: BẬT (ĐANG BƠM)";
-                log("[RELAY] BẬT máy bơm nước (GPIO26 -> HIGH)", "out");
-            } else {
-                relayLed.classList.remove("active");
-                relayToggleBtn.classList.remove("active");
-                relayToggleBtn.innerText = "BẬT BƠM";
-                relayStateText.innerText = "Trạng thái: TẮT";
-                log("[RELAY] TẮT máy bơm nước (GPIO26 -> LOW)", "out");
-            }
-            updateUI();
-        }
-
         // MQTT CLIENT SETUP
         function initMQTT() {
             client = new Paho.MQTT.Client(MQTT_HOST, MQTT_PORT, "/mqtt", CLIENT_ID);
@@ -739,11 +641,8 @@
 
             client.onMessageArrived = function(message) {
                 try {
-                    const payload = JSON.parse(message.payloadString);
+                    JSON.parse(message.payloadString);
                     log(`[MQTT NHẬN TỪ APP] Topic: ${message.destinationName} -> ${message.payloadString}`, "in");
-                    if (payload.action === "SET_PUMP") {
-                        setRelayState(payload.state === true);
-                    }
                 } catch(e) {
                     log("[MQTT] Nhận payload: " + message.payloadString, "in");
                 }
@@ -774,14 +673,6 @@
         function publishTelemetry() {
             if (!client || !client.isConnected()) return;
 
-            // Nếu đang bật bơm -> tự động tăng độ ẩm lên một chút
-            if (pumpActive) {
-                let cur = parseInt(slider.value);
-                if (cur < 2900) {
-                    slider.value = cur + 30;
-                }
-            }
-
             const data = updateUI();
             const payload = {
                 device_id: "esp32_soil_station_01",
@@ -794,10 +685,6 @@
                     ec: parseFloat(data.ec),
                     moisture: parseFloat(data.moisture),
                     temperature: 27.5
-                },
-                actuators: {
-                    pump: pumpActive,
-                    nutrient_valve: valveActive
                 }
             };
 

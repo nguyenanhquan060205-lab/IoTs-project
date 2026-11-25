@@ -31,10 +31,6 @@ COMMAND_TOPIC = "soil_station/1/command"
 STATUS_TOPIC = "soil_station/1/status"
 CLIENT_ID = f"mock_esp32_station_{random.randint(1000, 9999)}"
 
-# Trạng thái thiết bị ngoại vi
-pump_state = False
-valve_state = False
-
 # Hệ số theo loại đất (khớp với SoilEstimator::profile trong firmware).
 # nitrogen / phosphorus / potassium là mức N, P, K bình thường của loại đất, chỉ để so sánh và thông báo
 SOIL_PROFILES = {
@@ -136,11 +132,7 @@ def build_payload(moisture, soil_type):
             "potassium": profile["potassium"]
         },
         "npk_level": npk_levels(n, p, k, soil_type),
-        "adc": {"raw": raw, "noise": noise, "dry": adc_dry, "wet": adc_wet},
-        "actuators": {
-            "pump": pump_state,
-            "nutrient_valve": valve_state
-        }
+        "adc": {"raw": raw, "noise": noise, "dry": adc_dry, "wet": adc_wet}
     }
 
 def on_connect(client, userdata, flags, rc, properties=None):
@@ -158,11 +150,10 @@ def on_connect(client, userdata, flags, rc, properties=None):
         print(f"❌ [MQTT] Kết nối thất bại với mã lỗi: {rc}")
 
 def on_message(client, userdata, msg):
-    global pump_state, valve_state, soil_type, adc_dry, adc_wet, dry_calibrated, wet_calibrated
+    global soil_type, adc_dry, adc_wet, dry_calibrated, wet_calibrated
     try:
         payload = json.loads(msg.payload.decode())
         action = payload.get("action", "")
-        state = payload.get("state", False)
 
         print(f"\n📩 [LỆNH TỪ APP MOBILE] Topic: {msg.topic}")
 
@@ -196,19 +187,12 @@ def on_message(client, userdata, msg):
             print(f"   🎛️ [HIỆU CHUẨN] Đã lưu mốc {'KHÔ' if point == 'dry' else 'ƯỚT'}: ADC {raw}")
             return
 
-        print(f"   -> Hành động: {action} | Trạng thái mới: {'BẬT (ON)' if state else 'TẮT (OFF)'}")
-
-        if action == "SET_PUMP":
-            pump_state = state
-            print(f"   ⚙️ [RƠ-LE BƠM NƯỚC] Đã chuyển sang: {'HOẠT ĐỘNG' if pump_state else 'DỪNG'}")
-        elif action == "SET_VALVE":
-            valve_state = state
-            print(f"   ⚙️ [VAN DINH DƯỠNG] Đã chuyển sang: {'MỞ' if valve_state else 'ĐÓNG'}")
+        print(f"   ❌ Lệnh không hỗ trợ: {action}")
     except Exception as e:
         print(f"❌ Lỗi parse lệnh JSON: {e}")
 
 def main():
-    global current_moisture, pump_state, soil_type
+    global current_moisture, soil_type
 
     import argparse
     parser = argparse.ArgumentParser(description="Soil Station IoT Simulator (ESP32 Mock)")
@@ -262,12 +246,8 @@ def main():
         while True:
             cycle += 1
 
-            # Mô phỏng hiệu ứng: Nếu bơm đang bật -> độ ẩm tăng dần
-            if pump_state:
-                current_moisture = min(88.0, current_moisture + 2.5)
-            else:
-                # Nếu bơm tắt -> đất khô dần rất chậm
-                current_moisture = max(35.0, current_moisture - 0.3)
+            # Mô phỏng hiệu ứng: Đất khô dần rất chậm
+            current_moisture = max(35.0, current_moisture - 0.3)
 
             payload = build_payload(current_moisture, soil_type)
             tel = payload["telemetry"]
@@ -282,7 +262,6 @@ def main():
             normal, level = payload["npk_normal"], payload["npk_level"]
             print(f"   📏 Mức bình thường của loại đất: N={normal['nitrogen']:g} P={normal['phosphorus']:g} "
                   f"K={normal['potassium']:g} -> N {level['nitrogen']}, P {level['phosphorus']}, K {level['potassium']}")
-            print(f"   🔌 Rơ-le Bơm: {'[BẬT]' if pump_state else '[TẮT]'}")
 
             if max_cycles > 0 and cycle >= max_cycles:
                 print(f"\n🎯 Đã hoàn thành {cycle} chu kỳ kiểm thử. Dừng trạm an toàn.")
