@@ -62,6 +62,9 @@ class HistoryRepository {
   Future<Database?>? _opening;
   DateTime? _lastSavedAt;
 
+  /// Tăng 1 mỗi khi lưu xong một số đo, để trang Lịch sử đang mở tự tải lại
+  final ValueNotifier<int> savedCount = ValueNotifier(0);
+
   HistoryRepository({this._factory, this._path});
 
   Future<Database?> _database() => _opening ??= _open();
@@ -111,16 +114,23 @@ class HistoryRepository {
 
     final db = await _database();
     if (db == null) return false;
-    await db.insert('readings', {
-      'ts': telemetry.timestamp.millisecondsSinceEpoch,
-      'soil_type': telemetry.soilType?.code,
-      'moisture': telemetry.moisture,
-      'ec': telemetry.ec,
-      'nitrogen': telemetry.nitrogen,
-      'phosphorus': telemetry.phosphorus,
-      'potassium': telemetry.potassium,
-      'ph': telemetry.ph,
-    });
+    try {
+      await db.insert('readings', {
+        'ts': telemetry.timestamp.millisecondsSinceEpoch,
+        'soil_type': telemetry.soilType?.code,
+        'moisture': telemetry.moisture,
+        'ec': telemetry.ec,
+        'nitrogen': telemetry.nitrogen,
+        'phosphorus': telemetry.phosphorus,
+        'potassium': telemetry.potassium,
+        'ph': telemetry.ph,
+      });
+    } catch (e) {
+      // Provider gọi save() mà không chờ kết quả, nên phải tự bắt lỗi ở đây
+      debugPrint('[HISTORY] Không lưu được số đo: $e');
+      return false;
+    }
+    savedCount.value++;
     return true;
   }
 

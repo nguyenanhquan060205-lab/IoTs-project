@@ -56,11 +56,12 @@ enum HistoryMetric {
 }
 
 class _HistoryData {
+  final HistoryRange range; // Khoảng đã dùng để tải, có thể khác khoảng vừa chọn trong lúc đang tải lại
   final DateTime from;
   final List<HistoryPoint> series;
   final List<DailySummary> days;
 
-  const _HistoryData(this.from, this.series, this.days);
+  const _HistoryData(this.range, this.from, this.series, this.days);
 }
 
 class HistoryScreen extends StatefulWidget {
@@ -79,10 +80,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
   late Future<_HistoryData> _data = _load();
 
   Future<_HistoryData> _load() async {
-    final from = DateTime.now().subtract(_range.span);
-    final series = await widget.repository.loadSeries(from: from, bucket: _range.bucket);
+    final range = _range;
+    final from = DateTime.now().subtract(range.span);
+    final series = await widget.repository.loadSeries(from: from, bucket: range.bucket);
     final days = await widget.repository.loadDailySummaries(from: from);
-    return _HistoryData(from, series, days);
+    return _HistoryData(range, from, series, days);
   }
 
   void _reload() {
@@ -91,10 +93,31 @@ class _HistoryScreenState extends State<HistoryScreen> {
     });
   }
 
+  // Đang xem trang này mà App vừa lưu thêm số đo thì vẽ lại ngay, không phải chuyển tab
+  void _onSaved() {
+    if (widget.active && mounted) _reload();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    widget.repository.savedCount.addListener(_onSaved);
+  }
+
   @override
   void didUpdateWidget(covariant HistoryScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (!identical(widget.repository, oldWidget.repository)) {
+      oldWidget.repository.savedCount.removeListener(_onSaved);
+      widget.repository.savedCount.addListener(_onSaved);
+    }
     if (widget.active && !oldWidget.active) _reload();
+  }
+
+  @override
+  void dispose() {
+    widget.repository.savedCount.removeListener(_onSaved);
+    super.dispose();
   }
 
   @override
@@ -146,7 +169,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
             FutureBuilder<_HistoryData>(
               future: _data,
               builder: (context, snapshot) {
-                if (snapshot.connectionState != ConnectionState.done) {
+                // Đang tải lại thì giữ số liệu cũ trên màn hình, chỉ hiện vòng quay ở lần tải đầu
+                if (snapshot.connectionState != ConnectionState.done && !snapshot.hasData) {
                   return const SizedBox(
                     height: 260,
                     child: Center(child: CircularProgressIndicator(color: AppColors.accent)),
@@ -209,7 +233,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   Widget _buildChartCard(_HistoryData data) {
     final metric = _metric;
-    final bucketMs = _range.bucket.inMilliseconds;
+    final range = data.range;
+    final bucketMs = range.bucket.inMilliseconds;
 
     // Ngắt nét vẽ ở những khoảng app không mở, tránh nối thẳng qua khoảng không có số đo
     final spots = <FlSpot>[];
@@ -231,7 +256,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
     final minX = data.from.millisecondsSinceEpoch.toDouble();
     final maxX = DateTime.now().millisecondsSinceEpoch.toDouble();
-    final timeFormat = DateFormat(_range == HistoryRange.day ? 'HH:mm' : 'dd/MM');
+    final timeFormat = DateFormat(range == HistoryRange.day ? 'HH:mm' : 'dd/MM');
     final latest = metric.valueOf(data.series.last);
     final unitSuffix = metric.unit.isEmpty ? '' : ' ${metric.unit}';
 
@@ -268,7 +293,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   ),
                 ),
                 Text(
-                  'trung bình ${_range.bucketLabel}',
+                  'trung bình ${range.bucketLabel}',
                   style: const TextStyle(fontSize: 13, color: AppColors.ink3),
                 ),
               ],
@@ -309,7 +334,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     sideTitles: SideTitles(
                       showTitles: true,
                       reservedSize: 26,
-                      interval: _range.labelStep.inMilliseconds.toDouble(),
+                      interval: range.labelStep.inMilliseconds.toDouble(),
                       getTitlesWidget: (value, meta) {
                         // Bỏ nhãn ở 2 mép để chữ không bị cắt
                         if (value == meta.min || value == meta.max) return const SizedBox.shrink();

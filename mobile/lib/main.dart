@@ -1,12 +1,32 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'core/constants/app_colors.dart';
 import 'providers/soil_data_provider.dart';
 import 'screens/home_shell.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await _useDesktopDatabase();
   runApp(const SoilNutrientApp());
+}
+
+/// sqflite chỉ chạy trên Android, iOS, macOS. Trên Windows/Linux phải dùng SQLite qua FFI,
+/// nếu không thì CSDL lịch sử không mở được và App không lưu được số đo nào.
+Future<void> _useDesktopDatabase() async {
+  if (kIsWeb) return;
+  if (defaultTargetPlatform != TargetPlatform.windows && defaultTargetPlatform != TargetPlatform.linux) return;
+  try {
+    sqfliteFfiInit();
+    databaseFactory = databaseFactoryFfi;
+    // Mặc định FFI lưu vào thư mục đang chạy lệnh; chuyển về thư mục dữ liệu của App để mở lại vẫn còn lịch sử
+    final dir = await getApplicationSupportDirectory();
+    await databaseFactory.setDatabasesPath(dir.path);
+  } catch (e) {
+    debugPrint('[HISTORY] Không chuẩn bị được SQLite cho máy tính: $e');
+  }
 }
 
 class SoilNutrientApp extends StatelessWidget {

@@ -44,6 +44,19 @@ void main() {
     expect(series.length, 2);
   });
 
+  test('Notifies listeners only when a reading is actually stored', () async {
+    final start = DateTime.now().subtract(const Duration(hours: 1));
+    var notified = 0;
+    repo.savedCount.addListener(() => notified++);
+
+    await repo.save(reading(start));
+    await repo.save(reading(start.add(const Duration(seconds: 4)))); // skipped, same minute
+    await repo.save(reading(start.add(const Duration(minutes: 1))));
+
+    expect(notified, 2);
+    expect(repo.savedCount.value, 2);
+  });
+
   test('Series averages readings inside each bucket', () async {
     // UTC start keeps 10-minute buckets aligned whatever the machine's time zone is
     final start = DateTime.utc(2026, 11, 24, 1, 0);
