@@ -80,6 +80,18 @@ test('averageTelemetry: trung bình từng chỉ số, bỏ bản tin thiếu s�
   assert.equal(M.averageTelemetry([]).ec, null);
 });
 
+test('referenceFromNormal: lấy mức chuẩn N, P, K của loại đất làm giá trị tham chiếu', () => {
+  const msg = { soil_type: 'garden', npk_normal: { nitrogen: 65, phosphorus: 33, potassium: 90 } };
+  assert.deepEqual(M.referenceFromNormal(msg), { n: 65, p: 33, k: 90 });
+});
+
+test('referenceFromNormal: thiếu npk_normal hoặc thiếu số thì trả null cho chất đó', () => {
+  assert.deepEqual(M.referenceFromNormal({ telemetry: {} }), { n: null, p: null, k: null });
+  assert.deepEqual(M.referenceFromNormal(null), { n: null, p: null, k: null });
+  assert.deepEqual(M.referenceFromNormal({ npk_normal: { nitrogen: 20, phosphorus: 'x' } }),
+    { n: 20, p: null, k: null });
+});
+
 test('summarize: tính riêng từng chỉ số và lọc được theo loại đất', () => {
   const sample = (soil, estN, refN) => ({
     soil_type: soil,

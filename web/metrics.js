@@ -135,6 +135,17 @@
     return result;
   }
 
+  /**
+   * Giá trị tham chiếu N, P, K của một mẫu: mức chuẩn của loại đất mà trạm gửi trong npk_normal.
+   * Nhóm không có bộ kit thử đất, nên sai số là độ lệch của ước lượng so với mức chuẩn này.
+   * Trả về {n, p, k}; bản tin thiếu npk_normal hoặc thiếu số thì chất đó là null.
+   */
+  function referenceFromNormal(message) {
+    const normal = (message && message.npk_normal) || {};
+    const pick = (value) => (isNum(value) ? value : null);
+    return { n: pick(normal.nitrogen), p: pick(normal.phosphorus), k: pick(normal.potassium) };
+  }
+
   /** Sai số theo từng chỉ số. soilType rỗng thì tính trên mọi mẫu. */
   function summarize(samples, soilType) {
     const chosen = (samples || []).filter((s) => !soilType || s.soil_type === soilType);
@@ -243,6 +254,7 @@
     adcToMoisturePercent,
     noiseSummary,
     averageTelemetry,
+    referenceFromNormal,
     summarize,
     parseNumber,
     toCsv,

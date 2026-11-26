@@ -1,6 +1,6 @@
 # Trang web đánh giá sai số
 
-`evaluation.html` nhận bản tin của trạm qua MQTT và tính sai số của các chỉ số ước lượng so với giá trị tham chiếu từ bộ dụng cụ thử đất. Sai số chỉ hiện trên trang này, không hiện trên OLED. Trang chỉ đăng ký nhận bản tin, không gửi lệnh nào tới trạm.
+`evaluation.html` nhận bản tin của trạm qua MQTT và tính sai số của N, P, K ước lượng so với mức chuẩn nhóm đặt cho loại đất đang đo (`npk_normal` trong bản tin). Nhóm không có bộ dụng cụ thử đất, nên đây là độ lệch so với mức chuẩn, không phải độ chính xác so với số đo thật. Sai số chỉ hiện trên trang này, không hiện trên OLED. Trang chỉ đăng ký nhận bản tin, không gửi lệnh nào tới trạm.
 
 ## Mở trang
 
@@ -27,7 +27,7 @@ Mặc định trang nối `broker.emqx.io` qua WebSocket có TLS, cổng 8084, �
 1. Cắm đầu dò vào mẫu đất, chờ số đo đứng yên khoảng 1 phút.
 2. Chọn mức ẩm, kiểm tra mã mẫu (trang tự đề xuất M01, M02...), bấm **Lấy mẫu**.
 3. Trang lấy trung bình 5 bản tin kế tiếp (khoảng 20 giây) làm giá trị ước lượng. Loại đất lấy theo trạm đang đo. Nếu loại đất đổi giữa chừng thì mẫu bị bỏ.
-4. Đo mẫu bằng bộ kit, gõ giá trị vào cột **Tham chiếu**. Chỉ số nào kit không đo thì để trống. Gõ `6,5` hay `6.5` đều được.
+4. Cột **Tham chiếu** của N, P, K được điền sẵn bằng mức chuẩn của loại đất trong bản tin cuối. Các chỉ số khác để trống vì chưa có giá trị để so. Ô nào cũng sửa được, gõ `6,5` hay `6.5` đều được.
 
 Dữ liệu được lưu trong trình duyệt đang dùng. Bấm **Xuất CSV** sau mỗi buổi đo và lưu tệp vào `docs/thuc-nghiem/`. **Nhập CSV** để mở lại.
 
@@ -68,8 +68,8 @@ Tệp dùng UTF-8 có BOM, ngăn cột bằng dấu phẩy, số dùng dấu ch�
 
 Tệp xuất từ phần đo nhiễu có các cột `received_at, timestamp, soil_type, adc_raw, adc_noise, adc_dry, adc_wet, moisture`.
 
-## Lưu ý khi so với bộ kit
+## Đọc sai số so với mức chuẩn
 
-- Độ ẩm của trạm là chỉ số tương đối theo hai mốc khô (ngoài không khí) và ướt (nhúng nước), không phải độ ẩm khối lượng. So với độ ẩm cân sấy sẽ lệch nhiều vì hai đại lượng khác định nghĩa.
-- Bút đo EC thường đo dịch chiết đất:nước (1:2 hoặc 1:5), không phải EC của đất ở độ ẩm đang đo. Ghi rõ tỷ lệ đã dùng trong cột ghi chú.
-- N, P, K, EC, pH của trạm đều là số ước lượng từ độ ẩm và loại đất, không phải số đo trực tiếp.
+- N, P, K tính từ EC, EC tính từ độ ẩm (`firmware/src/soil_estimator.h`), nên tỉ số ước lượng / mức chuẩn tỉ lệ thuận với độ ẩm. Hệ số được chọn để ở độ ẩm 60% mỗi loại đất cho gần đúng mức chuẩn của nó. Mẫu khô hay ướt hơn sẽ lệch nhiều, đó là do độ ẩm của mẫu chứ không phải phép đo sai.
+- Với hệ số hiện tại, một chất ở mức bình thường (lệch không quá ±20%) khi độ ẩm nằm từ khoảng 48 – 50% tới 71 – 75% tùy chất và loại đất. Riêng K của đất bạc màu là 55 – 82%, và ở độ ẩm 60% vẫn thấp hơn mức chuẩn 12%.
+- Muốn biết độ chính xác thật thì phải có số đo độc lập (bộ kit thử đất hoặc phòng thí nghiệm). Khi có số đo đó, gõ đè vào cột Tham chiếu. Lưu ý độ ẩm của trạm là chỉ số tương đối theo hai mốc khô, ướt, không phải độ ẩm khối lượng; bút đo EC thường đo dịch chiết đất:nước (1:2 hoặc 1:5), không phải EC của đất ở độ ẩm đang đo.

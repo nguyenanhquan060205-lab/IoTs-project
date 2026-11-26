@@ -209,7 +209,7 @@
         <input type="file" id="fileImport" accept=".csv,text/csv" hidden>
         <button id="btnClear" type="button">Xóa tất cả mẫu</button>
       </div>
-      <p class="hint">Ô tham chiếu nào bộ kit không đo thì để trống. Gõ số bằng dấu phẩy hoặc dấu chấm đều được. Dữ liệu được lưu trong trình duyệt này; xuất CSV để lưu vào <code>docs/thuc-nghiem/</code>.</p>
+      <p class="hint">Tham chiếu N, P, K được điền sẵn bằng mức chuẩn của loại đất mà trạm gửi kèm (<code>npk_normal</code>), sửa được nếu cần. Chỉ số nào chưa có giá trị để so thì để trống. Gõ số bằng dấu phẩy hoặc dấu chấm đều được. Dữ liệu được lưu trong trình duyệt này; xuất CSV để lưu vào <code>docs/thuc-nghiem/</code>.</p>
     </section>
 
     <!-- 4. KẾT QUẢ -->
@@ -575,11 +575,13 @@
       return;
     }
     const avg = M.averageTelemetry(capture.messages);
+    // Tham chiếu N, P, K là mức chuẩn của loại đất trạm gửi kèm (npk_normal), các chỉ số khác chưa có giá trị để so
+    const normal = M.referenceFromNormal(capture.messages[capture.messages.length - 1]);
     const est = {};
     const ref = {};
     for (const ind of M.INDICATORS) {
       est[ind.key] = round2(avg[ind.key]);
-      ref[ind.key] = null;
+      ref[ind.key] = ind.key in normal ? normal[ind.key] : null;
     }
     const sample = {
       sample_id: capture.id,
@@ -593,7 +595,7 @@
     samples.push(sample);
     saveSamples();
     log(`Đã lấy mẫu ${sample.sample_id} (${soilLabel(sample.soil_type)}, ${sample.moisture_level}) từ ${capture.needed} bản tin`);
-    cancelCapture(`Đã lấy mẫu ${sample.sample_id}. Nhập giá trị tham chiếu vào bảng bên dưới.`);
+    cancelCapture(`Đã lấy mẫu ${sample.sample_id}. Tham chiếu N, P, K đã điền sẵn bằng mức chuẩn của loại đất.`);
     $('sampleId').value = nextSampleId();
     $('captureNote').value = '';
     renderSamples();
@@ -626,7 +628,7 @@
   function renderSamples() {
     const table = $('sampleTable');
     table.replaceChildren();
-    table.appendChild(el('caption', { text: `${samples.length} mẫu. Cột trái mỗi chỉ số là ước lượng của trạm, cột phải là giá trị tham chiếu từ bộ kit.` }));
+    table.appendChild(el('caption', { text: `${samples.length} mẫu. Cột trái mỗi chỉ số là ước lượng của trạm, cột phải là giá trị tham chiếu (N, P, K: mức chuẩn của loại đất).` }));
     const head1 = el('tr', null, [
       el('th', { className: 'l', rowspan: '2', scope: 'col', text: 'Mã' }),
       el('th', { className: 'l', rowspan: '2', scope: 'col', text: 'Loại đất' }),
@@ -841,7 +843,8 @@
     root.appendChild(svg('line', { class: 'identity', x1: sx(lo), y1: sy(lo), x2: sx(hi), y2: sy(hi) }));
 
     const xLabel = svg('text', { x: ML + SIZE / 2, y: H - 8, 'text-anchor': 'middle' });
-    xLabel.textContent = `Tham chiếu${ind.unit ? ` (${ind.unit})` : ''}`;
+    const refName = ['n', 'p', 'k'].includes(key) ? 'Mức chuẩn của loại đất' : 'Tham chiếu';
+    xLabel.textContent = `${refName}${ind.unit ? ` (${ind.unit})` : ''}`;
     root.appendChild(xLabel);
     const yLabel = svg('text', { x: 14, y: MT + SIZE / 2, 'text-anchor': 'middle', transform: `rotate(-90 14 ${MT + SIZE / 2})` });
     yLabel.textContent = `Ước lượng của trạm${ind.unit ? ` (${ind.unit})` : ''}`;
