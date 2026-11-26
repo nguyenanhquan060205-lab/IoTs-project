@@ -99,7 +99,8 @@ def hinh_3_1():
         "Chỉ nhận bản tin, không gửi lệnh",
     ], fill="#eaf6f1")
 
-    s.box(40, 340, 640, 150, "Broker MQTT broker.emqx.io", [
+    s.box(40, 340, 640, 150, "Broker MQTT riêng EMQX Serverless", [
+        "Đăng nhập bằng tài khoản, ACL chặn topic không được phép",
         "soil_station/1/telemetry: trạm → app, web (4 giây/lần)",
         "soil_station/1/command: app → trạm (SET_SOIL_TYPE, CALIBRATE)",
         "soil_station/1/status: online, LWT offline (giữ lại)",
