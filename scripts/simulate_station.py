@@ -9,6 +9,7 @@ N, P, K, EC, pH là số ước lượng từ độ ẩm theo loại đất, gi�
 import json
 import os
 import random
+import ssl
 import time
 import sys
 
@@ -225,7 +226,9 @@ def main():
     client.on_connect = on_connect
     client.on_message = on_message
     if not args.no_tls:
-        client.tls_set()  # Xác thực chứng chỉ broker bằng kho CA của hệ điều hành
+        # Xác thực chứng chỉ broker bằng kho CA của hệ điều hành. Truyền rõ PROTOCOL_TLS_CLIENT vì
+        # tls_set() mặc định của paho dùng ssl.PROTOCOL_TLSv1_2, hằng số này đã bị bỏ từ Python 3.15
+        client.tls_set(tls_version=ssl.PROTOCOL_TLS_CLIENT)
     if args.username:
         client.username_pw_set(args.username, args.password)
 
