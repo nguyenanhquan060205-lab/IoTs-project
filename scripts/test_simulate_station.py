@@ -24,12 +24,14 @@ class TestSimulateStation(unittest.TestCase):
             n, p, k, ph, ec = simulate_station.calculate_nutrients_from_moisture(m)
 
             # Check physiological agronomic constraints
-            self.assertGreaterEqual(ec, 150.0, f"EC too low for moisture {m}")
+            self.assertGreaterEqual(ec, 0.0, f"EC negative for moisture {m}")
             self.assertLessEqual(ec, 2200.0, f"EC too high for moisture {m}")
 
-            self.assertGreaterEqual(n, 10.0, f"Nitrogen below minimal threshold for moisture {m}")
-            self.assertGreaterEqual(p, 5.0, f"Phosphorus below minimal threshold for moisture {m}")
-            self.assertGreaterEqual(k, 15.0, f"Potassium below minimal threshold for moisture {m}")
+            self.assertGreaterEqual(n, 0.0, f"Nitrogen negative for moisture {m}")
+            self.assertGreaterEqual(p, 0.0, f"Phosphorus negative for moisture {m}")
+            self.assertGreaterEqual(k, 0.0, f"Potassium negative for moisture {m}")
+            # Không còn mức sàn: N, P, K bám đúng EC ở mọi độ ẩm
+            self.assertAlmostEqual(n, round(ec * simulate_station.N_PER_EC, 1), delta=0.11)
 
             self.assertGreaterEqual(ph, 4.5, f"pH too acidic for moisture {m}")
             self.assertLessEqual(ph, 8.5, f"pH too alkaline for moisture {m}")

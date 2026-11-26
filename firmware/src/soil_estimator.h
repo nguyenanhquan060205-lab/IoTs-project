@@ -128,21 +128,18 @@ public:
         SoilNutrientData data;
         data.moisture = moisture;
 
-        // 1. EC (µS/cm): Nước hòa tan muối khoáng nên EC của đất tăng theo độ ẩm
+        // 1. EC (µS/cm): Nước hòa tan muối khoáng nên EC của đất tăng theo độ ẩm.
+        // Không đặt mức sàn: đất khô hẳn thì EC về 0. Mức sàn cũ (150) làm đất bạc màu dưới 37,5% ẩm
+        // luôn báo cùng một số, nay EC và N, P, K chạy đều theo độ ẩm ở mọi loại đất
         data.ec = (moisture * soil.ecPerMoisture) + noiseRandom;
-        if (data.ec < 150.0f) data.ec = 150.0f;
+        if (data.ec < 0.0f) data.ec = 0.0f;
         if (data.ec > 2200.0f) data.ec = 2200.0f;
 
         // 2-4. N, P, K dễ tiêu (mg/kg đất): dinh dưỡng phải hòa tan vào nước trong đất thì cây mới hút được,
         // và chính lượng ion hòa tan đó làm EC tăng. Nên N, P, K tính từ EC, tức là đổi theo độ ẩm đo được
         data.nitrogen = data.ec * N_PER_EC;
-        if (data.nitrogen < 10.0f) data.nitrogen = 10.0f;
-
         data.phosphorus = data.ec * P_PER_EC;
-        if (data.phosphorus < 5.0f) data.phosphorus = 5.0f;
-
         data.potassium = data.ec * K_PER_EC;
-        if (data.potassium < 15.0f) data.potassium = 15.0f;
 
         // 5. pH: Dao động quanh pH gốc của loại đất, hơi chua dần khi đất ẩm lên
         data.ph = soil.phBase - ((moisture - 50.0f) * 0.012f) + (noiseRandom * 0.005f);

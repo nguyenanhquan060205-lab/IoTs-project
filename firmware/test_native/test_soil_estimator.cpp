@@ -72,13 +72,13 @@ void testAgronomicEstimationBounds() {
         // Moisture preserved
         assert(data.moisture == m);
 
-        // EC bounds: [150, 2200]
-        assert(data.ec >= 150.0f && data.ec <= 2200.0f);
+        // EC bounds: [0, 2200], no floor so EC follows moisture all the way down
+        assert(data.ec >= 0.0f && data.ec <= 2200.0f);
 
-        // Nutrients positive & physiologically sound
-        assert(data.nitrogen >= 10.0f);
-        assert(data.phosphorus >= 5.0f);
-        assert(data.potassium >= 15.0f);
+        // Nutrients never negative
+        assert(data.nitrogen >= 0.0f);
+        assert(data.phosphorus >= 0.0f);
+        assert(data.potassium >= 0.0f);
 
         // pH bounds: [4.5, 8.5]
         assert(data.ph >= 4.5f && data.ph <= 8.5f);
@@ -110,8 +110,8 @@ void testSoilTypeProfiles() {
 
         for (SoilType type : types) {
             SoilNutrientData data = SoilEstimator::estimate(m, 0.0f, type);
-            assert(data.ec >= 150.0f && data.ec <= 2200.0f);
-            assert(data.nitrogen >= 10.0f && data.phosphorus >= 5.0f && data.potassium >= 15.0f);
+            assert(data.ec >= 0.0f && data.ec <= 2200.0f);
+            assert(data.nitrogen >= 0.0f && data.phosphorus >= 0.0f && data.potassium >= 0.0f);
             assert(data.ph >= 4.5f && data.ph <= 8.5f);
 
             if (m == 55.0f || m == 75.0f) {
@@ -183,6 +183,17 @@ void testNpkFollowsEc() {
     assert(std::fabs(garden.nitrogen - 64.8f) < 0.1f);
     assert(std::fabs(garden.phosphorus - 32.4f) < 0.1f);
     assert(std::fabs(garden.potassium - 89.1f) < 0.1f);
+
+    // No floor: barren soil at 20% moisture gives EC 80 (the old floor forced 150) and dry soil gives 0
+    SoilNutrientData barren20 = SoilEstimator::estimate(20.0f, 0.0f, SoilType::BARREN);
+    assert(std::fabs(barren20.ec - 80.0f) < 0.1f);
+    assert(std::fabs(barren20.nitrogen - 6.4f) < 0.01f);
+    assert(std::fabs(barren20.phosphorus - 3.2f) < 0.01f);
+    assert(std::fabs(barren20.potassium - 8.8f) < 0.01f);
+    SoilNutrientData barren0 = SoilEstimator::estimate(0.0f, 0.0f, SoilType::BARREN);
+    assert(barren0.ec == 0.0f && barren0.nitrogen == 0.0f && barren0.phosphorus == 0.0f && barren0.potassium == 0.0f);
+    // A negative noise sample never makes EC negative
+    assert(SoilEstimator::estimate(0.0f, -15.0f, SoilType::BARREN).ec == 0.0f);
     std::cout << "  -> Passed N-P-K from EC tests!\n";
 }
 

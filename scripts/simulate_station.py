@@ -74,12 +74,12 @@ def calculate_nutrients_from_moisture(moisture, soil_type="garden"):
 
     # EC (µS/cm): Nước hòa tan muối khoáng có sẵn nên EC tăng theo độ ẩm
     ec = (moisture * profile["ec_per_moisture"]) + random.uniform(-15, 15)
-    ec = max(150.0, min(2200.0, ec))
+    ec = max(0.0, min(2200.0, ec))  # Không có mức sàn, giống firmware: đất khô hẳn thì EC về 0
 
     # Đạm, Lân, Kali dễ tiêu (mg/kg): dinh dưỡng hòa tan trong nước của đất, cũng là thứ làm EC tăng
-    n = max(10.0, ec * N_PER_EC)
-    p = max(5.0, ec * P_PER_EC)
-    k = max(15.0, ec * K_PER_EC)
+    n = ec * N_PER_EC
+    p = ec * P_PER_EC
+    k = ec * K_PER_EC
 
     # pH: Dao động quanh pH gốc của loại đất, khô quá thì kiềm nhẹ, ẩm quá thì hơi chua
     ph = profile["ph_base"] - ((moisture - 50.0) * 0.012) + random.uniform(-0.1, 0.1)
