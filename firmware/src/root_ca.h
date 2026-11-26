@@ -3,8 +3,8 @@
 
 /**
  * Chứng chỉ gốc (Root CA) để ESP32 xác thực broker MQTT qua TLS, chống giả mạo máy chủ.
- * - DigiCert Global Root G2 (hết hạn 2038): broker.emqx.io
- * - ISRG Root X1 / Let's Encrypt (hết hạn 2035): HiveMQ Cloud và đa số broker riêng
+ * - DigiCert Global Root G2 (hết hạn 2038): broker riêng EMQX Serverless (*.emqxsl.com) và broker công cộng broker.emqx.io
+ * - ISRG Root X1 / Let's Encrypt (hết hạn 2035): HiveMQ Cloud và đa số broker dùng chứng chỉ Let's Encrypt
  * Đổi sang broker dùng CA khác thì nối thêm chứng chỉ gốc của CA đó vào cuối chuỗi.
  */
 static const char ROOT_CA_BUNDLE[] PROGMEM =

@@ -19,6 +19,7 @@
 #define HAS_SECRETS 1
 #else
 // Chưa tạo secrets.h (ví dụ chạy trên Wokwi): dùng broker công cộng qua TLS, có mã hóa nhưng chưa có tài khoản.
+// Trạm thật phải có secrets.h với tài khoản soil_station của broker riêng, App và trang web mới thấy số đo.
 // Trên mạch thật thì phải tạo secrets.h, nếu không trạm chỉ thử WiFi mẫu "iPhone" / "password" bên dưới.
 #warning "Chua co firmware/src/secrets.h: tram se dung WiFi mau 'iPhone'. Chep secrets.example.h thanh secrets.h va dien WiFi that truoc khi nap vao mach that."
 #define HAS_SECRETS 0

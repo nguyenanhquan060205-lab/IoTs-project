@@ -1,5 +1,5 @@
 {
-  "MQTT_HOST": "xxxxxxxxxxxxxxxx.s1.eu.hivemq.cloud",
+  "MQTT_HOST": "y0601019.ala.asia-southeast1.emqxsl.com",
   "MQTT_PORT": "8883",
   "MQTT_TLS": "true",
   "MQTT_USERNAME": "soil_app",
