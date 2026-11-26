@@ -1,0 +1,12 @@
+# 2026-11-26 13:02:55.852 | lệnh: offset | cổng COM7 | broker broker.emqx.io:8883
+# Đồng hồ máy tính lệch +451 ms so với time.google.com (trễ khứ hồi 39 ms), các số dưới đây đã bù độ lệch này
+2026-11-26 13:02:58.434 [1] timestamp 1795672978 | nhận lúc 1795672978.886 (đã bù) | lệch +0.886 s | 372 byte
+2026-11-26 13:03:58.451 [2] timestamp 1795673038 | nhận lúc 1795673038.902 (đã bù) | lệch +0.902 s | 367 byte
+2026-11-26 13:05:02.450 [3] timestamp 1795673102 | nhận lúc 1795673102.901 (đã bù) | lệch +0.901 s | 371 byte
+2026-11-26 13:06:06.451 [4] timestamp 1795673166 | nhận lúc 1795673166.903 (đã bù) | lệch +0.903 s | 367 byte
+2026-11-26 13:07:06.463 [5] timestamp 1795673226 | nhận lúc 1795673226.914 (đã bù) | lệch +0.914 s | 369 byte
+# Đo lại lúc kết thúc: đồng hồ máy tính lệch +442 ms
+# Tóm tắt
+# Giờ nhận trừ timestamp của trạm: n = 5, nhỏ nhất 0.886 s, trung vị 0.902 s, trung bình 0.901 s, lớn nhất 0.914 s
+# timestamp chỉ chính xác tới giây (trạm cắt phần lẻ), nên số trên gồm phần lẻ bị cắt (0 - 1 s) cộng độ trễ mạng
+# Kích thước bản tin telemetry: n = 5, nhỏ nhất 367 byte, trung vị 369 byte, trung bình 369 byte, lớn nhất 372 byte

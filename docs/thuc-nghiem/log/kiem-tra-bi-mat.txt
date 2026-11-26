@@ -1,0 +1,9 @@
+# 2026-11-26 12:48:15 | Kiểm tra thông tin cấu hình không nằm trong kho mã
+# git ls-files | grep -i 'secret|mqtt_config':
+firmware/src/secrets.example.h
+mobile/mqtt_config.example.json
+plans/261125-0323-esp32-hardware-bringup/phase-02-secrets-config.md
+# git log --all --oneline -- firmware/src/secrets.h mobile/mqtt_config.json (trống là chưa từng commit):
+# git check-ignore:
+.gitignore:49:firmware/src/secrets.h	firmware/src/secrets.h
+.gitignore:50:mobile/mqtt_config.json	mobile/mqtt_config.json

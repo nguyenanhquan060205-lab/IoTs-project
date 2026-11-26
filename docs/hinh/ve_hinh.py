@@ -1,11 +1,11 @@
-"""Vẽ 4 hình sơ đồ cho báo cáo giai đoạn 2 (Hình 3.1, 3.3, 3.4, 3.6) dưới dạng HTML + SVG.
+"""Vẽ 5 hình sơ đồ cho báo cáo giai đoạn 2 (Hình 3.1, 3.2, 3.3, 3.4, 3.6) dưới dạng HTML + SVG.
 
 Chạy: python docs/hinh/ve_hinh.py
 Sinh ra các tệp hinh-3-*.html cạnh tệp này. Xuất PNG bằng Chrome hoặc Edge chạy ẩn, ví dụ:
   chrome --headless=new --hide-scrollbars --force-device-scale-factor=2 \
          --window-size=<rộng>,<cao> --screenshot=hinh-3-1-kien-truc.png hinh-3-1-kien-truc.html
 Kích thước từng hình in ở cuối khi chạy. Nội dung lấy theo firmware/src/main.cpp, soil_estimator.h,
-mobile/lib/services/agronomic_engine.dart và web/evaluation.html.
+mobile/lib/services/agronomic_engine.dart, web/evaluation.html và HARDWARE_CHECKLIST.md (Hình 3.2).
 """
 from html import escape
 from pathlib import Path
@@ -287,8 +287,58 @@ def hinh_3_6():
     return s, "Hình 3.6: Quy trình vận hành của hệ chuyên gia trên ứng dụng"
 
 
+def hinh_3_2():
+    """Sơ đồ nối chân theo PIN_* trong firmware/src/main.cpp và HARDWARE_CHECKLIST.md (không còn rơ-le)"""
+    s = Svg(1150, 620)
+    s.box(400, 30, 300, 540, fill="#eaf1fb")
+    s.text(550, 62, "ESP32 DevKit", 18, "bold", "middle")
+    s.text(550, 86, "ESP32-WROOM-32, nguồn USB 5 V", 15, "normal", "middle", MUTED)
+
+    # Cảm biến độ ẩm bên trái, nối thẳng vào 3V3, GND và GPIO34
+    s.box(60, 100, 240, 150, "Cảm biến độ ẩm", ["module LM393"], fill="#ffffff")
+    for y, pin_sensor, pin_esp in [(140, "VCC", "3V3"), (180, "GND", "GND"), (220, "AO", "GPIO34 (ADC1)")]:
+        s.text(290, y + 5, pin_sensor, 15, "bold", "end")
+        s.path([(300, y), (400, y)], head=False)
+        s.text(412, y + 5, pin_esp, 15, "bold")
+    s.box(60, 300, 300, 130, None, [
+        "VCC chỉ nối 3V3, không nối 5V",
+        "(chân ADC chịu tối đa 3,3 V).",
+        "GPIO34 thuộc ADC1 nên vẫn đọc",
+        "được khi Wi-Fi đang bật.",
+    ], fill="#fffbea", dash="6 4", size=15)
+
+    # OLED: SDA, SCL nối GPIO21, GPIO22; nguồn ghi bằng nhãn để hình đỡ rối
+    s.text(830, 50, "OLED SSD1306 (I2C, địa chỉ 0x3C)", 16, "bold")
+    s.box(830, 70, 270, 120, fill="#ffffff")
+    for y, pin_oled, pin_esp, power in [(110, "SDA", "GPIO21", "VCC → 3V3"), (150, "SCL", "GPIO22", "GND → GND")]:
+        s.text(688, y + 5, pin_esp, 15, "bold", "end")
+        s.path([(700, y), (830, y)], head=False)
+        s.text(842, y + 5, pin_oled, 15, "bold")
+        s.text(1088, y + 5, power, 15, "normal", "end", MUTED)
+
+    # 3 LED qua điện trở 220 Ω, còi; cực âm nối GND
+    for y, label, pin, fill in [(260, "LED đỏ", "GPIO32", "#fde8e8"), (330, "LED vàng", "GPIO19", "#fff6d6"),
+                                (400, "LED xanh", "GPIO33", "#e6f4ea")]:
+        s.text(688, y + 5, pin, 15, "bold", "end")
+        s.path([(700, y), (760, y)], head=False)
+        s.box(760, y - 17, 80, 34, None, ["220 Ω"], align="center", size=14, rx=4)
+        s.path([(840, y), (880, y)], head=False)
+        s.box(880, y - 20, 120, 40, None, [label], fill=fill, align="center", size=15)
+        s.path([(1000, y), (1040, y)], head=False)
+        s.text(1046, y + 5, "GND", 15, "bold")
+    s.text(688, 495, "GPIO25", 15, "bold", "end")
+    s.path([(700, 490), (880, 490)], head=False)
+    s.text(790, 482, "PWM 2,7 kHz", 14, "normal", "middle", MUTED)
+    s.box(880, 470, 120, 40, None, ["Còi (+)"], fill="#f4f4f1", align="center", size=15)
+    s.path([(1000, 490), (1040, 490)], head=False)
+    s.text(1046, 495, "GND", 15, "bold")
+    s.text(575, 603, "Mọi cực âm và chân GND của linh kiện nối chung GND của ESP32", 14, "normal", "middle", MUTED)
+    return s, "Hình 3.2: Sơ đồ đấu nối mạch trạm đo (cảm biến LM393, OLED, LED cảnh báo)"
+
+
 if __name__ == "__main__":
-    for name, build in [("hinh-3-1-kien-truc", hinh_3_1), ("hinh-3-3-luu-do-khoi-dong", hinh_3_3),
+    for name, build in [("hinh-3-1-kien-truc", hinh_3_1), ("hinh-3-2-so-do-noi-chan", hinh_3_2),
+                        ("hinh-3-3-luu-do-khoi-dong", hinh_3_3),
                         ("hinh-3-4-tuan-tu-doi-loai-dat", hinh_3_4), ("hinh-3-6-he-chuyen-gia", hinh_3_6)]:
         svg, title = build()
         (OUT / f"{name}.html").write_text(svg.html(title), encoding="utf-8")

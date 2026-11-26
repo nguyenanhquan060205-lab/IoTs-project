@@ -1,0 +1,167 @@
+# 2026-11-26 13:17:44.612 | lệnh: boot | cổng COM7 | broker broker.emqx.io:8883
+# Lần 1/5: đặt lại trạm qua chân EN
+2026-11-26 13:17:44.739 [1] ets Jul 29 2019 12:21:46
+2026-11-26 13:17:44.739 [1] 
+2026-11-26 13:17:44.744 [1] rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+2026-11-26 13:17:44.747 [1] configsip: 0, SPIWP:0xee
+2026-11-26 13:17:44.752 [1] clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+2026-11-26 13:17:44.755 [1] mode:DIO, clock div:2
+2026-11-26 13:17:44.758 [1] load:0x3fff0030,len:4640
+2026-11-26 13:17:44.761 [1] load:0x40078000,len:15632
+2026-11-26 13:17:44.762 [1] load:0x40080400,len:3164
+2026-11-26 13:17:44.762 [1] entry 0x4008059c
+2026-11-26 13:17:45.707 [1] 
+2026-11-26 13:17:45.709 [1] ==============================================
+2026-11-26 13:17:45.712 [1]   HE THONG DINH DUONG DAT IOT (ESP32)
+2026-11-26 13:17:45.716 [1] ==============================================
+2026-11-26 13:17:45.726 [1] Loai dat dang do: DAT VUON | Hieu chuan ADC: kho=200 (mac dinh), uot=3000 (mac dinh)
+2026-11-26 13:17:47.255 [1] Dang khoi dong WiFi Multi...
+2026-11-26 13:17:55.504 [1] Dang ket noi WiFi "<wifi>" (hoac "Wokwi-GUEST" khi mo phong)
+2026-11-26 13:17:55.505 [1] ✅ WiFi da ket noi!
+2026-11-26 13:17:55.507 [1]    SSID: <wifi>
+2026-11-26 13:17:55.510 [1]    Dia chi IP: <ip>
+2026-11-26 13:17:56.215 [1] Dang ket noi MQTT broker.emqx.io:1883 (khong ma hoa, mo phong Wokwi)... Thanh cong! (705 ms, heap trong 210800 byte)
+2026-11-26 13:17:56.217 [1] Da dang ky lang nghe: soil_station/1/command
+2026-11-26 13:17:56.320 [1] [SENSOR] Dat: DAT VUON | ADC: 1876 (+-16.5) | Am:  59.9% | EC:   808 | N: 64.6 | P: 32.3 | K: 88.9 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:17:56.328 [1] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:18:00.318 [1] [SENSOR] Dat: DAT VUON | ADC: 1966 (+-23.7) | Am:  63.1% | EC:   851 | N: 68.1 | P: 34.1 | K: 93.7 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 13:18:00.327 [1] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:18:04.320 [1] [SENSOR] Dat: DAT VUON | ADC: 1950 (+-4.3) | Am:  62.5% | EC:   844 | N: 67.5 | P: 33.8 | K: 92.8 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 13:18:04.329 [1] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:18:08.318 [1] [SENSOR] Dat: DAT VUON | ADC: 1996 (+-12.9) | Am:  64.1% | EC:   866 | N: 69.3 | P: 34.6 | K: 95.3 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 13:18:08.327 [1] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:18:10.947 [1] [NTP] Da co gio sau 15439 ms ke tu khi co WiFi: 2026-11-26 13:18:11 (ICT)
+# Lần 1: NTP 15439 ms, MQTT 705 ms, heap 210800 byte
+# Lần 2/5: đặt lại trạm qua chân EN
+2026-11-26 13:18:11.053 [2] ets Jul 29 2019 12:21:46
+2026-11-26 13:18:11.053 [2] 
+2026-11-26 13:18:11.058 [2] rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+2026-11-26 13:18:11.061 [2] configsip: 0, SPIWP:0xee
+2026-11-26 13:18:11.067 [2] clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+2026-11-26 13:18:11.069 [2] mode:DIO, clock div:2
+2026-11-26 13:18:11.072 [2] load:0x3fff0030,len:4640
+2026-11-26 13:18:11.075 [2] load:0x40078000,len:15632
+2026-11-26 13:18:11.075 [2] load:0x40080400,len:3164
+2026-11-26 13:18:11.077 [2] entry 0x4008059c
+2026-11-26 13:18:12.021 [2] 
+2026-11-26 13:18:12.024 [2] ==============================================
+2026-11-26 13:18:12.027 [2]   HE THONG DINH DUONG DAT IOT (ESP32)
+2026-11-26 13:18:12.030 [2] ==============================================
+2026-11-26 13:18:12.040 [2] Loai dat dang do: DAT VUON | Hieu chuan ADC: kho=200 (mac dinh), uot=3000 (mac dinh)
+2026-11-26 13:18:13.569 [2] Dang khoi dong WiFi Multi...
+2026-11-26 13:18:21.366 [2] Dang ket noi WiFi "<wifi>" (hoac "Wokwi-GUEST" khi mo phong)
+2026-11-26 13:18:21.367 [2] ✅ WiFi da ket noi!
+2026-11-26 13:18:21.369 [2]    SSID: <wifi>
+2026-11-26 13:18:21.372 [2]    Dia chi IP: <ip>
+2026-11-26 13:18:22.312 [2] Dang ket noi MQTT broker.emqx.io:1883 (khong ma hoa, mo phong Wokwi)... Thanh cong! (938 ms, heap trong 210760 byte)
+2026-11-26 13:18:22.314 [2] Da dang ky lang nghe: soil_station/1/command
+2026-11-26 13:18:22.418 [2] [SENSOR] Dat: DAT VUON | ADC: 1923 (+-6.9) | Am:  61.5% | EC:   831 | N: 66.5 | P: 33.2 | K: 91.4 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:18:22.425 [2] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:18:26.415 [2] [SENSOR] Dat: DAT VUON | ADC: 1925 (+-23.0) | Am:  61.6% | EC:   832 | N: 66.5 | P: 33.3 | K: 91.5 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:18:26.424 [2] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:18:30.415 [2] [SENSOR] Dat: DAT VUON | ADC: 1938 (+-23.1) | Am:  62.1% | EC:   838 | N: 67.0 | P: 33.5 | K: 92.2 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:18:30.424 [2] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:18:34.415 [2] [SENSOR] Dat: DAT VUON | ADC: 1945 (+-21.5) | Am:  62.3% | EC:   841 | N: 67.3 | P: 33.7 | K: 92.5 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:18:34.424 [2] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:18:38.416 [2] [SENSOR] Dat: DAT VUON | ADC: 1926 (+-11.5) | Am:  61.6% | EC:   832 | N: 66.6 | P: 33.3 | K: 91.5 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:18:38.425 [2] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:18:38.431 [2] [NTP] Da co gio sau 16951 ms ke tu khi co WiFi: 2026-11-26 13:18:38 (ICT)
+# Lần 2: NTP 16951 ms, MQTT 938 ms, heap 210760 byte
+# Lần 3/5: đặt lại trạm qua chân EN
+2026-11-26 13:18:38.537 [3] ets Jul 29 2019 12:21:46
+2026-11-26 13:18:38.537 [3] 
+2026-11-26 13:18:38.543 [3] rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+2026-11-26 13:18:38.545 [3] configsip: 0, SPIWP:0xee
+2026-11-26 13:18:38.551 [3] clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+2026-11-26 13:18:38.554 [3] mode:DIO, clock div:2
+2026-11-26 13:18:38.557 [3] load:0x3fff0030,len:4640
+2026-11-26 13:18:38.559 [3] load:0x40078000,len:15632
+2026-11-26 13:18:38.559 [3] load:0x40080400,len:3164
+2026-11-26 13:18:38.561 [3] entry 0x4008059c
+2026-11-26 13:18:39.505 [3] 
+2026-11-26 13:18:39.508 [3] ==============================================
+2026-11-26 13:18:39.511 [3]   HE THONG DINH DUONG DAT IOT (ESP32)
+2026-11-26 13:18:39.515 [3] ==============================================
+2026-11-26 13:18:39.525 [3] Loai dat dang do: DAT VUON | Hieu chuan ADC: kho=200 (mac dinh), uot=3000 (mac dinh)
+2026-11-26 13:18:41.054 [3] Dang khoi dong WiFi Multi...
+2026-11-26 13:18:47.780 [3] Dang ket noi WiFi "<wifi>" (hoac "Wokwi-GUEST" khi mo phong)
+2026-11-26 13:18:47.780 [3] ✅ WiFi da ket noi!
+2026-11-26 13:18:47.783 [3]    SSID: <wifi>
+2026-11-26 13:18:47.785 [3]    Dia chi IP: <ip>
+2026-11-26 13:18:48.746 [3] Dang ket noi MQTT broker.emqx.io:1883 (khong ma hoa, mo phong Wokwi)... Thanh cong! (959 ms, heap trong 210728 byte)
+2026-11-26 13:18:48.749 [3] Da dang ky lang nghe: soil_station/1/command
+2026-11-26 13:18:48.852 [3] [SENSOR] Dat: DAT VUON | ADC: 1940 (+-10.8) | Am:  62.1% | EC:   839 | N: 67.1 | P: 33.6 | K: 92.3 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:18:48.861 [3] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:18:52.849 [3] [SENSOR] Dat: DAT VUON | ADC: 1936 (+-4.8) | Am:  62.0% | EC:   837 | N: 67.0 | P: 33.5 | K: 92.1 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:18:52.857 [3] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:18:56.849 [3] [SENSOR] Dat: DAT VUON | ADC: 1957 (+-19.9) | Am:  62.8% | EC:   847 | N: 67.8 | P: 33.9 | K: 93.2 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 13:18:56.858 [3] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:19:00.848 [3] [SENSOR] Dat: DAT VUON | ADC: 1941 (+-3.8) | Am:  62.2% | EC:   839 | N: 67.2 | P: 33.6 | K: 92.3 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:19:00.857 [3] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:19:03.822 [3] [NTP] Da co gio sau 16039 ms ke tu khi co WiFi: 2026-11-26 13:19:04 (ICT)
+# Lần 3: NTP 16039 ms, MQTT 959 ms, heap 210728 byte
+# Lần 4/5: đặt lại trạm qua chân EN
+2026-11-26 13:19:03.929 [4] ets Jul 29 2019 12:21:46
+2026-11-26 13:19:03.929 [4] 
+2026-11-26 13:19:03.935 [4] rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+2026-11-26 13:19:03.937 [4] configsip: 0, SPIWP:0xee
+2026-11-26 13:19:03.943 [4] clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+2026-11-26 13:19:03.946 [4] mode:DIO, clock div:2
+2026-11-26 13:19:03.948 [4] load:0x3fff0030,len:4640
+2026-11-26 13:19:03.951 [4] load:0x40078000,len:15632
+2026-11-26 13:19:03.951 [4] load:0x40080400,len:3164
+2026-11-26 13:19:03.953 [4] entry 0x4008059c
+2026-11-26 13:19:04.897 [4] 
+2026-11-26 13:19:04.900 [4] ==============================================
+2026-11-26 13:19:04.903 [4]   HE THONG DINH DUONG DAT IOT (ESP32)
+2026-11-26 13:19:04.906 [4] ==============================================
+2026-11-26 13:19:04.917 [4] Loai dat dang do: DAT VUON | Hieu chuan ADC: kho=200 (mac dinh), uot=3000 (mac dinh)
+2026-11-26 13:19:06.446 [4] Dang khoi dong WiFi Multi...
+2026-11-26 13:19:13.753 [4] Dang ket noi WiFi "<wifi>" (hoac "Wokwi-GUEST" khi mo phong)
+2026-11-26 13:19:13.753 [4] ✅ WiFi da ket noi!
+2026-11-26 13:19:13.755 [4]    SSID: <wifi>
+2026-11-26 13:19:13.758 [4]    Dia chi IP: <ip>
+2026-11-26 13:19:14.468 [4] Dang ket noi MQTT broker.emqx.io:1883 (khong ma hoa, mo phong Wokwi)... Thanh cong! (709 ms, heap trong 210744 byte)
+2026-11-26 13:19:14.471 [4] Da dang ky lang nghe: soil_station/1/command
+2026-11-26 13:19:14.574 [4] [SENSOR] Dat: DAT VUON | ADC: 1936 (+-8.9) | Am:  62.0% | EC:   837 | N: 67.0 | P: 33.5 | K: 92.1 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:19:14.581 [4] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:19:18.345 [4] [NTP] Da co gio sau 4588 ms ke tu khi co WiFi: 2026-11-26 13:19:18 (ICT)
+# Lần 4: NTP 4588 ms, MQTT 709 ms, heap 210744 byte
+# Lần 5/5: đặt lại trạm qua chân EN
+2026-11-26 13:19:18.452 [5] ets Jul 29 2019 12:21:46
+2026-11-26 13:19:18.452 [5] 
+2026-11-26 13:19:18.457 [5] rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+2026-11-26 13:19:18.460 [5] configsip: 0, SPIWP:0xee
+2026-11-26 13:19:18.465 [5] clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+2026-11-26 13:19:18.468 [5] mode:DIO, clock div:2
+2026-11-26 13:19:18.471 [5] load:0x3fff0030,len:4640
+2026-11-26 13:19:18.474 [5] load:0x40078000,len:15632
+2026-11-26 13:19:18.474 [5] load:0x40080400,len:3164
+2026-11-26 13:19:18.475 [5] entry 0x4008059c
+2026-11-26 13:19:19.420 [5] 
+2026-11-26 13:19:19.423 [5] ==============================================
+2026-11-26 13:19:19.426 [5]   HE THONG DINH DUONG DAT IOT (ESP32)
+2026-11-26 13:19:19.429 [5] ==============================================
+2026-11-26 13:19:19.439 [5] Loai dat dang do: DAT VUON | Hieu chuan ADC: kho=200 (mac dinh), uot=3000 (mac dinh)
+2026-11-26 13:19:20.968 [5] Dang khoi dong WiFi Multi...
+2026-11-26 13:19:28.548 [5] Dang ket noi WiFi "<wifi>" (hoac "Wokwi-GUEST" khi mo phong)
+2026-11-26 13:19:28.549 [5] ✅ WiFi da ket noi!
+2026-11-26 13:19:28.551 [5]    SSID: <wifi>
+2026-11-26 13:19:28.554 [5]    Dia chi IP: <ip>
+2026-11-26 13:19:29.389 [5] Dang ket noi MQTT broker.emqx.io:1883 (khong ma hoa, mo phong Wokwi)... Thanh cong! (832 ms, heap trong 210764 byte)
+2026-11-26 13:19:29.391 [5] Da dang ky lang nghe: soil_station/1/command
+2026-11-26 13:19:29.494 [5] [SENSOR] Dat: DAT VUON | ADC: 1933 (+-3.5) | Am:  61.9% | EC:   836 | N: 66.8 | P: 33.4 | K: 91.9 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:19:29.502 [5] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:19:33.492 [5] [SENSOR] Dat: DAT VUON | ADC: 1947 (+-18.4) | Am:  62.4% | EC:   842 | N: 67.4 | P: 33.7 | K: 92.7 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:19:33.501 [5] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:19:37.492 [5] [SENSOR] Dat: DAT VUON | ADC: 1952 (+-21.8) | Am:  62.6% | EC:   845 | N: 67.6 | P: 33.8 | K: 92.9 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 13:19:37.501 [5] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:19:41.493 [5] [SENSOR] Dat: DAT VUON | ADC: 1955 (+-19.4) | Am:  62.7% | EC:   846 | N: 67.7 | P: 33.8 | K: 93.1 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 13:19:41.501 [5] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:19:45.258 [5] [NTP] Da co gio sau 16706 ms ke tu khi co WiFi: 2026-11-26 13:19:45 (ICT)
+# Lần 5: NTP 16706 ms, MQTT 832 ms, heap 210764 byte
+# Tóm tắt
+# Thời gian có giờ NTP kể từ khi có Wi-Fi: n = 5, nhỏ nhất 4588 ms, trung vị 16039 ms, trung bình 13945 ms, lớn nhất 16951 ms
+# Thời gian kết nối MQTT (gồm bắt tay TLS nếu có): n = 5, nhỏ nhất 705 ms, trung vị 832 ms, trung bình 829 ms, lớn nhất 959 ms
+# Bộ nhớ trống sau khi kết nối: n = 5, nhỏ nhất 210728 byte, trung vị 210760 byte, trung bình 210759 byte, lớn nhất 210800 byte
+# Số lần kết nối thất bại: 0

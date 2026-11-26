@@ -1,0 +1,23 @@
+# 2026-11-26 13:42:38.332 | lệnh: soil-types | cổng COM7 | broker broker.emqx.io:8883
+# Loại đất ban đầu: garden
+# Đã gửi SET_SOIL_TYPE potting
+# Bản tin xác nhận đầu tiên sau 0.8 giây
+2026-11-26 13:42:43.237 [potting] {"device_id":"esp32_soil_station_01","timestamp":1795675363,"soil_type":"potting","telemetry":{"nitrogen":95.8,"phosphorus":47.9,"potassium":131.8,"ph":6.1,"ec":1197.9,"moisture":59.9},"npk_normal":{"nitrogen":95,"phosphorus":50,"potassium":135},"npk_level":{"nitrogen":"normal","phosphorus":"normal","potassium":"normal"},"adc":{"raw":1877,"noise":3.5,"dry":200,"wet":3000}}
+2026-11-26 13:42:47.216 [potting] {"device_id":"esp32_soil_station_01","timestamp":1795675367,"soil_type":"potting","telemetry":{"nitrogen":96.3,"phosphorus":48.1,"potassium":132.4,"ph":6.1,"ec":1203.6,"moisture":60.2},"npk_normal":{"nitrogen":95,"phosphorus":50,"potassium":135},"npk_level":{"nitrogen":"normal","phosphorus":"normal","potassium":"normal"},"adc":{"raw":1885,"noise":2.5,"dry":200,"wet":3000}}
+2026-11-26 13:42:51.256 [potting] {"device_id":"esp32_soil_station_01","timestamp":1795675371,"soil_type":"potting","telemetry":{"nitrogen":96.1,"phosphorus":48,"potassium":132.1,"ph":6.1,"ec":1200.7,"moisture":60},"npk_normal":{"nitrogen":95,"phosphorus":50,"potassium":135},"npk_level":{"nitrogen":"normal","phosphorus":"normal","potassium":"normal"},"adc":{"raw":1881,"noise":3.7,"dry":200,"wet":3000}}
+# Đã gửi SET_SOIL_TYPE garden
+# Bản tin xác nhận đầu tiên sau 2.1 giây
+2026-11-26 13:42:53.402 [garden] {"device_id":"esp32_soil_station_01","timestamp":1795675373,"soil_type":"garden","telemetry":{"nitrogen":64.9,"phosphorus":32.5,"potassium":89.3,"ph":6.4,"ec":811.4,"moisture":60.1},"npk_normal":{"nitrogen":65,"phosphorus":33,"potassium":90},"npk_level":{"nitrogen":"normal","phosphorus":"normal","potassium":"normal"},"adc":{"raw":1883,"noise":4.5,"dry":200,"wet":3000}}
+2026-11-26 13:42:57.405 [garden] {"device_id":"esp32_soil_station_01","timestamp":1795675377,"soil_type":"garden","telemetry":{"nitrogen":64.8,"phosphorus":32.4,"potassium":89.1,"ph":6.4,"ec":810,"moisture":60},"npk_normal":{"nitrogen":65,"phosphorus":33,"potassium":90},"npk_level":{"nitrogen":"normal","phosphorus":"normal","potassium":"normal"},"adc":{"raw":1880,"noise":4.6,"dry":200,"wet":3000}}
+2026-11-26 13:43:01.416 [garden] {"device_id":"esp32_soil_station_01","timestamp":1795675381,"soil_type":"garden","telemetry":{"nitrogen":64.8,"phosphorus":32.4,"potassium":89.2,"ph":6.4,"ec":810.5,"moisture":60},"npk_normal":{"nitrogen":65,"phosphorus":33,"potassium":90},"npk_level":{"nitrogen":"normal","phosphorus":"normal","potassium":"normal"},"adc":{"raw":1881,"noise":3.8,"dry":200,"wet":3000}}
+# Đã gửi SET_SOIL_TYPE barren
+# Bản tin xác nhận đầu tiên sau 0.7 giây
+2026-11-26 13:43:02.153 [barren] {"device_id":"esp32_soil_station_01","timestamp":1795675382,"soil_type":"barren","telemetry":{"nitrogen":19.2,"phosphorus":9.6,"potassium":26.4,"ph":5.7,"ec":240.1,"moisture":60},"npk_normal":{"nitrogen":20,"phosphorus":10,"potassium":30},"npk_level":{"nitrogen":"normal","phosphorus":"normal","potassium":"normal"},"adc":{"raw":1881,"noise":4.5,"dry":200,"wet":3000}}
+2026-11-26 13:43:06.128 [barren] {"device_id":"esp32_soil_station_01","timestamp":1795675386,"soil_type":"barren","telemetry":{"nitrogen":19.2,"phosphorus":9.6,"potassium":26.4,"ph":5.7,"ec":240.1,"moisture":60},"npk_normal":{"nitrogen":20,"phosphorus":10,"potassium":30},"npk_level":{"nitrogen":"normal","phosphorus":"normal","potassium":"normal"},"adc":{"raw":1881,"noise":5.7,"dry":200,"wet":3000}}
+2026-11-26 13:43:10.138 [barren] {"device_id":"esp32_soil_station_01","timestamp":1795675390,"soil_type":"barren","telemetry":{"nitrogen":19.2,"phosphorus":9.6,"potassium":26.4,"ph":5.7,"ec":239.9,"moisture":60},"npk_normal":{"nitrogen":20,"phosphorus":10,"potassium":30},"npk_level":{"nitrogen":"normal","phosphorus":"normal","potassium":"normal"},"adc":{"raw":1879,"noise":4,"dry":200,"wet":3000}}
+# Đã trả lại loại đất garden
+# Tóm tắt (trung bình mỗi loại đất)
+# Loại đất | n | ADC | Độ ẩm % | EC | N | P | K | pH | Mức chuẩn N/P/K | Mức N/P/K
+# potting | 3 | 1881 | 60.0 | 1201 | 96.1 | 48.0 | 132.1 | 6.10 | 95/50/135 | normal/normal/normal
+# garden | 3 | 1881 | 60.0 | 811 | 64.8 | 32.4 | 89.2 | 6.40 | 65/33/90 | normal/normal/normal
+# barren | 3 | 1880 | 60.0 | 240 | 19.2 | 9.6 | 26.4 | 5.70 | 20/10/30 | normal/normal/normal

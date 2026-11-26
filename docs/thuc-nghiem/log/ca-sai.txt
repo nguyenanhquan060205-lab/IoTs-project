@@ -1,0 +1,63 @@
+# 2026-11-26 13:15:29.861 | lệnh: serial-log | cổng COM7 | broker broker.emqx.io:8883
+# Đặt lại trạm qua chân EN
+2026-11-26 13:15:29.992 ets Jul 29 2019 12:21:46
+2026-11-26 13:15:29.992 
+2026-11-26 13:15:29.997 rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+2026-11-26 13:15:29.999 configsip: 0, SPIWP:0xee
+2026-11-26 13:15:30.004 clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+2026-11-26 13:15:30.007 mode:DIO, clock div:2
+2026-11-26 13:15:30.010 load:0x3fff0030,len:4640
+2026-11-26 13:15:30.013 load:0x40078000,len:15632
+2026-11-26 13:15:30.013 load:0x40080400,len:3164
+2026-11-26 13:15:30.014 entry 0x4008059c
+2026-11-26 13:15:30.959 
+2026-11-26 13:15:30.962 ==============================================
+2026-11-26 13:15:30.965   HE THONG DINH DUONG DAT IOT (ESP32)
+2026-11-26 13:15:30.969 ==============================================
+2026-11-26 13:15:30.979 Loai dat dang do: DAT VUON | Hieu chuan ADC: kho=200 (mac dinh), uot=3000 (mac dinh)
+2026-11-26 13:15:32.508 Dang khoi dong WiFi Multi...
+2026-11-26 13:15:40.191 Dang ket noi WiFi "<wifi>" (hoac "Wokwi-GUEST" khi mo phong)
+2026-11-26 13:15:40.191 ✅ WiFi da ket noi!
+2026-11-26 13:15:40.193    SSID: <wifi>
+2026-11-26 13:15:40.196    Dia chi IP: <ip>
+2026-11-26 13:15:40.806 Dang ket noi MQTT broker.emqx.io:8883 (TLS)... That bai sau 610 ms, rc=-2. Thu lai sau 5 giay...
+2026-11-26 13:15:40.908 [SENSOR] Dat: DAT VUON | ADC: 1744 (+-3.3) | Am:  55.1% | EC:   744 | N: 59.6 | P: 29.8 | K: 81.9 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:15:42.257 [NTP] Da co gio sau 2061 ms ke tu khi co WiFi: 2026-11-26 13:15:42 (ICT)
+2026-11-26 13:15:44.907 [SENSOR] Dat: DAT VUON | ADC: 1742 (+-3.7) | Am:  55.1% | EC:   743 | N: 59.5 | P: 29.7 | K: 81.8 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:15:45.717 Dang ket noi MQTT broker.emqx.io:8883 (TLS)... That bai sau 523 ms, rc=-2. Thu lai sau 5 giay...
+2026-11-26 13:15:48.907 [SENSOR] Dat: DAT VUON | ADC: 1742 (+-3.0) | Am:  55.1% | EC:   743 | N: 59.5 | P: 29.7 | K: 81.8 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:15:50.713 Dang ket noi MQTT broker.emqx.io:8883 (TLS)... That bai sau 519 ms, rc=-2. Thu lai sau 5 giay...
+2026-11-26 13:15:52.907 [SENSOR] Dat: DAT VUON | ADC: 1742 (+-3.8) | Am:  55.1% | EC:   743 | N: 59.5 | P: 29.7 | K: 81.8 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:15:55.762 Dang ket noi MQTT broker.emqx.io:8883 (TLS)... That bai sau 568 ms, rc=-2. Thu lai sau 5 giay...
+2026-11-26 13:15:56.907 [SENSOR] Dat: DAT VUON | ADC: 1735 (+-5.4) | Am:  54.8% | EC:   740 | N: 59.2 | P: 29.6 | K: 81.4 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:16:00.744 Dang ket noi MQTT broker.emqx.io:8883 (TLS)... That bai sau 551 ms, rc=-2. Thu lai sau 5 giay...
+2026-11-26 13:16:00.907 [SENSOR] Dat: DAT VUON | ADC: 1825 (+-8.8) | Am:  58.0% | EC:   783 | N: 62.7 | P: 31.3 | K: 86.2 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:16:04.905 [SENSOR] Dat: DAT VUON | ADC: 1819 (+-12.7) | Am:  57.8% | EC:   781 | N: 62.4 | P: 31.2 | K: 85.9 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:16:05.762 Dang ket noi MQTT broker.emqx.io:8883 (TLS)... That bai sau 568 ms, rc=-2. Thu lai sau 5 giay...
+2026-11-26 13:16:08.908 [SENSOR] Dat: DAT VUON | ADC: 1824 (+-16.0) | Am:  58.0% | EC:   783 | N: 62.6 | P: 31.3 | K: 86.1 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:16:10.723 Dang ket noi MQTT broker.emqx.io:8883 (TLS)... That bai sau 530 ms, rc=-2. Thu lai sau 5 giay...
+2026-11-26 13:16:12.907 [SENSOR] Dat: DAT VUON | ADC: 1832 (+-10.5) | Am:  58.3% | EC:   787 | N: 62.9 | P: 31.5 | K: 86.6 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:16:15.714 Dang ket noi MQTT broker.emqx.io:8883 (TLS)... That bai sau 521 ms, rc=-2. Thu lai sau 5 giay...
+2026-11-26 13:16:16.906 [SENSOR] Dat: DAT VUON | ADC: 1832 (+-9.3) | Am:  58.3% | EC:   787 | N: 62.9 | P: 31.5 | K: 86.6 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:16:20.714 Dang ket noi MQTT broker.emqx.io:8883 (TLS)... That bai sau 521 ms, rc=-2. Thu lai sau 5 giay...
+2026-11-26 13:16:20.906 [SENSOR] Dat: DAT VUON | ADC: 1835 (+-8.9) | Am:  58.4% | EC:   788 | N: 63.1 | P: 31.5 | K: 86.7 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:16:24.904 [SENSOR] Dat: DAT VUON | ADC: 1829 (+-10.8) | Am:  58.2% | EC:   785 | N: 62.8 | P: 31.4 | K: 86.4 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:16:25.730 Dang ket noi MQTT broker.emqx.io:8883 (TLS)... That bai sau 538 ms, rc=-2. Thu lai sau 5 giay...
+2026-11-26 13:16:28.906 [SENSOR] Dat: DAT VUON | ADC: 1826 (+-16.2) | Am:  58.1% | EC:   784 | N: 62.7 | P: 31.4 | K: 86.2 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:16:30.663 Dang ket noi MQTT broker.emqx.io:8883 (TLS)... That bai sau 471 ms, rc=-2. Thu lai sau 5 giay...
+2026-11-26 13:16:32.905 [SENSOR] Dat: DAT VUON | ADC: 1824 (+-10.2) | Am:  58.0% | EC:   783 | N: 62.6 | P: 31.3 | K: 86.1 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:16:35.684 Dang ket noi MQTT broker.emqx.io:8883 (TLS)... That bai sau 492 ms, rc=-2. Thu lai sau 5 giay...
+2026-11-26 13:16:36.905 [SENSOR] Dat: DAT VUON | ADC: 1830 (+-6.3) | Am:  58.2% | EC:   786 | N: 62.9 | P: 31.4 | K: 86.4 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:16:40.779 Dang ket noi MQTT broker.emqx.io:8883 (TLS)... That bai sau 587 ms, rc=-2. Thu lai sau 5 giay...
+2026-11-26 13:16:40.906 [SENSOR] Dat: DAT VUON | ADC: 1814 (+-4.0) | Am:  57.6% | EC:   778 | N: 62.3 | P: 31.1 | K: 85.6 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:16:44.903 [SENSOR] Dat: DAT VUON | ADC: 1820 (+-5.9) | Am:  57.9% | EC:   781 | N: 62.5 | P: 31.2 | K: 85.9 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:16:45.815 Dang ket noi MQTT broker.emqx.io:8883 (TLS)... That bai sau 623 ms, rc=-2. Thu lai sau 5 giay...
+2026-11-26 13:16:48.905 [SENSOR] Dat: DAT VUON | ADC: 1823 (+-3.9) | Am:  58.0% | EC:   783 | N: 62.6 | P: 31.3 | K: 86.1 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:16:50.636 Dang ket noi MQTT broker.emqx.io:8883 (TLS)... That bai sau 445 ms, rc=-2. Thu lai sau 5 giay...
+2026-11-26 13:16:52.904 [SENSOR] Dat: DAT VUON | ADC: 1806 (+-4.9) | Am:  57.4% | EC:   774 | N: 61.9 | P: 31.0 | K: 85.2 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:16:55.734 Dang ket noi MQTT broker.emqx.io:8883 (TLS)... That bai sau 543 ms, rc=-2. Thu lai sau 5 giay...
+2026-11-26 13:16:56.904 [SENSOR] Dat: DAT VUON | ADC: 1806 (+-5.2) | Am:  57.4% | EC:   774 | N: 61.9 | P: 31.0 | K: 85.2 (chuan 65/33/90: OK) | pH: 6.4
+# Tóm tắt
+# Thời gian có giờ NTP: n = 1, nhỏ nhất 2061 ms, trung vị 2061 ms, trung bình 2061 ms, lớn nhất 2061 ms
+# Kết nối MQTT thành công 0 lần, thất bại 16 lần (rc = [-2])
+# Thời gian tới khi thất bại: n = 16, nhỏ nhất 445 ms, trung vị 534 ms, trung bình 538 ms, lớn nhất 623 ms

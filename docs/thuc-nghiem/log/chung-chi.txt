@@ -1,0 +1,17 @@
+# 2026-11-26 12:48:05 | Hạn các chứng chỉ gốc trong firmware/src/root_ca.h, đọc bằng openssl x509
+subject=C=US, O=DigiCert Inc, OU=www.digicert.com, CN=DigiCert Global Root G2
+notBefore=Aug  1 12:00:00 2013 GMT
+notAfter=Jan 15 12:00:00 2038 GMT
+
+subject=C=US, O=Internet Security Research Group, CN=ISRG Root X1
+notBefore=Jun  4 11:04:38 2015 GMT
+notAfter=Jun  4 11:04:38 2035 GMT
+
+# Chuỗi chứng chỉ broker.emqx.io:8883 hôm nay (openssl s_client):
+ 0 s:CN=*.emqx.io
+   i:C=US, O=DigiCert Inc, OU=www.digicert.com, CN=RapidSSL TLS RSA CA G1
+ 1 s:C=US, O=DigiCert Inc, OU=www.digicert.com, CN=RapidSSL TLS RSA CA G1
+   i:C=US, O=DigiCert Inc, OU=www.digicert.com, CN=DigiCert Global Root G2
+ 2 s:C=US, O=DigiCert Inc, OU=www.digicert.com, CN=DigiCert Global Root G2
+   i:C=US, O=DigiCert Inc, OU=www.digicert.com, CN=DigiCert Global Root CA
+Verify return code: 0 (ok)

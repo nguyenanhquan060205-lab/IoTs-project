@@ -1,0 +1,15 @@
+# 2026-11-26 13:44:28.059 | lệnh: offline | cổng COM7 | broker broker.emqx.io:8883
+# Lần 1: giữ chân EN ở mức thấp (trạm dừng như mất nguồn)
+2026-11-26 13:45:06.091 [1] status offline sau 32.6 s
+# Lần 1: nhả chân EN sau 60 s
+2026-11-26 13:45:45.551 [1] status online sau 12.1 s
+2026-11-26 13:45:45.551 [1] bản tin telemetry đầu tiên sau 12.1 s
+# Lần 2: giữ chân EN ở mức thấp (trạm dừng như mất nguồn)
+2026-11-26 13:46:58.530 [2] status offline sau 28.0 s
+# Lần 2: nhả chân EN sau 60 s
+2026-11-26 13:47:42.703 [2] status online sau 12.1 s
+2026-11-26 13:47:42.704 [2] bản tin telemetry đầu tiên sau 12.2 s
+# Tóm tắt
+# Từ lúc trạm dừng tới status offline: n = 2, nhỏ nhất 28.0 s, trung vị 30.3 s, trung bình 30.3 s, lớn nhất 32.6 s
+# Từ lúc cấp lại tới status online: n = 2, nhỏ nhất 12.1 s, trung vị 12.1 s, trung bình 12.1 s, lớn nhất 12.1 s
+# Từ lúc cấp lại tới bản tin telemetry đầu tiên: n = 2, nhỏ nhất 12.1 s, trung vị 12.1 s, trung bình 12.1 s, lớn nhất 12.2 s

@@ -1,0 +1,87 @@
+# 2026-11-26 13:09:46.776 | lệnh: boot | cổng COM7 | broker broker.emqx.io:8883
+# Lần 1/3: đặt lại trạm qua chân EN
+2026-11-26 13:09:46.898 [1] ets Jul 29 2019 12:21:46
+2026-11-26 13:09:46.898 [1] 
+2026-11-26 13:09:46.903 [1] rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+2026-11-26 13:09:46.905 [1] configsip: 0, SPIWP:0xee
+2026-11-26 13:09:46.911 [1] clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+2026-11-26 13:09:46.914 [1] mode:DIO, clock div:2
+2026-11-26 13:09:46.917 [1] load:0x3fff0030,len:4640
+2026-11-26 13:09:46.919 [1] load:0x40078000,len:15632
+2026-11-26 13:09:46.923 [1] load:0x40080400,len:3164
+2026-11-26 13:09:46.923 [1] entry 0x4008059c
+2026-11-26 13:09:47.865 [1] 
+2026-11-26 13:09:47.868 [1] ==============================================
+2026-11-26 13:09:47.871 [1]   HE THONG DINH DUONG DAT IOT (ESP32)
+2026-11-26 13:09:47.874 [1] ==============================================
+2026-11-26 13:09:47.885 [1] Loai dat dang do: DAT VUON | Hieu chuan ADC: kho=200 (mac dinh), uot=3000 (mac dinh)
+2026-11-26 13:09:49.413 [1] Dang khoi dong WiFi Multi...
+2026-11-26 13:09:56.773 [1] Dang ket noi WiFi "<wifi>" (hoac "Wokwi-GUEST" khi mo phong)
+2026-11-26 13:09:56.773 [1] ✅ WiFi da ket noi!
+2026-11-26 13:09:56.775 [1]    SSID: <wifi>
+2026-11-26 13:09:56.778 [1]    Dia chi IP: <ip>
+2026-11-26 13:09:58.618 [1] Dang ket noi MQTT broker.emqx.io:8883 (TLS)... Thanh cong! (1838 ms, heap trong 167212 byte)
+2026-11-26 13:09:58.619 [1] Da dang ky lang nghe: soil_station/1/command
+2026-11-26 13:09:58.724 [1] [SENSOR] Dat: DAT VUON | ADC: 1687 (+-3.7) | Am:  53.1% | EC:   717 | N: 57.4 | P: 28.7 | K: 78.9 (chuan 65/33/90: OK) | pH: 6.5
+2026-11-26 13:09:58.734 [1] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:09:58.849 [1] [NTP] Da co gio sau 2072 ms ke tu khi co WiFi: 2026-11-26 13:09:59 (ICT)
+# Lần 1: NTP 2072 ms, MQTT 1838 ms, heap 167212 byte
+# Lần 2/3: đặt lại trạm qua chân EN
+2026-11-26 13:09:58.956 [2] ets Jul 29 2019 12:21:46
+2026-11-26 13:09:58.956 [2] 
+2026-11-26 13:09:58.961 [2] rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+2026-11-26 13:09:58.964 [2] configsip: 0, SPIWP:0xee
+2026-11-26 13:09:58.970 [2] clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+2026-11-26 13:09:58.973 [2] mode:DIO, clock div:2
+2026-11-26 13:09:58.975 [2] load:0x3fff0030,len:4640
+2026-11-26 13:09:58.978 [2] load:0x40078000,len:15632
+2026-11-26 13:09:58.978 [2] load:0x40080400,len:3164
+2026-11-26 13:09:58.980 [2] entry 0x4008059c
+2026-11-26 13:09:59.925 [2] 
+2026-11-26 13:09:59.928 [2] ==============================================
+2026-11-26 13:09:59.931 [2]   HE THONG DINH DUONG DAT IOT (ESP32)
+2026-11-26 13:09:59.934 [2] ==============================================
+2026-11-26 13:09:59.945 [2] Loai dat dang do: DAT VUON | Hieu chuan ADC: kho=200 (mac dinh), uot=3000 (mac dinh)
+2026-11-26 13:10:01.474 [2] Dang khoi dong WiFi Multi...
+2026-11-26 13:10:08.771 [2] Dang ket noi WiFi "<wifi>" (hoac "Wokwi-GUEST" khi mo phong)
+2026-11-26 13:10:08.772 [2] ✅ WiFi da ket noi!
+2026-11-26 13:10:08.774 [2]    SSID: <wifi>
+2026-11-26 13:10:08.777 [2]    Dia chi IP: <ip>
+2026-11-26 13:10:11.494 [2] Dang ket noi MQTT broker.emqx.io:8883 (TLS)... Thanh cong! (2715 ms, heap trong 167280 byte)
+2026-11-26 13:10:11.495 [2] Da dang ky lang nghe: soil_station/1/command
+2026-11-26 13:10:11.601 [2] [SENSOR] Dat: DAT VUON | ADC: 1683 (+-5.2) | Am:  53.0% | EC:   715 | N: 57.2 | P: 28.6 | K: 78.7 (chuan 65/33/90: OK) | pH: 6.5
+2026-11-26 13:10:11.611 [2] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:10:13.379 [2] [NTP] Da co gio sau 4603 ms ke tu khi co WiFi: 2026-11-26 13:10:13 (ICT)
+# Lần 2: NTP 4603 ms, MQTT 2715 ms, heap 167280 byte
+# Lần 3/3: đặt lại trạm qua chân EN
+2026-11-26 13:10:13.485 [3] ets Jul 29 2019 12:21:46
+2026-11-26 13:10:13.485 [3] 
+2026-11-26 13:10:13.491 [3] rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+2026-11-26 13:10:13.494 [3] configsip: 0, SPIWP:0xee
+2026-11-26 13:10:13.499 [3] clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+2026-11-26 13:10:13.502 [3] mode:DIO, clock div:2
+2026-11-26 13:10:13.505 [3] load:0x3fff0030,len:4640
+2026-11-26 13:10:13.507 [3] load:0x40078000,len:15632
+2026-11-26 13:10:13.507 [3] load:0x40080400,len:3164
+2026-11-26 13:10:13.509 [3] entry 0x4008059c
+2026-11-26 13:10:14.454 [3] 
+2026-11-26 13:10:14.457 [3] ==============================================
+2026-11-26 13:10:14.460 [3]   HE THONG DINH DUONG DAT IOT (ESP32)
+2026-11-26 13:10:14.463 [3] ==============================================
+2026-11-26 13:10:14.474 [3] Loai dat dang do: DAT VUON | Hieu chuan ADC: kho=200 (mac dinh), uot=3000 (mac dinh)
+2026-11-26 13:10:16.002 [3] Dang khoi dong WiFi Multi...
+2026-11-26 13:10:23.581 [3] Dang ket noi WiFi "<wifi>" (hoac "Wokwi-GUEST" khi mo phong)
+2026-11-26 13:10:23.582 [3] ✅ WiFi da ket noi!
+2026-11-26 13:10:23.584 [3]    SSID: <wifi>
+2026-11-26 13:10:23.587 [3]    Dia chi IP: <ip>
+2026-11-26 13:10:25.566 [3] Dang ket noi MQTT broker.emqx.io:8883 (TLS)... Thanh cong! (1978 ms, heap trong 167264 byte)
+2026-11-26 13:10:25.568 [3] Da dang ky lang nghe: soil_station/1/command
+2026-11-26 13:10:25.675 [3] [SENSOR] Dat: DAT VUON | ADC: 1686 (+-12.5) | Am:  53.1% | EC:   716 | N: 57.3 | P: 28.7 | K: 78.8 (chuan 65/33/90: OK) | pH: 6.5
+2026-11-26 13:10:25.685 [3] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:10:25.691 [3] [NTP] Da co gio sau 1858 ms ke tu khi co WiFi: 2026-11-26 13:10:26 (ICT)
+# Lần 3: NTP 1858 ms, MQTT 1978 ms, heap 167264 byte
+# Tóm tắt
+# Thời gian có giờ NTP kể từ khi có Wi-Fi: n = 3, nhỏ nhất 1858 ms, trung vị 2072 ms, trung bình 2844 ms, lớn nhất 4603 ms
+# Thời gian kết nối MQTT (gồm bắt tay TLS nếu có): n = 3, nhỏ nhất 1838 ms, trung vị 1978 ms, trung bình 2177 ms, lớn nhất 2715 ms
+# Bộ nhớ trống sau khi kết nối: n = 3, nhỏ nhất 167212 byte, trung vị 167264 byte, trung bình 167252 byte, lớn nhất 167280 byte
+# Số lần kết nối thất bại: 0

@@ -1,0 +1,114 @@
+# 2026-11-26 13:11:22.381 | lệnh: serial-log | cổng COM7 | broker broker.emqx.io:8883
+# Đặt lại trạm qua chân EN
+2026-11-26 13:11:22.502 ets Jul 29 2019 12:21:46
+2026-11-26 13:11:22.503 
+2026-11-26 13:11:22.508 rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+2026-11-26 13:11:22.511 configsip: 0, SPIWP:0xee
+2026-11-26 13:11:22.516 clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+2026-11-26 13:11:22.519 mode:DIO, clock div:2
+2026-11-26 13:11:22.522 load:0x3fff0030,len:4640
+2026-11-26 13:11:22.524 load:0x40078000,len:15632
+2026-11-26 13:11:22.525 load:0x40080400,len:3164
+2026-11-26 13:11:22.528 entry 0x4008059c
+2026-11-26 13:11:23.471 
+2026-11-26 13:11:23.474 ==============================================
+2026-11-26 13:11:23.477   HE THONG DINH DUONG DAT IOT (ESP32)
+2026-11-26 13:11:23.481 ==============================================
+2026-11-26 13:11:23.491 Loai dat dang do: DAT VUON | Hieu chuan ADC: kho=200 (mac dinh), uot=3000 (mac dinh)
+2026-11-26 13:11:25.019 Dang khoi dong WiFi Multi...
+2026-11-26 13:11:32.307 Dang ket noi WiFi "<wifi>" (hoac "Wokwi-GUEST" khi mo phong)
+2026-11-26 13:11:32.307 ✅ WiFi da ket noi!
+2026-11-26 13:11:32.309    SSID: <wifi>
+2026-11-26 13:11:32.312    Dia chi IP: <ip>
+2026-11-26 13:11:34.033 Dang ket noi MQTT broker.emqx.io:8883 (TLS)... Thanh cong! (1719 ms, heap trong 167256 byte)
+2026-11-26 13:11:34.035 Da dang ky lang nghe: soil_station/1/command
+2026-11-26 13:11:34.141 [SENSOR] Dat: DAT VUON | ADC: 1672 (+-7.7) | Am:  52.6% | EC:   710 | N: 56.8 | P: 28.4 | K: 78.1 (chuan 65/33/90: OK) | pH: 6.5
+2026-11-26 13:11:34.151 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:11:38.140 [SENSOR] Dat: DAT VUON | ADC: 1673 (+-11.5) | Am:  52.6% | EC:   710 | N: 56.8 | P: 28.4 | K: 78.1 (chuan 65/33/90: OK) | pH: 6.5
+2026-11-26 13:11:38.152 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:11:42.139 [SENSOR] Dat: DAT VUON | ADC: 1671 (+-5.2) | Am:  52.5% | EC:   709 | N: 56.7 | P: 28.4 | K: 78.0 (chuan 65/33/90: OK) | pH: 6.5
+2026-11-26 13:11:42.149 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:11:46.138 [SENSOR] Dat: DAT VUON | ADC: 1675 (+-4.0) | Am:  52.7% | EC:   711 | N: 56.9 | P: 28.4 | K: 78.2 (chuan 65/33/90: OK) | pH: 6.5
+2026-11-26 13:11:46.147 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:11:50.138 [SENSOR] Dat: DAT VUON | ADC: 1668 (+-6.3) | Am:  52.4% | EC:   708 | N: 56.6 | P: 28.3 | K: 77.9 (chuan 65/33/90: OK) | pH: 6.5
+2026-11-26 13:11:50.148 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:11:54.138 [SENSOR] Dat: DAT VUON | ADC: 1667 (+-11.1) | Am:  52.4% | EC:   707 | N: 56.6 | P: 28.3 | K: 77.8 (chuan 65/33/90: OK) | pH: 6.5
+2026-11-26 13:11:54.148 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:11:58.140 [SENSOR] Dat: DAT VUON | ADC: 1677 (+-5.9) | Am:  52.8% | EC:   712 | N: 57.0 | P: 28.5 | K: 78.3 (chuan 65/33/90: OK) | pH: 6.5
+2026-11-26 13:11:58.150 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:12:02.138 [SENSOR] Dat: DAT VUON | ADC: 1676 (+-11.0) | Am:  52.7% | EC:   712 | N: 56.9 | P: 28.5 | K: 78.3 (chuan 65/33/90: OK) | pH: 6.5
+2026-11-26 13:12:02.147 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:12:06.138 [SENSOR] Dat: DAT VUON | ADC: 1674 (+-9.6) | Am:  52.6% | EC:   711 | N: 56.9 | P: 28.4 | K: 78.2 (chuan 65/33/90: OK) | pH: 6.5
+2026-11-26 13:12:06.148 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:12:10.138 [SENSOR] Dat: DAT VUON | ADC: 1668 (+-4.4) | Am:  52.4% | EC:   708 | N: 56.6 | P: 28.3 | K: 77.9 (chuan 65/33/90: OK) | pH: 6.5
+2026-11-26 13:12:10.147 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:12:14.137 [SENSOR] Dat: DAT VUON | ADC: 1685 (+-4.8) | Am:  53.0% | EC:   716 | N: 57.3 | P: 28.6 | K: 78.8 (chuan 65/33/90: OK) | pH: 6.5
+2026-11-26 13:12:14.146 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:12:18.138 [SENSOR] Dat: DAT VUON | ADC: 1671 (+-11.8) | Am:  52.5% | EC:   709 | N: 56.7 | P: 28.4 | K: 78.0 (chuan 65/33/90: OK) | pH: 6.5
+2026-11-26 13:12:18.148 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:12:22.138 [SENSOR] Dat: DAT VUON | ADC: 1668 (+-4.8) | Am:  52.4% | EC:   708 | N: 56.6 | P: 28.3 | K: 77.9 (chuan 65/33/90: OK) | pH: 6.5
+2026-11-26 13:12:22.149 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:12:26.137 [SENSOR] Dat: DAT VUON | ADC: 1663 (+-8.8) | Am:  52.2% | EC:   705 | N: 56.4 | P: 28.2 | K: 77.6 (chuan 65/33/90: OK) | pH: 6.5
+2026-11-26 13:12:26.148 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:12:30.136 [SENSOR] Dat: DAT VUON | ADC: 1663 (+-4.8) | Am:  52.2% | EC:   705 | N: 56.4 | P: 28.2 | K: 77.6 (chuan 65/33/90: OK) | pH: 6.5
+2026-11-26 13:12:30.147 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:12:34.136 [SENSOR] Dat: DAT VUON | ADC: 1666 (+-4.6) | Am:  52.4% | EC:   707 | N: 56.5 | P: 28.3 | K: 77.8 (chuan 65/33/90: OK) | pH: 6.5
+2026-11-26 13:12:34.145 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:12:38.137 [SENSOR] Dat: DAT VUON | ADC: 1668 (+-7.9) | Am:  52.4% | EC:   708 | N: 56.6 | P: 28.3 | K: 77.9 (chuan 65/33/90: OK) | pH: 6.5
+2026-11-26 13:12:38.146 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:12:42.137 [SENSOR] Dat: DAT VUON | ADC: 1663 (+-5.5) | Am:  52.2% | EC:   705 | N: 56.4 | P: 28.2 | K: 77.6 (chuan 65/33/90: OK) | pH: 6.5
+2026-11-26 13:12:42.148 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:12:46.135 [SENSOR] Dat: DAT VUON | ADC: 1667 (+-6.0) | Am:  52.4% | EC:   707 | N: 56.6 | P: 28.3 | K: 77.8 (chuan 65/33/90: OK) | pH: 6.5
+2026-11-26 13:12:46.145 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:12:50.135 [SENSOR] Dat: DAT VUON | ADC: 1661 (+-5.5) | Am:  52.2% | EC:   704 | N: 56.4 | P: 28.2 | K: 77.5 (chuan 65/33/90: OK) | pH: 6.5
+2026-11-26 13:12:50.145 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:12:54.136 [SENSOR] Dat: DAT VUON | ADC: 1667 (+-5.9) | Am:  52.4% | EC:   707 | N: 56.6 | P: 28.3 | K: 77.8 (chuan 65/33/90: OK) | pH: 6.5
+2026-11-26 13:12:54.148 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:12:58.135 [SENSOR] Dat: DAT VUON | ADC: 1663 (+-8.3) | Am:  52.2% | EC:   705 | N: 56.4 | P: 28.2 | K: 77.6 (chuan 65/33/90: OK) | pH: 6.5
+2026-11-26 13:12:58.147 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:13:02.135 [SENSOR] Dat: DAT VUON | ADC: 1657 (+-10.6) | Am:  52.0% | EC:   702 | N: 56.2 | P: 28.1 | K: 77.3 (chuan 65/33/90: OK) | pH: 6.5
+2026-11-26 13:13:02.145 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:13:06.137 [SENSOR] Dat: DAT VUON | ADC: 1662 (+-7.4) | Am:  52.2% | EC:   705 | N: 56.4 | P: 28.2 | K: 77.5 (chuan 65/33/90: OK) | pH: 6.5
+2026-11-26 13:13:06.146 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:13:10.135 [SENSOR] Dat: DAT VUON | ADC: 1656 (+-5.4) | Am:  52.0% | EC:   702 | N: 56.2 | P: 28.1 | K: 77.2 (chuan 65/33/90: OK) | pH: 6.5
+2026-11-26 13:13:10.144 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:13:14.134 [SENSOR] Dat: DAT VUON | ADC: 1664 (+-6.4) | Am:  52.3% | EC:   706 | N: 56.5 | P: 28.2 | K: 77.6 (chuan 65/33/90: OK) | pH: 6.5
+2026-11-26 13:13:14.143 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:13:18.134 [SENSOR] Dat: DAT VUON | ADC: 1723 (+-8.8) | Am:  54.4% | EC:   734 | N: 58.7 | P: 29.4 | K: 80.8 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:13:18.144 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:13:22.135 [SENSOR] Dat: DAT VUON | ADC: 1713 (+-4.2) | Am:  54.0% | EC:   729 | N: 58.4 | P: 29.2 | K: 80.2 (chuan 65/33/90: OK) | pH: 6.5
+2026-11-26 13:13:22.145 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:13:26.134 [SENSOR] Dat: DAT VUON | ADC: 1708 (+-6.0) | Am:  53.9% | EC:   727 | N: 58.2 | P: 29.1 | K: 80.0 (chuan 65/33/90: OK) | pH: 6.5
+2026-11-26 13:13:26.143 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:13:30.136 [SENSOR] Dat: DAT VUON | ADC: 1719 (+-15.0) | Am:  54.2% | EC:   732 | N: 58.6 | P: 29.3 | K: 80.6 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:13:30.148 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:13:34.133 [SENSOR] Dat: DAT VUON | ADC: 1716 (+-13.7) | Am:  54.1% | EC:   731 | N: 58.5 | P: 29.2 | K: 80.4 (chuan 65/33/90: OK) | pH: 6.5
+2026-11-26 13:13:34.144 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:13:38.133 [SENSOR] Dat: DAT VUON | ADC: 1716 (+-5.5) | Am:  54.1% | EC:   731 | N: 58.5 | P: 29.2 | K: 80.4 (chuan 65/33/90: OK) | pH: 6.5
+2026-11-26 13:13:38.143 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:13:42.133 [SENSOR] Dat: DAT VUON | ADC: 1728 (+-9.7) | Am:  54.6% | EC:   737 | N: 58.9 | P: 29.5 | K: 81.0 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:13:42.143 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:13:46.132 [SENSOR] Dat: DAT VUON | ADC: 1732 (+-5.0) | Am:  54.7% | EC:   739 | N: 59.1 | P: 29.5 | K: 81.3 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:13:46.142 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:13:50.134 [SENSOR] Dat: DAT VUON | ADC: 1727 (+-10.5) | Am:  54.5% | EC:   736 | N: 58.9 | P: 29.4 | K: 81.0 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:13:50.143 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:13:54.132 [SENSOR] Dat: DAT VUON | ADC: 1736 (+-4.7) | Am:  54.9% | EC:   741 | N: 59.2 | P: 29.6 | K: 81.5 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:13:54.143 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:13:58.132 [SENSOR] Dat: DAT VUON | ADC: 1735 (+-5.0) | Am:  54.8% | EC:   740 | N: 59.2 | P: 29.6 | K: 81.4 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:13:58.142 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:14:02.133 [SENSOR] Dat: DAT VUON | ADC: 1718 (+-4.5) | Am:  54.2% | EC:   732 | N: 58.6 | P: 29.3 | K: 80.5 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:14:02.143 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:14:06.132 [SENSOR] Dat: DAT VUON | ADC: 1715 (+-13.2) | Am:  54.1% | EC:   730 | N: 58.4 | P: 29.2 | K: 80.3 (chuan 65/33/90: OK) | pH: 6.5
+2026-11-26 13:14:06.141 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:14:10.131 [SENSOR] Dat: DAT VUON | ADC: 1730 (+-1.9) | Am:  54.6% | EC:   738 | N: 59.0 | P: 29.5 | K: 81.1 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:14:10.141 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:14:14.134 [SENSOR] Dat: DAT VUON | ADC: 1726 (+-3.0) | Am:  54.5% | EC:   736 | N: 58.9 | P: 29.4 | K: 80.9 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:14:14.143 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:14:18.131 [SENSOR] Dat: DAT VUON | ADC: 1729 (+-5.2) | Am:  54.6% | EC:   737 | N: 59.0 | P: 29.5 | K: 81.1 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:14:18.141 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 13:14:22.131 [SENSOR] Dat: DAT VUON | ADC: 1736 (+-7.3) | Am:  54.9% | EC:   741 | N: 59.2 | P: 29.6 | K: 81.5 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 13:14:22.140 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+# Tóm tắt
+# Thời gian có giờ NTP: không có số đo
+# Kết nối MQTT thành công 1 lần, thất bại 0 lần
+# Thời gian kết nối MQTT thành công: n = 1, nhỏ nhất 1719 ms, trung vị 1719 ms, trung bình 1719 ms, lớn nhất 1719 ms
