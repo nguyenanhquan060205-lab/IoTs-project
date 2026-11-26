@@ -6,7 +6,7 @@
 
 ### 1. TỔNG QUAN DỰ ÁN (EXECUTIVE SUMMARY)
 * **Tên đề tài**: Hệ thống IoT phân tích dinh dưỡng đất: Ước lượng NPK từ độ ẩm đất (Smart Soil Nutrient Analysis System: Heuristic NPK Estimation from Soil Moisture).
-* **Nền tảng công nghệ**: Vi điều khiển ESP32, Cảm biến độ ẩm đất điện dung/nước, Giao thức MQTT (EMQX/HiveMQ Cloud), Ứng dụng di động Flutter (Android/iOS/macOS).
+* **Nền tảng công nghệ**: Vi điều khiển ESP32, Cảm biến độ ẩm đất điện dung/nước, Giao thức MQTT (broker riêng EMQX Serverless, có tài khoản và ACL), Ứng dụng di động Flutter (Android/iOS/macOS).
 * **Bối cảnh & Tính cấp thiết**:
   - Cảm biến NPK chuyên dụng trên thị trường có giá thành rất cao (hàng triệu đồng) và điện cực đo nhanh bị oxy hóa, ăn mòn khi cắm lâu trong đất; phân tích hóa nghiệm phòng lab thì tốn kém và mất nhiều ngày.
   - Cảm biến độ ẩm đất có giá thành rất rẻ (15.000đ – 30.000đ), bền bỉ, dễ triển khai đo liên tục theo thời gian thực.
@@ -117,7 +117,17 @@ flowchart TD
 
 ### 4. GIAO THỨC TRUYỀN THÔNG MQTT CLOUD
 
-* **Broker**: Mặc định `broker.emqx.io` cổng `8883` qua **TLS** (mã hóa đường truyền, ESP32 xác thực chứng chỉ broker bằng Root CA trong [`root_ca.h`](firmware/src/root_ca.h)). Broker công cộng không có tài khoản nên ai biết topic vẫn đọc hoặc gửi được; để chặn việc này, tạo broker riêng có tài khoản (ví dụ HiveMQ Cloud Free), điền vào `firmware/src/secrets.h` (mẫu: [`secrets.example.h`](firmware/src/secrets.example.h)) và `mobile/mqtt_config.json` (mẫu: [`mqtt_config.example.json`](mobile/mqtt_config.example.json)), rồi chạy App bằng `flutter run --dart-define-from-file=mqtt_config.json`. Hai file thật đã nằm trong `.gitignore`. Riêng khi chạy mô phỏng trên Wokwi (mạng `Wokwi-GUEST`), trạm tự dùng cổng `1883` không mã hóa vì mạng ảo của Wokwi không bắt tay TLS được (đã thử cả `www.google.com:443` cũng bị ngắt); ở mạng WiFi thật trạm luôn dùng TLS.
+* **Broker**: Broker riêng **EMQX Serverless** `y0601019.ala.asia-southeast1.emqxsl.com`, chỉ mở cổng `8883` (MQTT qua **TLS**) và `8084` (WebSocket qua TLS, đường dẫn `/mqtt`), không cho đăng nhập khi không có tài khoản. ESP32 xác thực chứng chỉ broker bằng Root CA trong [`root_ca.h`](firmware/src/root_ca.h) (chuỗi chứng chỉ của broker kết thúc ở DigiCert Global Root G2). Mỗi bên đăng nhập bằng một tài khoản và chỉ được làm đúng việc của mình. Phân quyền (ACL) đặt trên trang quản lý EMQX: mỗi tài khoản có các luật Allow ở tab Username, việc nào không khớp thì bị luật `#` Deny ở tab All Users chặn.
+
+  | Tài khoản | Dùng cho | Được gửi (publish) | Được nhận (subscribe) |
+  |---|---|---|---|
+  | `soil_station` | ESP32, `scripts/simulate_station.py`, `simulator/index.html` | telemetry, status | command |
+  | `soil_app` | App Flutter | command | telemetry, status |
+  | `soil_web` | `web/evaluation.html` | không có | telemetry, status |
+
+  Mật khẩu chỉ nằm trong `firmware/src/secrets.h` (mẫu: [`secrets.example.h`](firmware/src/secrets.example.h)) và `mobile/mqtt_config.json` (mẫu: [`mqtt_config.example.json`](mobile/mqtt_config.example.json)). Hai file thật đã nằm trong `.gitignore`. App chạy bằng `flutter run --dart-define-from-file=mqtt_config.json`. Lệnh `python scripts/test_broker_acl.py` kiểm tra lại toàn bộ: không có tài khoản hoặc sai mật khẩu thì bị từ chối, tài khoản App không gửi được số đo giả, trạm không tự gửi lệnh được, LWT vẫn tới App.
+
+  Thiếu hai file cấu hình thì trạm và App dùng broker công cộng `broker.emqx.io` (có TLS nhưng không có tài khoản, ai biết topic cũng đọc và gửi được), chỉ nên dùng để thử nhanh. Riêng khi chạy mô phỏng trên Wokwi (mạng `Wokwi-GUEST`), trạm dùng cổng `1883` không mã hóa vì mạng ảo của Wokwi không bắt tay TLS được (đã thử cả `www.google.com:443` cũng bị ngắt). Broker riêng không mở cổng 1883, nên muốn chạy Wokwi thì phải build khi chưa có `secrets.h`, lúc đó trạm nối `broker.emqx.io`. Ở mạng WiFi thật trạm luôn dùng TLS.
 * **Topic Telemetry** (`soil_station/1/telemetry`): ESP32 gửi dữ liệu định kỳ mỗi 4 giây.
 * **Topic Command** (`soil_station/1/command`): Lệnh chọn loại đất đang đo (`{"action": "SET_SOIL_TYPE", "soil_type": "garden"}`, giá trị `potting` / `garden` / `barren`) và lệnh hiệu chuẩn (`{"action": "CALIBRATE", "point": "dry"}` hoặc `"wet"`: trạm lấy ADC đang đọc làm mốc, từ chối nếu cách mốc còn lại dưới 300 khi mốc đó đã được đo thật; không so với số mặc định 200 / 3000). Sau mỗi lệnh trạm gửi ngay một bản tin telemetry để App xác nhận. ESP32 lưu loại đất và mốc hiệu chuẩn vào flash (NVS) nên khởi động lại vẫn giữ.
 * **Topic Status** (`soil_station/1/status`): Trạm kết nối xong thì đăng `{"status": "online", "device": ...}` (giữ lại trên broker) và gửi lại 30 giây 1 lần; mất kết nối đột ngột thì broker tự đăng `{"status": "offline"}` qua LWT. Gửi lại định kỳ vì khi trạm khởi động lại, phiên cũ còn treo trên broker khoảng 22 giây rồi LWT `offline` của nó mới được đăng, đè lên `online` của phiên mới.
@@ -186,6 +196,7 @@ soil-nutrient-analysis-system/
 ├── simulator/             # Trình giả lập trạm đo Web UI chạy trực tiếp trên máy
 │   └── index.html         # Giao diện OLED ảo + Cảm biến nước Slider
 ├── scripts/               # Script giả lập Python kiểm thử mạng MQTT
-│   └── simulate_station.py
+│   ├── simulate_station.py
+│   └── test_broker_acl.py # Kiểm tra tài khoản và ACL của broker riêng
 └── mobile/                # Ứng dụng di động Flutter (Android, iOS, macOS)
 ```

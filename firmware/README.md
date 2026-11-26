@@ -27,7 +27,7 @@ Chỉ độ ẩm là số đo thật. EC, N, P, K, pH là số ước lượng (
 
 ## Nạp code
 
-1. Chép `src/secrets.example.h` thành `src/secrets.h`, điền WiFi **2.4 GHz** và broker. Không có `secrets.h` thì build vẫn chạy nhưng báo `#warning`, và trạm chỉ thử WiFi mẫu `iPhone`.
+1. Chép `src/secrets.example.h` thành `src/secrets.h`, điền WiFi **2.4 GHz** và mật khẩu tài khoản `soil_station` (hỏi người quản lý broker). Địa chỉ broker riêng và username đã điền sẵn. Không có `secrets.h` thì build vẫn chạy nhưng báo `#warning`, trạm chỉ thử WiFi mẫu `iPhone` và nối broker công cộng, nên App và trang web không thấy số đo.
 2. Cắm ESP32 bằng cáp USB truyền dữ liệu, rồi chạy từ thư mục gốc dự án:
    - Windows PowerShell: `powershell -ExecutionPolicy Bypass -File scripts\flash_esp32.ps1`
    - macOS, Linux, Git Bash: `./scripts/flash_esp32.sh`
@@ -40,7 +40,7 @@ Lần đầu build, PlatformIO tải toolchain ESP32 (chiếm khoảng 4 GB ổ 
 ## Hoạt động
 
 - **WiFi**: lúc khởi động thử tối đa 2 lần (khoảng 25 giây). Mất WiFi thì cứ 15 giây dò lại 1 lần; giữa các lần trạm vẫn đo, báo đèn, còi và OLED bình thường.
-- **MQTT**: broker trong `secrets.h`, mất kết nối thì 5 giây thử lại. Topic `soil_station/1/status` nhận `online` (giữ lại trên broker) khi trạm kết nối và cứ 30 giây gửi lại 1 lần, và `offline` qua LWT khi trạm mất kết nối đột ngột. Trên mạng ảo `Wokwi-GUEST` trạm dùng cổng 1883 không mã hóa.
+- **MQTT**: broker riêng EMQX Serverless trong `secrets.h`, đăng nhập bằng tài khoản `soil_station`, mất kết nối thì 5 giây thử lại. Tài khoản này chỉ được gửi telemetry, status và nhận command. Topic `soil_station/1/status` nhận `online` (giữ lại trên broker) khi trạm kết nối và cứ 30 giây gửi lại 1 lần, và `offline` qua LWT khi trạm mất kết nối đột ngột. Trên mạng ảo `Wokwi-GUEST` trạm dùng cổng 1883 không mã hóa. Broker riêng không mở cổng này, nên muốn chạy Wokwi thì build khi chưa có `secrets.h` (trạm nối `broker.emqx.io`).
 - **Lệnh từ App** (`soil_station/1/command`): `SET_SOIL_TYPE`, `CALIBRATE` (`dry` / `wet`). Sau mỗi lệnh trạm gửi ngay một bản tin để App xác nhận.
 - **Hiệu chuẩn**: loại đất và 2 mốc lưu trong NVS, rút điện vẫn giữ. Mốc mới bị từ chối nếu cách mốc còn lại dưới 300 ADC, nhưng chỉ khi mốc còn lại đã được đo thật (không so với số mặc định 200 / 3000).
 - **Log đo thời gian** (dùng cho Chương 4 của báo cáo): mỗi lần khởi động in một lần `[NTP] Da co gio sau ... ms ke tu khi co WiFi: <giờ> (ICT)`. Mỗi lần kết nối broker in `Thanh cong! (... ms, heap trong ... byte)`, trong đó số ms gồm cả bắt tay TLS và gói CONNECT.
@@ -55,7 +55,7 @@ Lần đầu build, PlatformIO tải toolchain ESP32 (chiếm khoảng 4 GB ổ 
 | `could not open port` | Đóng Serial Monitor hoặc Arduino IDE đang giữ cổng |
 | `Chua vao duoc WiFi` | Sai tên/mật khẩu trong `secrets.h`, hoặc mạng 5 GHz |
 | `That bai sau ... ms, rc=-2` | Không mở được kết nối tới broker: sai host/cổng, mạng chặn 8883, hoặc Root CA không khớp |
-| `That bai sau ... ms, rc=4` / `rc=5` | Sai tài khoản MQTT |
+| `That bai sau ... ms, rc=4` / `rc=5` | Sai username hoặc mật khẩu `soil_station` trong `secrets.h` |
 | `Bo qua: ADC ... qua gan moc ... da luu` | Đầu dò chưa được lau khô hoặc chưa nhúng vào nước khi lưu mốc |
 
 Sơ đồ đấu nối đầy đủ xem [`HARDWARE_CHECKLIST.md`](../HARDWARE_CHECKLIST.md), giao thức và thuật toán xem [`SPECIFICATION.md`](../SPECIFICATION.md).

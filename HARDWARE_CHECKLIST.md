@@ -66,5 +66,9 @@ Chi tiết và cách xử lý lỗi xem [`firmware/README.md`](firmware/README.m
 4. Ở màn hình chính, chọn đúng loại đất, cắm đầu dò ngập vào mẫu đất, chờ khoảng 1 phút. Mỗi mẫu đo ít nhất 3 vị trí.
 5. Xem lại kết quả theo ngày ở màn **Lịch sử đo** (App chỉ ghi khi đang mở).
 
-#### 3.2. Bảo mật broker (tùy chọn)
-Mặc định trạm và App đã kết nối qua TLS cổng 8883 (có mã hóa). Muốn có tài khoản riêng: tạo cluster HiveMQ Cloud Free, tạo 2 tài khoản (trạm và App), chép `firmware/src/secrets.example.h` thành `secrets.h`, chép `mobile/mqtt_config.example.json` thành `mqtt_config.json`, điền thông tin rồi chạy App bằng `flutter run --dart-define-from-file=mqtt_config.json`.
+#### 3.2. Đăng nhập broker riêng
+Trạm, App và trang web nối broker riêng EMQX Serverless qua TLS, mỗi bên có tài khoản riêng (bảng tài khoản và quyền xem mục 4 của [`SPECIFICATION.md`](SPECIFICATION.md)). Mật khẩu không có trong repo, hỏi người quản lý broker.
+1. Nạp code cho trạm: chép `firmware/src/secrets.example.h` thành `secrets.h`. Địa chỉ broker và username `soil_station` đã điền sẵn, chỉ cần điền WiFi 2.4 GHz và mật khẩu `soil_station`.
+2. Chạy App: chép `mobile/mqtt_config.example.json` thành `mqtt_config.json`, điền mật khẩu `soil_app`, rồi chạy `flutter run --dart-define-from-file=mqtt_config.json` trong thư mục `mobile`. Chạy `flutter run` không kèm file này thì App nối broker công cộng và không thấy số đo của trạm.
+3. Kiểm tra: `python scripts/test_broker_acl.py` phải báo tất cả các mục **ĐẠT**. Serial Monitor của trạm in `Dang ket noi MQTT y0601019.ala.asia-southeast1.emqxsl.com:8883 (TLS)... Thanh cong!`. Nếu in `rc=4` hoặc `rc=5` thì sai mật khẩu.
+4. Trạm giả khi chưa có mạch: `python scripts/simulate_station.py --broker y0601019.ala.asia-southeast1.emqxsl.com --username soil_station --password <mật khẩu>`. Nhớ tắt trạm giả trước khi đo bằng mạch thật để số đo không bị lẫn.

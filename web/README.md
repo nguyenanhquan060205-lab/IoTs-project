@@ -6,11 +6,11 @@
 
 Bấm đúp vào `web/evaluation.html` để mở bằng Chrome, Edge hoặc Firefox. Không cần cài gì, nhưng máy phải có Internet: trang tải thư viện MQTT (Paho) từ cdnjs và nối tới broker.
 
-Mặc định trang nối `broker.emqx.io` qua WebSocket có TLS, cổng 8084, đường dẫn `/mqtt`. Đây là cùng broker mà trạm gửi lên ở cổng 8883. Topic mặc định là `soil_station/1/telemetry` và `soil_station/1/status`.
+Mặc định trang nối broker riêng `y0601019.ala.asia-southeast1.emqxsl.com` qua WebSocket có TLS, cổng 8084, đường dẫn `/mqtt`, bằng tài khoản `soil_web`. Đây là cùng broker mà trạm gửi lên ở cổng 8883. Tài khoản `soil_web` chỉ được đọc telemetry và status, broker chặn mọi lệnh gửi từ tài khoản này. Trang không lưu mật khẩu: mỗi lần mở, gõ mật khẩu vào ô Password rồi bấm **Kết nối** (hoặc Enter). Chưa gõ mật khẩu thì trang chưa kết nối. Muốn dùng broker công cộng `broker.emqx.io` thì đổi ô Broker và để trống Username. Topic mặc định là `soil_station/1/telemetry` và `soil_station/1/status`.
 
 ## Các phần trên trang
 
-1. **Kết nối broker**: đổi broker hoặc topic nếu cần. Mất kết nối thì trang tự thử lại sau 5 giây.
+1. **Kết nối broker**: gõ mật khẩu `soil_web`, đổi broker hoặc topic nếu cần. Mất kết nối thì trang tự thử lại sau 5 giây. Sai mật khẩu thì trang báo lỗi kết nối kèm lời nhắc kiểm tra mật khẩu.
 2. **Số đo trực tiếp**:
    - Bản tin mới nhất: độ ẩm, EC, N, P, K, pH; mức N, P, K so với mức chuẩn của loại đất; khối `adc`.
    - Trạng thái trạm lấy từ topic status: online, hoặc offline khi broker đăng LWT sau khoảng 20 giây trạm mất kết nối.

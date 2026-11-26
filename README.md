@@ -15,7 +15,7 @@
    - Cấp nguồn độc lập bằng **Sạc dự phòng** (Powerbank).
 
 2. **Tầng Truyền thông (Network Layer)**:
-   - Giao thức **MQTT** chuẩn IoT qua **HiveMQ Cloud Free Tier** (0đ, bảo mật TLS).
+   - Giao thức **MQTT** qua broker riêng **EMQX Serverless** (gói miễn phí, 0đ): mã hóa TLS, mỗi bên đăng nhập bằng tài khoản riêng và chỉ được dùng đúng topic của mình (ACL).
    - ESP32 kết nối mạng qua WiFi nhà hoặc điểm phát sóng 4G (Personal Hotspot) từ điện thoại.
 
 3. **Tầng Ứng dụng & Dịch vụ (Application Layer)**:
