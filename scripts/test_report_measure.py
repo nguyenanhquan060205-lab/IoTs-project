@@ -69,6 +69,27 @@ class TestSntp(unittest.TestCase):
             rm.clock_offset_from_sntp(bytes(40), 0, 0)
 
 
+class TestSampleCsv(unittest.TestCase):
+    def test_row_matches_web_columns(self):
+        avg = {"moisture": 60.04, "ec": 810.5, "nitrogen": 64.84, "phosphorus": 32.42, "potassium": 89.155, "ph": 6.4}
+        row = rm.sample_csv_row("M01", "garden", "Ẩm", "2026-11-26T08:00:00Z", avg,
+                                {"nitrogen": 65, "phosphorus": 33, "potassium": 90}, "ghi chú, có dấu phẩy")
+        cells = row.split(",", 16)
+        self.assertEqual(len(rm.SAMPLE_CSV_COLUMNS), 17)
+        self.assertEqual(cells[:4], ["M01", "garden", "Ẩm", "2026-11-26T08:00:00Z"])
+        self.assertEqual(cells[4:10], ["60.04", "810.5", "64.84", "32.42", "89.16", "6.4"])
+        self.assertEqual(cells[10:16], ["", "", "65", "33", "90", ""])
+        self.assertEqual(cells[16], '"ghi chú, có dấu phẩy"')
+
+    def test_append_csv_writes_bom_and_header_once(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path = os.path.join(folder, "mau.csv")
+            rm.append_csv(path, ["a", "b"], "1,2")
+            rm.append_csv(path, ["a", "b"], "3,4")
+            with open(path, encoding="utf-8", newline="") as f:
+                self.assertEqual(f.read(), "﻿a,b\r\n1,2\r\n3,4\r\n")
+
+
 class TestMasker(unittest.TestCase):
     def test_masks_known_wifi_name_and_ip(self):
         masker = rm.Masker(["abc"])

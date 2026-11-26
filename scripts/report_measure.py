@@ -138,6 +138,41 @@ def read_wifi_name(secrets_path):
     return match.group(1) if match else None
 
 
+# Cột CSV giống hệt CSV_COLUMNS và hàm toCsv trong web/metrics.js, để trang web Nhập CSV được
+SAMPLE_CSV_COLUMNS = ["sample_id", "soil_type", "moisture_level", "captured_at",
+                      "est_moisture", "est_ec", "est_n", "est_p", "est_k", "est_ph",
+                      "ref_moisture", "ref_ec", "ref_n", "ref_p", "ref_k", "ref_ph", "note"]
+NOISE_CSV_COLUMNS = ["received_at", "timestamp", "soil_type", "adc_raw", "adc_noise", "adc_dry", "adc_wet", "moisture"]
+
+
+def csv_cell(value):
+    if value is None:
+        return ""
+    text = str(value)
+    if any(ch in text for ch in ',"\n\r'):
+        return '"' + text.replace('"', '""') + '"'
+    return text
+
+
+def sample_csv_row(sample_id, soil_type, level, captured_at, avg, normal, note=""):
+    """Một dòng CSV mẫu đất: ước lượng là trung bình các bản tin, tham chiếu N, P, K là mức chuẩn npk_normal"""
+    normal = normal or {}
+    est = [avg.get(k) for k in ("moisture", "ec", "nitrogen", "phosphorus", "potassium", "ph")]
+    ref = [None, None, normal.get("nitrogen"), normal.get("phosphorus"), normal.get("potassium"), None]
+    cells = [sample_id, soil_type, level, captured_at] + [None if v is None else round(v, 2) for v in est] + ref + [note]
+    return ",".join(csv_cell(v) for v in cells)
+
+
+def append_csv(path, header, row):
+    """Thêm một dòng vào CSV; tệp mới thì ghi BOM và dòng tiêu đề như trang web"""
+    new = not os.path.exists(path)
+    os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
+    with open(path, "a", encoding="utf-8", newline="") as f:
+        if new:
+            f.write("﻿" + ",".join(header) + "\r\n")
+        f.write(row + "\r\n")
+
+
 class Masker:
     """Che tên Wi-Fi thành <wifi> và địa chỉ IPv4 thành <ip> trước khi ghi log vào repo công khai"""
 
@@ -441,6 +476,63 @@ def cmd_soil_types(args, rec):
                  f"{level.get('nitrogen')}/{level.get('phosphorus')}/{level.get('potassium')}")
 
 
+def cmd_sample(args, rec):
+    """Lấy một mẫu đất: đặt loại đất, chờ số ổn định, lấy trung bình N bản tin, thêm một dòng vào CSV mẫu đất"""
+    mq = Mqtt(args.broker, args.mqtt_port, [TELEMETRY_TOPIC])
+    items = []
+    try:
+        mq.drain()
+        mq.publish(COMMAND_TOPIC, {"action": "SET_SOIL_TYPE", "soil_type": args.soil})
+        if mq.wait_for(lambda topic, data: data.get("soil_type") == args.soil, 60) is None:
+            raise SystemExit(f"Trạm không xác nhận loại đất {args.soil} trong 60 giây")
+        rec.note(f"Mẫu {args.id}: trạm đã đặt loại đất {args.soil}, chờ {args.settle:.0f} giây cho số ổn định")
+        time.sleep(args.settle)
+        mq.drain()
+        while len(items) < args.count:
+            found = mq.wait_for(lambda topic, data: data.get("soil_type") == args.soil and "telemetry" in data, 30)
+            if found is None:
+                raise SystemExit("Không nhận được bản tin trong 30 giây")
+            rec.line(found[3].decode("utf-8", "replace"), f"[{args.id}] ")
+            items.append(found[2])
+    finally:
+        mq.close()
+    s = summarize_telemetry(items)
+    moistures = [d["telemetry"]["moisture"] for d in items]
+    captured_at = datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
+    row = sample_csv_row(args.id, args.soil, args.level, captured_at, s, s["npk_normal"], args.note)
+    append_csv(args.csv, SAMPLE_CSV_COLUMNS, row)
+    normal = s["npk_normal"] or {}
+    rec.note(f"Mẫu {args.id} ({args.soil}, {args.level}): {s['n']} bản tin, ADC {s['adc_raw']:.0f}, "
+             f"độ ẩm {s['moisture']:.1f}% (dao động {min(moistures):.1f} – {max(moistures):.1f}), EC {s['ec']:.0f}, "
+             f"N {s['nitrogen']:.1f} / chuẩn {normal.get('nitrogen')}, P {s['phosphorus']:.1f} / {normal.get('phosphorus')}, "
+             f"K {s['potassium']:.1f} / {normal.get('potassium')}, pH {s['ph']:.2f}, mức {s['npk_level']}")
+    rec.note(f"Đã thêm vào {args.csv}")
+
+
+def cmd_noise(args, rec):
+    """Ghi M bản tin liên tiếp trên một cốc đất đứng yên, xuất CSV giống nút Xuất CSV của phần Đo nhiễu trên trang web"""
+    mq = Mqtt(args.broker, args.mqtt_port, [TELEMETRY_TOPIC])
+    rows = []
+    try:
+        while len(rows) < args.count:
+            found = mq.wait_for(lambda topic, data: "adc" in data, 30)
+            if found is None:
+                raise SystemExit("Không nhận được bản tin trong 30 giây")
+            received_at, _, d, _ = found
+            adc = d["adc"]
+            rows.append([datetime.utcfromtimestamp(received_at).isoformat() + "Z", d.get("timestamp"), d.get("soil_type"),
+                         adc["raw"], adc["noise"], adc["dry"], adc["wet"], d["telemetry"]["moisture"]])
+            if len(rows) % 10 == 0:
+                rec.note(f"Đã ghi {len(rows)}/{args.count} bản tin")
+    finally:
+        mq.close()
+    if os.path.exists(args.csv):
+        os.remove(args.csv)
+    for r in rows:
+        append_csv(args.csv, NOISE_CSV_COLUMNS, ",".join(csv_cell(v) for v in r))
+    rec.note(f"Đã ghi {len(rows)} bản tin vào {args.csv}; tính bằng: node scripts/report_stats.js noise {args.csv}")
+
+
 def cmd_calibrate(args, rec):
     """Gửi lệnh CALIBRATE, ghi dòng Serial xác nhận và khối adc của bản tin gửi ngay sau đó"""
     ser = open_serial(args.port)
@@ -579,6 +671,21 @@ def main():
     p = sub.add_parser("soil-types", help="Đổi lần lượt 3 loại đất")
     p.add_argument("--samples", type=int, default=3, help="Số bản tin ghi cho mỗi loại đất")
     p.set_defaults(func=cmd_soil_types)
+
+    p = sub.add_parser("sample", help="Lấy một mẫu đất, thêm vào CSV mẫu đất")
+    p.add_argument("--id", required=True, help="Mã mẫu, ví dụ M01")
+    p.add_argument("--soil", choices=SOIL_TYPES, required=True)
+    p.add_argument("--level", required=True, help="Mức ẩm: 'Khô' hoặc 'Ẩm'")
+    p.add_argument("--count", type=int, default=5, help="Số bản tin lấy trung bình")
+    p.add_argument("--settle", type=float, default=20, help="Giây chờ số ổn định sau khi đổi loại đất")
+    p.add_argument("--note", default="")
+    p.add_argument("--csv", default=os.path.join(REPO_ROOT, "docs", "thuc-nghiem", "mau-dat.csv"))
+    p.set_defaults(func=cmd_sample)
+
+    p = sub.add_parser("noise", help="Ghi M bản tin liên tiếp để đo nhiễu bộ lọc")
+    p.add_argument("--count", type=int, default=100)
+    p.add_argument("--csv", required=True)
+    p.set_defaults(func=cmd_noise)
 
     p = sub.add_parser("calibrate", help="Lưu mốc khô hoặc ướt")
     p.add_argument("--point", choices=["dry", "wet"], required=True)
