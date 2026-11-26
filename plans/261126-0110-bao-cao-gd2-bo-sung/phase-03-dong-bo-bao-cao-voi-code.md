@@ -61,6 +61,24 @@ Code firmware và app vẫn nhận tài khoản nếu khai báo, nhưng nhóm ch
 - [ ] Bảng 5.1 dòng Kết nối MQTT: "MQTTS cổng 8883, kiểm tra Root CA, broker công cộng chưa có tài khoản".
 - [ ] Giữ nguyên tài liệu tham khảo [17] (tên tài liệu của EMQX).
 
+### 2b. Viết lại phần broker theo broker riêng EMQX (đổi lần 2, tối 2026-11-26)
+
+Mục 2 đã xóa phần tài khoản khỏi tài liệu (lần 4). Sau đó nhóm chuyển sang broker riêng EMQX Serverless có tài khoản và ACL, nên các chỗ mục 2 đã sửa phải viết lại theo bảng 3 tài khoản ở mục 4 của `SPECIFICATION.md`:
+
+- [ ] Danh mục từ viết tắt: thêm lại dòng ACL (Access Control List, danh sách phân quyền), đúng thứ tự chữ cái.
+- [ ] Bảng phân công, việc của Quân: "Cấu hình broker MQTT riêng EMQX Serverless có TLS, tài khoản và phân quyền cho trạm đo, ứng dụng và trang web".
+- [ ] Chương 1 mục 1 gạch đầu dòng 2 và Bảng 1.1 dòng 2: thêm "đăng nhập broker riêng bằng tài khoản, ACL chỉ cho mỗi bên dùng đúng topic của mình", bỏ "Vẫn dùng broker công cộng `broker.emqx.io`, chưa có tài khoản".
+- [ ] Bảng 3.1: B2 nói trạm đăng nhập bằng tài khoản `soil_station`; B5 "Kiểm tra tài khoản và quyền, chuyển tiếp bản tin tới ứng dụng".
+- [ ] Chương 3 mục 3.1, dòng `secrets.h`: "tên và mật khẩu Wi-Fi, địa chỉ broker riêng, tài khoản `soil_station`".
+- [ ] Chương 3 mục 3.3: gói CONNECT kèm tên đăng nhập và mật khẩu; sai mật khẩu thì broker trả "Bad user name or password" và trạm in `rc=4`. DigiCert Global Root G2 dùng cho broker riêng EMQX (`*.emqxsl.com`).
+- [ ] Chương 3 mục 4.1: tiêu đề "Broker MQTT có TLS, tài khoản và ACL". Viết lại: broker riêng EMQX Serverless (gói miễn phí), chỉ mở cổng 8883 và 8084, không cho đăng nhập khi không có tài khoản; bảng 3 tài khoản và quyền; luật `#` Deny ở tab All Users chặn mọi việc khác.
+- [ ] Chương 3 mục 5.1: "Địa chỉ broker và tài khoản `soil_app` lấy từ `mqtt_config.json` lúc biên dịch".
+- [ ] Bảng 4.1 dòng Máy chủ MQTT: "EMQX Serverless (broker riêng)", "Cổng 8883 có TLS, WSS 8084 cho trang web, 3 tài khoản và ACL".
+- [ ] Chương 4 mục 3 và Bảng 4.3: thêm các dòng kiểm tra tài khoản và ACL, kết quả lấy từ `python scripts/test_broker_acl.py` (chụp màn hình làm minh chứng): không có tài khoản hoặc sai mật khẩu bị từ chối, cổng 1883 không mở, tài khoản App gửi số đo giả và trạm tự gửi lệnh bị chặn, `soil_web` không gửi được lệnh, LWT vẫn tới App. Thời gian kết nối đo trên laptop không dùng làm thời gian TLS của ESP32.
+- [ ] Chương 5 mục 1 và Bảng 5.1 dòng Kết nối MQTT: "MQTTS cổng 8883, kiểm tra Root CA, broker riêng có tài khoản và ACL".
+- [ ] Hướng phát triển: bỏ gạch đầu dòng "dùng broker riêng có tài khoản và ACL" (đã làm). Hạn chế: bỏ gạch đầu dòng "broker công cộng chưa có tài khoản". Nếu muốn nêu thì nêu: mật khẩu tài khoản App nằm trong file APK, ACL chỉ cho tài khoản này nhận số đo và gửi lệnh.
+- [ ] Hình 3.1: thay bằng `docs/hinh/hinh-3-1-kien-truc.png` mới (khung broker ghi "Broker MQTT riêng EMQX Serverless").
+
 ### 3. Mô hình N, P, K theo code (`firmware/src/soil_estimator.h`)
 
 - [ ] Chương 1 mục 1, gạch đầu dòng 4: bỏ "Khắc phục nhược điểm càng tưới nước dinh dưỡng càng tăng" (code vẫn cho N, P, K tăng theo độ ẩm). Viết lại: N, P, K vẫn tính từ EC nhưng được so với mức chuẩn của loại đất đang chọn, lệch quá ±20% thì báo thấp hoặc cao. Xóa chữ "z" thừa ở cuối câu.
@@ -170,9 +188,8 @@ Không sửa cột "Kết quả mong đợi" cho khớp kết quả. Cột này 
 ## Verification
 
 - Đọc lại tài liệu sau mỗi lô sửa và đối chiếu từng ô đã đánh dấu ở trên.
-- Tìm trong tài liệu: "rơ-le", "SET_PUMP", "actuators", "512 byte", "chưa có LWT", "LWT chưa làm", "không tăng theo độ ẩm", "không còn tăng", "1.82", "4.4%", "48.62", "ACL", "HiveMQ", "mqtt_config.json" kèm "tài khoản": không còn kết quả nào.
-- "bộ dụng cụ", "bộ kit" chỉ còn trong Hạn chế và Hướng phát triển. "Wireshark" chỉ còn ở Chương 2 mục 4.1 (phần lý thuyết). "MQTTX" chỉ còn ở Bảng 2.2 dòng 8084. "tài khoản" chỉ còn ở dòng `secrets.h`, Hạn chế và Hướng phát triển.
-- Đếm các đánh dấu `[CHỜ SỐ ĐO]` và `[CHỜ ẢNH]`, ghi số lượng vào mục Tiến độ để phase 5 đối chiếu.
+- Tìm trong tài liệu: "rơ-le", "SET_PUMP", "actuators", "512 byte", "chưa có LWT", "LWT chưa làm", "không tăng theo độ ẩm", "không còn tăng", "1.82", "4.4%", "48.62", "HiveMQ", "broker công cộng": không còn kết quả nào. "ACL" và "tài khoản" chỉ còn ở các chỗ của mục 2b.
+- "bộ dụng cụ", "bộ kit" chỉ còn trong Hạn chế và Hướng phát triển. "Wireshark" chỉ còn ở Chương 2 mục 4.1 (phần lý thuyết). "MQTTX" chỉ còn ở Bảng 2.2 dòng 8084.- Đếm các đánh dấu `[CHỜ SỐ ĐO]` và `[CHỜ ẢNH]`, ghi số lượng vào mục Tiến độ để phase 5 đối chiếu.
 
 ## Tiến độ
 

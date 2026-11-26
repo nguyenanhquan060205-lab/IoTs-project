@@ -29,7 +29,7 @@ Sửa báo cáo cho khớp code hiện tại, đo thật trên mạch, tính sai
 | Sai số so với gì (chốt lại 2026-11-26) | Nhóm không có bộ kit thử đất. Sai số là độ lệch của N, P, K ước lượng so với mức chuẩn nhóm đặt cho loại đất đó (`npk_normal` trong bản tin) | Bỏ mọi chỗ nói đo bằng bộ kit. Trang web tự lấy mức chuẩn làm giá trị tham chiếu (phase 4). Báo cáo nói rõ đây không phải độ chính xác so với số đo thật (rủi ro 3) |
 | Sai số hiện ở đâu | Trên trang web, không hiện trên OLED | Firmware không thêm gì về sai số |
 | Số liệu Chương 4 | NTP 1,82 s, TLS 1,2 s, Bảng 4.7, MAE 4,4%, RMSE 4,9% là số tạm, chưa đo | Gỡ số tạm (phase 3), đo thật (phase 4), điền lại (phase 5) |
-| Tài khoản và ACL (đổi 2026-11-26) | Bỏ khỏi báo cáo. Claude xóa luôn trong phase 3, nhóm không phải tự xóa | Danh sách vị trí nằm ở phase 3 mục 2. Báo cáo theo đúng broker đang dùng: `broker.emqx.io` cổng 8883, có TLS, không tài khoản |
+| Tài khoản và ACL (đổi lần 2, tối 2026-11-26) | **Làm.** Broker riêng EMQX Serverless `y0601019.ala.asia-southeast1.emqxsl.com` (8883 TLS, 8084 WSS), 3 tài khoản `soil_station`, `soil_app`, `soil_web` và ACL, mọi việc khác bị luật `#` Deny chặn | Phase 3 mục 2 đã xóa phần ACL khỏi tài liệu theo quyết định cũ, giờ viết lại theo EMQX ở phase 3 mục 2b. Bằng chứng: `python scripts/test_broker_acl.py` đạt 22/22 mục |
 | Cách sửa tài liệu (đổi 2026-11-26) | Tài liệu là file `.docx` và tài khoản Google nối với Claude chỉ được xem. Nhóm lưu thành Google Tài liệu và cấp quyền sửa, Claude sửa qua API | Link tài liệu đổi. Bản `.docx` giữ làm dự phòng, nhóm ngừng sửa bản đó. Phase 3 bước 1 kiểm tra bản chuyển đổi |
 | Bắt gói tin bằng Wireshark (chốt 2026-11-26) | Bỏ | Xóa dòng bắt gói ở Bảng 4.3 và Hình 4.3, đánh lại số hình Chương 4 |
 | Ảnh | Claude tự làm ảnh không cần tay (sơ đồ, trang web, nhật ký Serial). Nhóm chụp mạch, OLED, app | API chỉ chèn ảnh có URL công khai. Repo đang công khai: nhóm đồng ý đẩy ảnh lên GitHub thì Claude chèn bằng link raw, không thì nhóm tự chèn (phase 5) |
@@ -72,13 +72,13 @@ Phase 2 (log) ──┴──> Phase 4 (4A tự động, 4B cùng nhóm, 4C ản
 | 6 | Số mẫu nhỏ: 12 mẫu, mỗi loại đất 4 mẫu | Thấp | Ghi n cạnh mỗi số, kết luận dè dặt, đưa vào Hạn chế |
 | 7 | Ảnh và log đẩy lên repo công khai | Thấp | Che tên Wi-Fi, bỏ địa chỉ IP, không đưa ảnh có mặt người hay mật khẩu. Hỏi nhóm trước khi push |
 | 8 | Giữ chân EN ở mức thấp để giả mất nguồn có thể khác rút điện thật | Thấp | Về phía broker hai cách như nhau: kết nối TCP đứt, không có gói DISCONNECT. Nhóm rút USB thật 1 lần để đối chiếu |
-| 9 | Broker công cộng: ai biết topic cũng đọc được số đo và gửi được lệnh | Thấp (demo) | Trang web và script chỉ gửi lệnh của chính phép đo, không lưu mật khẩu nào vào repo |
+| 9 | Mật khẩu `soil_app` nằm trong file APK, ai mở APK ra là đọc được | Thấp (demo) | ACL chỉ cho `soil_app` nhận số đo và gửi lệnh, không gửi được số đo giả. Mật khẩu chỉ nằm trong `secrets.h` và `mqtt_config.json` (đã `.gitignore`), trang web không lưu mật khẩu |
 
 ## Ngoài phạm vi
 
 - Sửa app để chấm điểm theo mức chuẩn của từng loại đất (câu hỏi mở 1).
 - Sửa firmware để có giờ NTP nhanh hơn.
-- Dựng broker riêng có tài khoản và ACL, bắt gói tin, hiện sai số trên OLED.
+- Bắt gói tin, hiện sai số trên OLED.
 
 ## Câu hỏi còn mở
 
@@ -89,7 +89,7 @@ Phase 2 (log) ──┴──> Phase 4 (4A tự động, 4B cùng nhóm, 4C ản
 
 - [ ] `node --test "web/*.test.js"` và `python -m unittest test_report_measure` (chạy trong `scripts/`) đều qua
 - [ ] Sau các bản nạp tạm, board chạy lại firmware chính, `git diff firmware/src` trống, Serial in đủ dòng NTP và MQTT
-- [ ] Báo cáo không còn chỗ mâu thuẫn với code: N, P, K theo EC, đã có LWT, không còn rơ-le, bộ đệm 768 byte, Bảng 3.6 có `npk_normal` và `npk_level`, không còn tài khoản và ACL, không còn bộ kit (trừ Hạn chế và Hướng phát triển)
+- [ ] Báo cáo không còn chỗ mâu thuẫn với code: N, P, K theo EC, đã có LWT, không còn rơ-le, bộ đệm 768 byte, Bảng 3.6 có `npk_normal` và `npk_level`, phần tài khoản và ACL khớp broker riêng EMQX, không còn bộ kit (trừ Hạn chế và Hướng phát triển)
 - [ ] Mọi số trong Chương 4 có tệp gốc trong `docs/thuc-nghiem/`
 - [ ] Tài liệu không còn `[CHỜ SỐ ĐO]`, `[CHỜ ẢNH]` hay ô "…", và đủ 13 hình có ảnh (3.1 – 3.7, 4.1 – 4.6 sau khi bỏ hình Wireshark)
 
