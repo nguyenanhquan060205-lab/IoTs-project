@@ -1,7 +1,7 @@
 ---
 phase: 2
 title: "Thêm log đo thời gian trong firmware"
-status: in-progress
+status: completed
 priority: P2
 effort: "30m"
 dependencies: []
@@ -39,7 +39,7 @@ Serial Monitor in ra đủ số để điền Bảng 4.2 và 4.3 bằng số đo
 - [x] In dòng `[NTP] Da co gio sau ... ms` một lần mỗi lần khởi động
 - [x] In thời gian kết nối MQTT và `ESP.getFreeHeap()` khi thành công, thời gian khi thất bại
 - [x] Build không cảnh báo (`PLATFORMIO_BUILD_FLAGS="-Wall -Wextra" pio run`, 2026-11-26: SUCCESS, Flash 84.8%)
-- [ ] Nạp vào board và xem Serial (chưa làm: board chưa cắm vào máy lúc thực hiện, làm ở đầu phase 4)
+- [x] Nạp vào board và xem Serial (2026-11-26, COM7: in `[NTP] Da co gio sau 15349 ms ke tu khi co WiFi` và `Thanh cong! (1533 ms, heap trong 167056 byte)`; lần nạp thứ hai in 15412 ms, 2503 ms, 167076 byte)
 
 ## Verification
 
