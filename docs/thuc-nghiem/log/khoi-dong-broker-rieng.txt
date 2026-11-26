@@ -1,0 +1,1294 @@
+# 2026-11-26 21:29:57.863 | lệnh: boot | cổng COM7 | broker y0601019.ala.asia-southeast1.emqxsl.com:8883
+# Lần 1/10: đặt lại trạm qua chân EN
+2026-11-26 21:29:58.043 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.043 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.043 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.043 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.043 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.043 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.043 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.043 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.044 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.045 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.045 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.045 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.045 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.045 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.045 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.045 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.045 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.045 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.045 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.045 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.045 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.045 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.045 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.045 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.045 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.045 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.045 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.045 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.045 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.045 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.045 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.045 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.045 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.045 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.045 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.045 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.045 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.045 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.045 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.045 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.045 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.045 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.045 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.045 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.045 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.045 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.046 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.047 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.048 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.049 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.050 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.051 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.052 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.053 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.054 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.055 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.056 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.057 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.058 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.058 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.058 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.058 [1] pic: soil_station/1/telemetry
+2026-11-26 21:29:58.058 [1] ets Jul 29 2019 12:21:46
+2026-11-26 21:29:58.058 [1] 
+2026-11-26 21:29:58.058 [1] rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+2026-11-26 21:29:58.058 [1] configsip: 0, SPIWP:0xee
+2026-11-26 21:29:58.061 [1] clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+2026-11-26 21:29:58.064 [1] mode:DIO, clock div:2
+2026-11-26 21:29:58.067 [1] load:0x3fff0030,len:4640
+2026-11-26 21:29:58.070 [1] load:0x40078000,len:15632
+2026-11-26 21:29:58.070 [1] load:0x40080400,len:3164
+2026-11-26 21:29:58.071 [1] entry 0x4008059c
+2026-11-26 21:29:59.016 [1] 
+2026-11-26 21:29:59.018 [1] ==============================================
+2026-11-26 21:29:59.021 [1]   HE THONG DINH DUONG DAT IOT (ESP32)
+2026-11-26 21:29:59.025 [1] ==============================================
+2026-11-26 21:29:59.035 [1] Loai dat dang do: DAT VUON | Hieu chuan ADC: kho=2033, uot=3000 (mac dinh)
+2026-11-26 21:30:00.564 [1] Dang khoi dong WiFi Multi...
+2026-11-26 21:30:07.656 [1] Dang ket noi WiFi "<wifi>" (hoac "Wokwi-GUEST" khi mo phong)
+2026-11-26 21:30:07.657 [1] ✅ WiFi da ket noi!
+2026-11-26 21:30:07.658 [1]    SSID: <wifi>
+2026-11-26 21:30:07.661 [1]    Dia chi IP: <ip>
+2026-11-26 21:30:10.255 [1] Dang ket noi MQTT y0601019.ala.asia-southeast1.emqxsl.com:8883 (TLS)... Thanh cong! (2594 ms, heap trong 166828 byte)
+2026-11-26 21:30:10.258 [1] Da dang ky lang nghe: soil_station/1/command
+2026-11-26 21:30:10.365 [1] [SENSOR] Dat: DAT VUON | ADC: 2077 (+-3.5) | Am:   4.6% | EC:    61 | N:  4.9 | P:  2.5 | K:  6.8 (chuan 65/33/90: THAP) | pH: 7.0
+2026-11-26 21:30:10.374 [1] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 21:30:10.378 [1] [CANH BAO] Dat qua kho (4.6%) -> coi bao 3 tieng
+2026-11-26 21:30:10.938 [1] [NTP] Da co gio sau 1685 ms ke tu khi co WiFi: 2026-11-26 21:30:11 (ICT)
+# Lần 1: NTP 1685 ms, MQTT 2594 ms, heap 166828 byte
+# Lần 2/10: đặt lại trạm qua chân EN
+2026-11-26 21:30:11.044 [2] ets Jul 29 2019 12:21:46
+2026-11-26 21:30:11.044 [2] 
+2026-11-26 21:30:11.050 [2] rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+2026-11-26 21:30:11.053 [2] configsip: 0, SPIWP:0xee
+2026-11-26 21:30:11.058 [2] clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+2026-11-26 21:30:11.061 [2] mode:DIO, clock div:2
+2026-11-26 21:30:11.064 [2] load:0x3fff0030,len:4640
+2026-11-26 21:30:11.066 [2] load:0x40078000,len:15632
+2026-11-26 21:30:11.066 [2] load:0x40080400,len:3164
+2026-11-26 21:30:11.068 [2] entry 0x4008059c
+2026-11-26 21:30:12.012 [2] 
+2026-11-26 21:30:12.015 [2] ==============================================
+2026-11-26 21:30:12.018 [2]   HE THONG DINH DUONG DAT IOT (ESP32)
+2026-11-26 21:30:12.022 [2] ==============================================
+2026-11-26 21:30:12.032 [2] Loai dat dang do: DAT VUON | Hieu chuan ADC: kho=2033, uot=3000 (mac dinh)
+2026-11-26 21:30:13.561 [2] Dang khoi dong WiFi Multi...
+2026-11-26 21:30:21.125 [2] Dang ket noi WiFi "<wifi>" (hoac "Wokwi-GUEST" khi mo phong)
+2026-11-26 21:30:21.125 [2] ✅ WiFi da ket noi!
+2026-11-26 21:30:21.128 [2]    SSID: <wifi>
+2026-11-26 21:30:21.130 [2]    Dia chi IP: <ip>
+2026-11-26 21:30:22.653 [2] Dang ket noi MQTT y0601019.ala.asia-southeast1.emqxsl.com:8883 (TLS)... Thanh cong! (1520 ms, heap trong 167024 byte)
+2026-11-26 21:30:22.655 [2] Da dang ky lang nghe: soil_station/1/command
+2026-11-26 21:30:22.761 [2] [SENSOR] Dat: DAT VUON | ADC: 2113 (+-2.9) | Am:   8.3% | EC:   112 | N:  8.9 | P:  4.5 | K: 12.3 (chuan 65/33/90: THAP) | pH: 7.0
+2026-11-26 21:30:22.771 [2] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 21:30:22.775 [2] [CANH BAO] Dat qua kho (8.3%) -> coi bao 3 tieng
+2026-11-26 21:30:25.291 [2] [NTP] Da co gio sau 4161 ms ke tu khi co WiFi: 2026-11-26 21:30:25 (ICT)
+# Lần 2: NTP 4161 ms, MQTT 1520 ms, heap 167024 byte
+# Lần 3/10: đặt lại trạm qua chân EN
+2026-11-26 21:30:25.397 [3] ets Jul 29 2019 12:21:46
+2026-11-26 21:30:25.397 [3] 
+2026-11-26 21:30:25.402 [3] rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+2026-11-26 21:30:25.405 [3] configsip: 0, SPIWP:0xee
+2026-11-26 21:30:25.411 [3] clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+2026-11-26 21:30:25.413 [3] mode:DIO, clock div:2
+2026-11-26 21:30:25.416 [3] load:0x3fff0030,len:4640
+2026-11-26 21:30:25.419 [3] load:0x40078000,len:15632
+2026-11-26 21:30:25.419 [3] load:0x40080400,len:3164
+2026-11-26 21:30:25.421 [3] entry 0x4008059c
+2026-11-26 21:30:26.366 [3] 
+2026-11-26 21:30:26.369 [3] ==============================================
+2026-11-26 21:30:26.372 [3]   HE THONG DINH DUONG DAT IOT (ESP32)
+2026-11-26 21:30:26.375 [3] ==============================================
+2026-11-26 21:30:26.385 [3] Loai dat dang do: DAT VUON | Hieu chuan ADC: kho=2033, uot=3000 (mac dinh)
+2026-11-26 21:30:27.914 [3] Dang khoi dong WiFi Multi...
+2026-11-26 21:30:34.891 [3] Dang ket noi WiFi "<wifi>" (hoac "Wokwi-GUEST" khi mo phong)
+2026-11-26 21:30:34.892 [3] ✅ WiFi da ket noi!
+2026-11-26 21:30:34.894 [3]    SSID: <wifi>
+2026-11-26 21:30:34.897 [3]    Dia chi IP: <ip>
+2026-11-26 21:30:35.555 [3] Dang ket noi MQTT y0601019.ala.asia-southeast1.emqxsl.com:8883 (TLS)... Thanh cong! (656 ms, heap trong 167052 byte)
+2026-11-26 21:30:35.558 [3] Da dang ky lang nghe: soil_station/1/command
+2026-11-26 21:30:35.665 [3] [SENSOR] Dat: DAT VUON | ADC: 2169 (+-19.6) | Am:  14.1% | EC:   190 | N: 15.2 | P:  7.6 | K: 20.9 (chuan 65/33/90: THAP) | pH: 6.9
+2026-11-26 21:30:35.674 [3] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 21:30:35.678 [3] [CANH BAO] Dat qua kho (14.1%) -> coi bao 3 tieng
+2026-11-26 21:30:39.661 [3] [SENSOR] Dat: DAT VUON | ADC: 2174 (+-3.5) | Am:  14.6% | EC:   197 | N: 15.7 | P:  7.9 | K: 21.7 (chuan 65/33/90: THAP) | pH: 6.9
+2026-11-26 21:30:39.671 [3] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 21:30:43.661 [3] [SENSOR] Dat: DAT VUON | ADC: 2173 (+-3.0) | Am:  14.5% | EC:   195 | N: 15.6 | P:  7.8 | K: 21.5 (chuan 65/33/90: THAP) | pH: 6.9
+2026-11-26 21:30:43.671 [3] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 21:30:47.661 [3] [SENSOR] Dat: DAT VUON | ADC: 2172 (+-7.2) | Am:  14.4% | EC:   194 | N: 15.5 | P:  7.8 | K: 21.3 (chuan 65/33/90: THAP) | pH: 6.9
+2026-11-26 21:30:47.670 [3] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 21:30:51.121 [3] [NTP] Da co gio sau 16225 ms ke tu khi co WiFi: 2026-11-26 21:30:51 (ICT)
+# Lần 3: NTP 16225 ms, MQTT 656 ms, heap 167052 byte
+# Lần 4/10: đặt lại trạm qua chân EN
+2026-11-26 21:30:51.228 [4] ets Jul 29 2019 12:21:46
+2026-11-26 21:30:51.228 [4] 
+2026-11-26 21:30:51.234 [4] rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+2026-11-26 21:30:51.236 [4] configsip: 0, SPIWP:0xee
+2026-11-26 21:30:51.242 [4] clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+2026-11-26 21:30:51.244 [4] mode:DIO, clock div:2
+2026-11-26 21:30:51.247 [4] load:0x3fff0030,len:4640
+2026-11-26 21:30:51.250 [4] load:0x40078000,len:15632
+2026-11-26 21:30:51.251 [4] load:0x40080400,len:3164
+2026-11-26 21:30:51.251 [4] entry 0x4008059c
+2026-11-26 21:30:52.197 [4] 
+2026-11-26 21:30:52.200 [4] ==============================================
+2026-11-26 21:30:52.202 [4]   HE THONG DINH DUONG DAT IOT (ESP32)
+2026-11-26 21:30:52.206 [4] ==============================================
+2026-11-26 21:30:52.216 [4] Loai dat dang do: DAT VUON | Hieu chuan ADC: kho=2033, uot=3000 (mac dinh)
+2026-11-26 21:30:53.745 [4] Dang khoi dong WiFi Multi...
+2026-11-26 21:31:01.446 [4] Dang ket noi WiFi "<wifi>" (hoac "Wokwi-GUEST" khi mo phong)
+2026-11-26 21:31:01.447 [4] ✅ WiFi da ket noi!
+2026-11-26 21:31:01.449 [4]    SSID: <wifi>
+2026-11-26 21:31:01.452 [4]    Dia chi IP: <ip>
+2026-11-26 21:31:02.051 [4] Dang ket noi MQTT y0601019.ala.asia-southeast1.emqxsl.com:8883 (TLS)... Thanh cong! (598 ms, heap trong 167060 byte)
+2026-11-26 21:31:02.054 [4] Da dang ky lang nghe: soil_station/1/command
+2026-11-26 21:31:02.160 [4] [SENSOR] Dat: DAT VUON | ADC: 2171 (+-6.9) | Am:  14.3% | EC:   193 | N: 15.4 | P:  7.7 | K: 21.2 (chuan 65/33/90: THAP) | pH: 6.9
+2026-11-26 21:31:02.171 [4] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 21:31:02.175 [4] [CANH BAO] Dat qua kho (14.3%) -> coi bao 3 tieng
+2026-11-26 21:31:06.157 [4] [SENSOR] Dat: DAT VUON | ADC: 2173 (+-4.4) | Am:  14.5% | EC:   195 | N: 15.6 | P:  7.8 | K: 21.5 (chuan 65/33/90: THAP) | pH: 6.9
+2026-11-26 21:31:06.167 [4] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 21:31:10.157 [4] [SENSOR] Dat: DAT VUON | ADC: 2176 (+-4.0) | Am:  14.8% | EC:   200 | N: 16.0 | P:  8.0 | K: 22.0 (chuan 65/33/90: THAP) | pH: 6.9
+2026-11-26 21:31:10.166 [4] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 21:31:14.157 [4] [SENSOR] Dat: DAT VUON | ADC: 2176 (+-9.1) | Am:  14.8% | EC:   200 | N: 16.0 | P:  8.0 | K: 22.0 (chuan 65/33/90: THAP) | pH: 6.9
+2026-11-26 21:31:14.166 [4] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 21:31:17.220 [4] [NTP] Da co gio sau 15769 ms ke tu khi co WiFi: 2026-11-26 21:31:17 (ICT)
+# Lần 4: NTP 15769 ms, MQTT 598 ms, heap 167060 byte
+# Lần 5/10: đặt lại trạm qua chân EN
+2026-11-26 21:31:17.327 [5] ets Jul 29 2019 12:21:46
+2026-11-26 21:31:17.327 [5] 
+2026-11-26 21:31:17.332 [5] rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+2026-11-26 21:31:17.335 [5] configsip: 0, SPIWP:0xee
+2026-11-26 21:31:17.341 [5] clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+2026-11-26 21:31:17.343 [5] mode:DIO, clock div:2
+2026-11-26 21:31:17.346 [5] load:0x3fff0030,len:4640
+2026-11-26 21:31:17.349 [5] load:0x40078000,len:15632
+2026-11-26 21:31:17.349 [5] load:0x40080400,len:3164
+2026-11-26 21:31:17.351 [5] entry 0x4008059c
+2026-11-26 21:31:18.296 [5] 
+2026-11-26 21:31:18.299 [5] ==============================================
+2026-11-26 21:31:18.301 [5]   HE THONG DINH DUONG DAT IOT (ESP32)
+2026-11-26 21:31:18.305 [5] ==============================================
+2026-11-26 21:31:18.315 [5] Loai dat dang do: DAT VUON | Hieu chuan ADC: kho=2033, uot=3000 (mac dinh)
+2026-11-26 21:31:19.844 [5] Dang khoi dong WiFi Multi...
+2026-11-26 21:31:26.924 [5] Dang ket noi WiFi "<wifi>" (hoac "Wokwi-GUEST" khi mo phong)
+2026-11-26 21:31:26.926 [5] ✅ WiFi da ket noi!
+2026-11-26 21:31:26.926 [5]    SSID: <wifi>
+2026-11-26 21:31:26.929 [5]    Dia chi IP: <ip>
+2026-11-26 21:31:28.398 [5] Dang ket noi MQTT y0601019.ala.asia-southeast1.emqxsl.com:8883 (TLS)... Thanh cong! (1468 ms, heap trong 166988 byte)
+2026-11-26 21:31:28.401 [5] Da dang ky lang nghe: soil_station/1/command
+2026-11-26 21:31:28.507 [5] [SENSOR] Dat: DAT VUON | ADC: 2178 (+-3.4) | Am:  15.0% | EC:   202 | N: 16.2 | P:  8.1 | K: 22.3 (chuan 65/33/90: THAP) | pH: 6.9
+2026-11-26 21:31:28.517 [5] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 21:31:28.521 [5] [CANH BAO] Dat qua kho (15.0%) -> coi bao 3 tieng
+2026-11-26 21:31:32.504 [5] [SENSOR] Dat: DAT VUON | ADC: 2179 (+-2.7) | Am:  15.1% | EC:   204 | N: 16.3 | P:  8.2 | K: 22.4 (chuan 65/33/90: THAP) | pH: 6.9
+2026-11-26 21:31:32.514 [5] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 21:31:36.504 [5] [SENSOR] Dat: DAT VUON | ADC: 2179 (+-6.1) | Am:  15.1% | EC:   204 | N: 16.3 | P:  8.2 | K: 22.4 (chuan 65/33/90: THAP) | pH: 6.9
+2026-11-26 21:31:36.513 [5] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 21:31:40.504 [5] [SENSOR] Dat: DAT VUON | ADC: 2178 (+-4.5) | Am:  15.0% | EC:   202 | N: 16.2 | P:  8.1 | K: 22.3 (chuan 65/33/90: THAP) | pH: 6.9
+2026-11-26 21:31:40.514 [5] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 21:31:44.369 [5] [NTP] Da co gio sau 17441 ms ke tu khi co WiFi: 2026-11-26 21:31:44 (ICT)
+# Lần 5: NTP 17441 ms, MQTT 1468 ms, heap 166988 byte
+# Lần 6/10: đặt lại trạm qua chân EN
+2026-11-26 21:31:44.476 [6] ets Jul 29 2019 12:21:46
+2026-11-26 21:31:44.476 [6] 
+2026-11-26 21:31:44.482 [6] rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+2026-11-26 21:31:44.484 [6] configsip: 0, SPIWP:0xee
+2026-11-26 21:31:44.490 [6] clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+2026-11-26 21:31:44.493 [6] mode:DIO, clock div:2
+2026-11-26 21:31:44.495 [6] load:0x3fff0030,len:4640
+2026-11-26 21:31:44.498 [6] load:0x40078000,len:15632
+2026-11-26 21:31:44.498 [6] load:0x40080400,len:3164
+2026-11-26 21:31:44.500 [6] entry 0x4008059c
+2026-11-26 21:31:45.445 [6] 
+2026-11-26 21:31:45.448 [6] ==============================================
+2026-11-26 21:31:45.451 [6]   HE THONG DINH DUONG DAT IOT (ESP32)
+2026-11-26 21:31:45.454 [6] ==============================================
+2026-11-26 21:31:45.464 [6] Loai dat dang do: DAT VUON | Hieu chuan ADC: kho=2033, uot=3000 (mac dinh)
+2026-11-26 21:31:46.993 [6] Dang khoi dong WiFi Multi...
+2026-11-26 21:31:54.203 [6] Dang ket noi WiFi "<wifi>" (hoac "Wokwi-GUEST" khi mo phong)
+2026-11-26 21:31:54.203 [6] ✅ WiFi da ket noi!
+2026-11-26 21:31:54.206 [6]    SSID: <wifi>
+2026-11-26 21:31:54.208 [6]    Dia chi IP: <ip>
+2026-11-26 21:31:55.737 [6] Dang ket noi MQTT y0601019.ala.asia-southeast1.emqxsl.com:8883 (TLS)... Thanh cong! (1528 ms, heap trong 166988 byte)
+2026-11-26 21:31:55.740 [6] Da dang ky lang nghe: soil_station/1/command
+2026-11-26 21:31:55.847 [6] [SENSOR] Dat: DAT VUON | ADC: 2179 (+-15.6) | Am:  15.1% | EC:   204 | N: 16.3 | P:  8.2 | K: 22.4 (chuan 65/33/90: THAP) | pH: 6.9
+2026-11-26 21:31:55.856 [6] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 21:31:55.860 [6] [CANH BAO] Dat qua kho (15.1%) -> coi bao 3 tieng
+2026-11-26 21:31:59.842 [6] [SENSOR] Dat: DAT VUON | ADC: 2179 (+-4.3) | Am:  15.1% | EC:   204 | N: 16.3 | P:  8.2 | K: 22.4 (chuan 65/33/90: THAP) | pH: 6.9
+2026-11-26 21:31:59.853 [6] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 21:32:03.842 [6] [SENSOR] Dat: DAT VUON | ADC: 2178 (+-3.9) | Am:  15.0% | EC:   202 | N: 16.2 | P:  8.1 | K: 22.3 (chuan 65/33/90: THAP) | pH: 6.9
+2026-11-26 21:32:03.852 [6] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 21:32:07.842 [6] [SENSOR] Dat: DAT VUON | ADC: 2178 (+-3.1) | Am:  15.0% | EC:   202 | N: 16.2 | P:  8.1 | K: 22.3 (chuan 65/33/90: THAP) | pH: 6.9
+2026-11-26 21:32:07.851 [6] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 21:32:10.448 [6] [NTP] Da co gio sau 16241 ms ke tu khi co WiFi: 2026-11-26 21:32:10 (ICT)
+# Lần 6: NTP 16241 ms, MQTT 1528 ms, heap 166988 byte
+# Lần 7/10: đặt lại trạm qua chân EN
+2026-11-26 21:32:10.554 [7] ets Jul 29 2019 12:21:46
+2026-11-26 21:32:10.554 [7] 
+2026-11-26 21:32:10.559 [7] rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+2026-11-26 21:32:10.562 [7] configsip: 0, SPIWP:0xee
+2026-11-26 21:32:10.568 [7] clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+2026-11-26 21:32:10.570 [7] mode:DIO, clock div:2
+2026-11-26 21:32:10.573 [7] load:0x3fff0030,len:4640
+2026-11-26 21:32:10.576 [7] load:0x40078000,len:15632
+2026-11-26 21:32:10.576 [7] load:0x40080400,len:3164
+2026-11-26 21:32:10.578 [7] entry 0x4008059c
+2026-11-26 21:32:11.523 [7] 
+2026-11-26 21:32:11.526 [7] ==============================================
+2026-11-26 21:32:11.528 [7]   HE THONG DINH DUONG DAT IOT (ESP32)
+2026-11-26 21:32:11.532 [7] ==============================================
+2026-11-26 21:32:11.542 [7] Loai dat dang do: DAT VUON | Hieu chuan ADC: kho=2033, uot=3000 (mac dinh)
+2026-11-26 21:32:13.071 [7] Dang khoi dong WiFi Multi...
+2026-11-26 21:32:19.908 [7] Dang ket noi WiFi "<wifi>" (hoac "Wokwi-GUEST" khi mo phong)
+2026-11-26 21:32:19.909 [7] ✅ WiFi da ket noi!
+2026-11-26 21:32:19.911 [7]    SSID: <wifi>
+2026-11-26 21:32:19.914 [7]    Dia chi IP: <ip>
+2026-11-26 21:32:21.303 [7] Dang ket noi MQTT y0601019.ala.asia-southeast1.emqxsl.com:8883 (TLS)... Thanh cong! (1388 ms, heap trong 167012 byte)
+2026-11-26 21:32:21.306 [7] Da dang ky lang nghe: soil_station/1/command
+2026-11-26 21:32:21.412 [7] [SENSOR] Dat: DAT VUON | ADC: 2177 (+-8.2) | Am:  14.9% | EC:   201 | N: 16.1 | P:  8.0 | K: 22.1 (chuan 65/33/90: THAP) | pH: 6.9
+2026-11-26 21:32:21.422 [7] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 21:32:21.426 [7] [CANH BAO] Dat qua kho (14.9%) -> coi bao 3 tieng
+2026-11-26 21:32:25.409 [7] [SENSOR] Dat: DAT VUON | ADC: 2178 (+-4.1) | Am:  15.0% | EC:   202 | N: 16.2 | P:  8.1 | K: 22.3 (chuan 65/33/90: THAP) | pH: 6.9
+2026-11-26 21:32:25.419 [7] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 21:32:29.409 [7] [SENSOR] Dat: DAT VUON | ADC: 2179 (+-3.4) | Am:  15.1% | EC:   204 | N: 16.3 | P:  8.2 | K: 22.4 (chuan 65/33/90: THAP) | pH: 6.9
+2026-11-26 21:32:29.419 [7] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 21:32:33.409 [7] [SENSOR] Dat: DAT VUON | ADC: 2175 (+-4.3) | Am:  14.7% | EC:   198 | N: 15.9 | P:  7.9 | K: 21.8 (chuan 65/33/90: THAP) | pH: 6.9
+2026-11-26 21:32:33.418 [7] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 21:32:37.409 [7] [SENSOR] Dat: DAT VUON | ADC: 2176 (+-2.9) | Am:  14.8% | EC:   200 | N: 16.0 | P:  8.0 | K: 22.0 (chuan 65/33/90: THAP) | pH: 6.9
+2026-11-26 21:32:37.418 [7] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 21:32:37.971 [7] [NTP] Da co gio sau 18058 ms ke tu khi co WiFi: 2026-11-26 21:32:38 (ICT)
+# Lần 7: NTP 18058 ms, MQTT 1388 ms, heap 167012 byte
+# Lần 8/10: đặt lại trạm qua chân EN
+2026-11-26 21:32:38.077 [8] ets Jul 29 2019 12:21:46
+2026-11-26 21:32:38.077 [8] 
+2026-11-26 21:32:38.082 [8] rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+2026-11-26 21:32:38.085 [8] configsip: 0, SPIWP:0xee
+2026-11-26 21:32:38.091 [8] clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+2026-11-26 21:32:38.094 [8] mode:DIO, clock div:2
+2026-11-26 21:32:38.096 [8] load:0x3fff0030,len:4640
+2026-11-26 21:32:38.099 [8] load:0x40078000,len:15632
+2026-11-26 21:32:38.099 [8] load:0x40080400,len:3164
+2026-11-26 21:32:38.101 [8] entry 0x4008059c
+2026-11-26 21:32:39.046 [8] 
+2026-11-26 21:32:39.048 [8] ==============================================
+2026-11-26 21:32:39.051 [8]   HE THONG DINH DUONG DAT IOT (ESP32)
+2026-11-26 21:32:39.055 [8] ==============================================
+2026-11-26 21:32:39.065 [8] Loai dat dang do: DAT VUON | Hieu chuan ADC: kho=2033, uot=3000 (mac dinh)
+2026-11-26 21:32:40.594 [8] Dang khoi dong WiFi Multi...
+2026-11-26 21:32:47.872 [8] Dang ket noi WiFi "<wifi>" (hoac "Wokwi-GUEST" khi mo phong)
+2026-11-26 21:32:47.873 [8] ✅ WiFi da ket noi!
+2026-11-26 21:32:47.875 [8]    SSID: <wifi>
+2026-11-26 21:32:47.878 [8]    Dia chi IP: <ip>
+2026-11-26 21:32:48.459 [8] Dang ket noi MQTT y0601019.ala.asia-southeast1.emqxsl.com:8883 (TLS)... Thanh cong! (578 ms, heap trong 167048 byte)
+2026-11-26 21:32:48.461 [8] Da dang ky lang nghe: soil_station/1/command
+2026-11-26 21:32:48.568 [8] [SENSOR] Dat: DAT VUON | ADC: 2177 (+-3.8) | Am:  14.9% | EC:   201 | N: 16.1 | P:  8.0 | K: 22.1 (chuan 65/33/90: THAP) | pH: 6.9
+2026-11-26 21:32:48.577 [8] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 21:32:48.581 [8] [CANH BAO] Dat qua kho (14.9%) -> coi bao 3 tieng
+2026-11-26 21:32:52.564 [8] [SENSOR] Dat: DAT VUON | ADC: 2180 (+-4.1) | Am:  15.2% | EC:   205 | N: 16.4 | P:  8.2 | K: 22.6 (chuan 65/33/90: THAP) | pH: 6.9
+2026-11-26 21:32:52.574 [8] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 21:32:56.564 [8] [SENSOR] Dat: DAT VUON | ADC: 2178 (+-4.3) | Am:  15.0% | EC:   202 | N: 16.2 | P:  8.1 | K: 22.3 (chuan 65/33/90: THAP) | pH: 6.9
+2026-11-26 21:32:56.574 [8] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 21:33:00.564 [8] [SENSOR] Dat: DAT VUON | ADC: 2179 (+-3.0) | Am:  15.1% | EC:   204 | N: 16.3 | P:  8.2 | K: 22.4 (chuan 65/33/90: THAP) | pH: 6.9
+2026-11-26 21:33:00.573 [8] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 21:33:04.564 [8] [SENSOR] Dat: DAT VUON | ADC: 2174 (+-9.5) | Am:  14.6% | EC:   197 | N: 15.7 | P:  7.9 | K: 21.7 (chuan 65/33/90: THAP) | pH: 6.9
+2026-11-26 21:33:04.574 [8] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 21:33:07.199 [8] [NTP] Da co gio sau 19322 ms ke tu khi co WiFi: 2026-11-26 21:33:07 (ICT)
+# Lần 8: NTP 19322 ms, MQTT 578 ms, heap 167048 byte
+# Lần 9/10: đặt lại trạm qua chân EN
+2026-11-26 21:33:07.305 [9] ets Jul 29 2019 12:21:46
+2026-11-26 21:33:07.305 [9] 
+2026-11-26 21:33:07.311 [9] rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+2026-11-26 21:33:07.314 [9] configsip: 0, SPIWP:0xee
+2026-11-26 21:33:07.319 [9] clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+2026-11-26 21:33:07.322 [9] mode:DIO, clock div:2
+2026-11-26 21:33:07.325 [9] load:0x3fff0030,len:4640
+2026-11-26 21:33:07.328 [9] load:0x40078000,len:15632
+2026-11-26 21:33:07.328 [9] load:0x40080400,len:3164
+2026-11-26 21:33:07.329 [9] entry 0x4008059c
+2026-11-26 21:33:08.275 [9] 
+2026-11-26 21:33:08.277 [9] ==============================================
+2026-11-26 21:33:08.280 [9]   HE THONG DINH DUONG DAT IOT (ESP32)
+2026-11-26 21:33:08.284 [9] ==============================================
+2026-11-26 21:33:08.294 [9] Loai dat dang do: DAT VUON | Hieu chuan ADC: kho=2033, uot=3000 (mac dinh)
+2026-11-26 21:33:09.824 [9] Dang khoi dong WiFi Multi...
+2026-11-26 21:33:17.352 [9] Dang ket noi WiFi "<wifi>" (hoac "Wokwi-GUEST" khi mo phong)
+2026-11-26 21:33:17.353 [9] ✅ WiFi da ket noi!
+2026-11-26 21:33:17.355 [9]    SSID: <wifi>
+2026-11-26 21:33:17.358 [9]    Dia chi IP: <ip>
+2026-11-26 21:33:18.500 [9] Dang ket noi MQTT y0601019.ala.asia-southeast1.emqxsl.com:8883 (TLS)... Thanh cong! (1140 ms, heap trong 167012 byte)
+2026-11-26 21:33:18.503 [9] Da dang ky lang nghe: soil_station/1/command
+2026-11-26 21:33:18.608 [9] [SENSOR] Dat: DAT VUON | ADC: 2180 (+-11.2) | Am:  15.2% | EC:   205 | N: 16.4 | P:  8.2 | K: 22.6 (chuan 65/33/90: THAP) | pH: 6.9
+2026-11-26 21:33:18.619 [9] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 21:33:18.623 [9] [CANH BAO] Dat qua kho (15.2%) -> coi bao 3 tieng
+2026-11-26 21:33:22.605 [9] [SENSOR] Dat: DAT VUON | ADC: 2181 (+-3.1) | Am:  15.3% | EC:   207 | N: 16.5 | P:  8.3 | K: 22.7 (chuan 65/33/90: THAP) | pH: 6.9
+2026-11-26 21:33:22.614 [9] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 21:33:26.605 [9] [SENSOR] Dat: DAT VUON | ADC: 2182 (+-3.0) | Am:  15.4% | EC:   208 | N: 16.6 | P:  8.3 | K: 22.9 (chuan 65/33/90: THAP) | pH: 6.9
+2026-11-26 21:33:26.614 [9] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 21:33:30.605 [9] [SENSOR] Dat: DAT VUON | ADC: 2180 (+-5.7) | Am:  15.2% | EC:   205 | N: 16.4 | P:  8.2 | K: 22.6 (chuan 65/33/90: THAP) | pH: 6.9
+2026-11-26 21:33:30.614 [9] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 21:33:33.304 [9] [NTP] Da co gio sau 15947 ms ke tu khi co WiFi: 2026-11-26 21:33:33 (ICT)
+# Lần 9: NTP 15947 ms, MQTT 1140 ms, heap 167012 byte
+# Lần 10/10: đặt lại trạm qua chân EN
+2026-11-26 21:33:33.410 [10] ets Jul 29 2019 12:21:46
+2026-11-26 21:33:33.411 [10] 
+2026-11-26 21:33:33.416 [10] rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+2026-11-26 21:33:33.419 [10] configsip: 0, SPIWP:0xee
+2026-11-26 21:33:33.424 [10] clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+2026-11-26 21:33:33.427 [10] mode:DIO, clock div:2
+2026-11-26 21:33:33.430 [10] load:0x3fff0030,len:4640
+2026-11-26 21:33:33.433 [10] load:0x40078000,len:15632
+2026-11-26 21:33:33.433 [10] load:0x40080400,len:3164
+2026-11-26 21:33:33.434 [10] entry 0x4008059c
+2026-11-26 21:33:34.380 [10] 
+2026-11-26 21:33:34.383 [10] ==============================================
+2026-11-26 21:33:34.385 [10]   HE THONG DINH DUONG DAT IOT (ESP32)
+2026-11-26 21:33:34.389 [10] ==============================================
+2026-11-26 21:33:34.399 [10] Loai dat dang do: DAT VUON | Hieu chuan ADC: kho=2033, uot=3000 (mac dinh)
+2026-11-26 21:33:35.928 [10] Dang khoi dong WiFi Multi...
+2026-11-26 21:33:43.177 [10] Dang ket noi WiFi "<wifi>" (hoac "Wokwi-GUEST" khi mo phong)
+2026-11-26 21:33:43.178 [10] ✅ WiFi da ket noi!
+2026-11-26 21:33:43.180 [10]    SSID: <wifi>
+2026-11-26 21:33:43.183 [10]    Dia chi IP: <ip>
+2026-11-26 21:33:43.809 [10] Dang ket noi MQTT y0601019.ala.asia-southeast1.emqxsl.com:8883 (TLS)... Thanh cong! (624 ms, heap trong 167000 byte)
+2026-11-26 21:33:43.811 [10] Da dang ky lang nghe: soil_station/1/command
+2026-11-26 21:33:43.919 [10] [SENSOR] Dat: DAT VUON | ADC: 2183 (+-4.4) | Am:  15.5% | EC:   209 | N: 16.8 | P:  8.4 | K: 23.0 (chuan 65/33/90: THAP) | pH: 6.9
+2026-11-26 21:33:43.928 [10] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 21:33:43.932 [10] [CANH BAO] Dat qua kho (15.5%) -> coi bao 3 tieng
+2026-11-26 21:33:47.915 [10] [SENSOR] Dat: DAT VUON | ADC: 2186 (+-3.0) | Am:  15.8% | EC:   214 | N: 17.1 | P:  8.5 | K: 23.5 (chuan 65/33/90: THAP) | pH: 6.9
+2026-11-26 21:33:47.925 [10] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 21:33:51.915 [10] [SENSOR] Dat: DAT VUON | ADC: 2183 (+-4.2) | Am:  15.5% | EC:   209 | N: 16.8 | P:  8.4 | K: 23.0 (chuan 65/33/90: THAP) | pH: 6.9
+2026-11-26 21:33:51.924 [10] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 21:33:55.915 [10] [SENSOR] Dat: DAT VUON | ADC: 2183 (+-5.8) | Am:  15.5% | EC:   209 | N: 16.8 | P:  8.4 | K: 23.0 (chuan 65/33/90: THAP) | pH: 6.9
+2026-11-26 21:33:55.924 [10] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 21:33:59.915 [10] [SENSOR] Dat: DAT VUON | ADC: 2184 (+-5.0) | Am:  15.6% | EC:   211 | N: 16.9 | P:  8.4 | K: 23.2 (chuan 65/33/90: THAP) | pH: 6.9
+2026-11-26 21:33:59.924 [10] => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 21:34:03.194 [10] [NTP] Da co gio sau 20012 ms ke tu khi co WiFi: 2026-11-26 21:34:03 (ICT)
+# Lần 10: NTP 20012 ms, MQTT 624 ms, heap 167000 byte
+# Tóm tắt
+# Thời gian có giờ NTP kể từ khi có Wi-Fi: n = 10, nhỏ nhất 1685 ms, trung vị 16233 ms, trung bình 14486 ms, lớn nhất 20012 ms
+# Thời gian kết nối MQTT (gồm bắt tay TLS nếu có): n = 10, nhỏ nhất 578 ms, trung vị 1264 ms, trung bình 1209 ms, lớn nhất 2594 ms
+# Bộ nhớ trống sau khi kết nối: n = 10, nhỏ nhất 166828 byte, trung vị 167012 byte, trung bình 167001 byte, lớn nhất 167060 byte
+# Số lần kết nối thất bại: 0

@@ -29,7 +29,7 @@ Cách làm các ảnh mới (ngày 2026-11-26, trạm thật đang gửi số):
 
 - Ảnh app chụp từ chính app Flutter của dự án, build bản Windows, cửa sổ cỡ điện thoại (412 × 880). Giao diện giống bản Android. Nếu muốn ảnh từ điện thoại thì chụp lại cùng các màn này.
 - Hình 4.4: đổi loại đất ngay trên app (màn Mẫu đất), đầu dò giữ yên, trạm xác nhận rồi mới chụp màn Tổng quan. Đất đóng bao và đất vườn 100 điểm, đất bạc màu 30 điểm.
-- Hình 4.1 dựng từ log Serial thật của lần khởi động thứ 4 (`log/khoi-dong-10-lan.txt`), bằng `python docs/hinh/ve_hinh_serial.py`. Tên Wi-Fi và IP đã che.
+- Hình 4.1 dựng từ log Serial thật của lần khởi động thứ 6 với broker EMQX riêng, đầu dò cắm trong đất (`log/khoi-dong-broker-rieng.txt`, NTP 16 241 ms, gần trung vị 16 233 ms của 10 lần), bằng `python docs/hinh/ve_hinh_serial.py`. Tên Wi-Fi và IP đã che. Bảng 4.2 và 4.3 vẫn lấy số từ `log/khoi-dong-10-lan.txt` (broker công cộng broker.emqx.io).
 - Hình 3.7 và 4.2 chụp trang web bằng `node docs/hinh/chup_trang_web.js`. Hình 3.7 hiện phần mẫu đất và sai số còn trống; chụp lại sau buổi đo 12 mẫu nếu muốn có số.
 
 ## 2. Số lấy từ code (đúng với firmware và app hiện tại)

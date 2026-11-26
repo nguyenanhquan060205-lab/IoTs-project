@@ -1,7 +1,8 @@
 """Dựng Hình 4.1 (Serial Monitor khi ESP32 đồng bộ giờ) từ log thật của report_measure.py.
 
 Chạy: python docs/hinh/ve_hinh_serial.py [log] [lần]
-Mặc định lấy lần 4 trong docs/thuc-nghiem/log/khoi-dong-10-lan.txt (16,0 giây, gần trung vị của 10 lần).
+Mặc định lấy lần 6 trong docs/thuc-nghiem/log/khoi-dong-broker-rieng.txt (broker EMQX riêng,
+đầu dò cắm trong đất: NTP 16,2 giây, gần trung vị 16,2 giây của 10 lần).
 Hình chỉ gồm các dòng ESP32 in ra (bỏ giờ máy tính mà script ghi kèm), từ dòng tiêu đề tới dòng [NTP].
 Log đã che tên Wi-Fi và địa chỉ IP. Xuất PNG bằng Chrome chạy ẩn như ve_hinh.py, kích thước in ở cuối.
 """
@@ -12,8 +13,8 @@ from pathlib import Path
 
 OUT = Path(__file__).resolve().parent
 ROOT = OUT.parent.parent
-LOG = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "docs" / "thuc-nghiem" / "log" / "khoi-dong-10-lan.txt"
-RUN = sys.argv[2] if len(sys.argv) > 2 else "4"
+LOG = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "docs" / "thuc-nghiem" / "log" / "khoi-dong-broker-rieng.txt"
+RUN = sys.argv[2] if len(sys.argv) > 2 else "6"
 PREFIX = re.compile(r"^\d{4}-\d{2}-\d{2} [\d:.]+ \[" + re.escape(RUN) + r"\] ?")
 
 
