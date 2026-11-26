@@ -1,0 +1,325 @@
+# 2026-11-26 15:35:40.811 | lệnh: serial-log | cổng COM7 | broker broker.emqx.io:8883
+# Đặt lại trạm qua chân EN
+2026-11-26 15:35:40.967 ets Jul 29 2019 12:21:46
+2026-11-26 15:35:40.967 
+2026-11-26 15:35:40.972 rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+2026-11-26 15:35:40.975 configsip: 0, SPIWP:0xee
+2026-11-26 15:35:40.980 clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+2026-11-26 15:35:40.983 mode:DIO, clock div:2
+2026-11-26 15:35:40.986 load:0x3fff0030,len:4640
+2026-11-26 15:35:40.989 load:0x40078000,len:15632
+2026-11-26 15:35:40.989 load:0x40080400,len:3164
+2026-11-26 15:35:40.996 entry 0x4008059c
+2026-11-26 15:35:41.935 
+2026-11-26 15:35:41.938 ==============================================
+2026-11-26 15:35:41.941   HE THONG DINH DUONG DAT IOT (ESP32)
+2026-11-26 15:35:41.944 ==============================================
+2026-11-26 15:35:41.955 Loai dat dang do: DAT VUON | Hieu chuan ADC: kho=200 (mac dinh), uot=3000 (mac dinh)
+2026-11-26 15:35:43.483 Dang khoi dong WiFi Multi...
+2026-11-26 15:35:51.167 Dang ket noi WiFi "<wifi>" (hoac "Wokwi-GUEST" khi mo phong)
+2026-11-26 15:35:51.168 ✅ WiFi da ket noi!
+2026-11-26 15:35:51.170    SSID: <wifi>
+2026-11-26 15:35:51.173    Dia chi IP: <ip>
+2026-11-26 15:35:52.692 Dang ket noi MQTT broker.emqx.io:8883 (TLS)... Thanh cong! (1520 ms, heap trong 167036 byte)
+2026-11-26 15:35:52.697 Da dang ky lang nghe: soil_station/1/command
+2026-11-26 15:35:52.805 [SENSOR] Dat: DAT VUON | ADC: 2198 (+-5.6) | Am:  71.4% | EC:   963 | N: 77.1 | P: 38.5 | K: 106.0 (chuan 65/33/90: OK) | pH: 6.2
+2026-11-26 15:35:52.814 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:35:56.801 [SENSOR] Dat: DAT VUON | ADC: 2204 (+-4.9) | Am:  71.6% | EC:   966 | N: 77.3 | P: 38.6 | K: 106.3 (chuan 65/33/90: OK) | pH: 6.2
+2026-11-26 15:35:56.810 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:36:00.801 [SENSOR] Dat: DAT VUON | ADC: 2202 (+-5.5) | Am:  71.5% | EC:   965 | N: 77.2 | P: 38.6 | K: 106.2 (chuan 65/33/90: OK) | pH: 6.2
+2026-11-26 15:36:00.810 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:36:04.801 [SENSOR] Dat: DAT VUON | ADC: 2207 (+-5.4) | Am:  71.7% | EC:   968 | N: 77.4 | P: 38.7 | K: 106.4 (chuan 65/33/90: OK) | pH: 6.2
+2026-11-26 15:36:04.810 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:36:07.719 [NTP] Da co gio sau 16546 ms ke tu khi co WiFi: 2026-11-26 15:36:08 (ICT)
+2026-11-26 15:36:07.720 [TEST] Gio tram: 1795682168.397
+2026-11-26 15:36:08.801 [SENSOR] Dat: DAT VUON | ADC: 2204 (+-4.4) | Am:  71.6% | EC:   966 | N: 77.3 | P: 38.6 | K: 106.3 (chuan 65/33/90: OK) | pH: 6.2
+2026-11-26 15:36:08.811 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:36:11.713 [TEST] Gio tram: 1795682172.397
+2026-11-26 15:36:12.801 [SENSOR] Dat: DAT VUON | ADC: 2205 (+-7.3) | Am:  71.6% | EC:   967 | N: 77.3 | P: 38.7 | K: 106.3 (chuan 65/33/90: OK) | pH: 6.2
+2026-11-26 15:36:12.810 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:36:15.713 [TEST] Gio tram: 1795682176.397
+2026-11-26 15:36:16.800 [SENSOR] Dat: DAT VUON | ADC: 2210 (+-4.5) | Am:  71.8% | EC:   969 | N: 77.5 | P: 38.8 | K: 106.6 (chuan 65/33/90: OK) | pH: 6.2
+2026-11-26 15:36:16.809 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:36:19.713 [TEST] Gio tram: 1795682180.397
+2026-11-26 15:36:20.800 [SENSOR] Dat: DAT VUON | ADC: 2211 (+-4.2) | Am:  71.8% | EC:   970 | N: 77.6 | P: 38.8 | K: 106.7 (chuan 65/33/90: OK) | pH: 6.2
+2026-11-26 15:36:20.809 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:36:23.713 [TEST] Gio tram: 1795682184.397
+2026-11-26 15:36:24.800 [SENSOR] Dat: DAT VUON | ADC: 2210 (+-5.6) | Am:  71.8% | EC:   969 | N: 77.5 | P: 38.8 | K: 106.6 (chuan 65/33/90: OK) | pH: 6.2
+2026-11-26 15:36:24.809 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:36:27.713 [TEST] Gio tram: 1795682188.397
+2026-11-26 15:36:28.800 [SENSOR] Dat: DAT VUON | ADC: 2211 (+-6.2) | Am:  71.8% | EC:   970 | N: 77.6 | P: 38.8 | K: 106.7 (chuan 65/33/90: OK) | pH: 6.2
+2026-11-26 15:36:28.810 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:36:31.713 [TEST] Gio tram: 1795682192.397
+2026-11-26 15:36:32.799 [SENSOR] Dat: DAT VUON | ADC: 2214 (+-8.3) | Am:  71.9% | EC:   971 | N: 77.7 | P: 38.8 | K: 106.8 (chuan 65/33/90: OK) | pH: 6.2
+2026-11-26 15:36:32.809 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:36:35.712 [TEST] Gio tram: 1795682196.397
+2026-11-26 15:36:36.799 [SENSOR] Dat: DAT VUON | ADC: 2211 (+-5.3) | Am:  71.8% | EC:   970 | N: 77.6 | P: 38.8 | K: 106.7 (chuan 65/33/90: OK) | pH: 6.2
+2026-11-26 15:36:36.809 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:36:39.712 [TEST] Gio tram: 1795682200.397
+2026-11-26 15:36:40.799 [SENSOR] Dat: DAT VUON | ADC: 2216 (+-4.8) | Am:  72.0% | EC:   972 | N: 77.8 | P: 38.9 | K: 106.9 (chuan 65/33/90: OK) | pH: 6.2
+2026-11-26 15:36:40.809 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:36:43.712 [TEST] Gio tram: 1795682204.397
+2026-11-26 15:36:44.799 [SENSOR] Dat: DAT VUON | ADC: 2216 (+-6.2) | Am:  72.0% | EC:   972 | N: 77.8 | P: 38.9 | K: 106.9 (chuan 65/33/90: OK) | pH: 6.2
+2026-11-26 15:36:44.808 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:36:47.712 [TEST] Gio tram: 1795682208.397
+2026-11-26 15:36:48.798 [SENSOR] Dat: DAT VUON | ADC: 2215 (+-3.9) | Am:  72.0% | EC:   972 | N: 77.7 | P: 38.9 | K: 106.9 (chuan 65/33/90: OK) | pH: 6.2
+2026-11-26 15:36:48.808 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:36:52.799 ����������������������������������������������������������������[SENSOR] Dat: DAT VUON | ADC: 2221 (+-4.9) | Am:  72.2% | EC:   974 | N: 78.0 | P: 39.0 | K: 107.2 (chuan 65/33/90: OK) | pH: 6.2
+2026-11-26 15:36:52.808 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:36:55.711 [TEST] Gio tram: 1795682216.397
+2026-11-26 15:36:56.799 [SENSOR] Dat: DAT VUON | ADC: 2218 (+-4.8) | Am:  72.1% | EC:   973 | N: 77.8 | P: 38.9 | K: 107.0 (chuan 65/33/90: OK) | pH: 6.2
+2026-11-26 15:36:56.808 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:36:59.711 [TEST] Gio tram: 1795682220.397
+2026-11-26 15:37:00.798 [SENSOR] Dat: DAT VUON | ADC: 2218 (+-8.1) | Am:  72.1% | EC:   973 | N: 77.8 | P: 38.9 | K: 107.0 (chuan 65/33/90: OK) | pH: 6.2
+2026-11-26 15:37:00.807 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:37:03.711 [TEST] Gio tram: 1795682224.397
+2026-11-26 15:37:04.798 [SENSOR] Dat: DAT VUON | ADC: 2217 (+-12.3) | Am:  72.0% | EC:   972 | N: 77.8 | P: 38.9 | K: 107.0 (chuan 65/33/90: OK) | pH: 6.2
+2026-11-26 15:37:04.807 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:37:07.711 [TEST] Gio tram: 1795682228.397
+2026-11-26 15:37:07.714 [TEST] Tat song Wi-Fi 300 giay
+2026-11-26 15:37:08.800 [SENSOR] Dat: DAT VUON | ADC: 2224 (+-2.3) | Am:  72.3% | EC:   976 | N: 78.1 | P: 39.0 | K: 107.3 (chuan 65/33/90: CAO) | pH: 6.2
+2026-11-26 15:37:11.710 [TEST] Gio tram: 1795682232.397
+2026-11-26 15:37:12.797 [SENSOR] Dat: DAT VUON | ADC: 2224 (+-5.1) | Am:  72.3% | EC:   976 | N: 78.1 | P: 39.0 | K: 107.3 (chuan 65/33/90: CAO) | pH: 6.2
+2026-11-26 15:37:15.710 [TEST] Gio tram: 1795682236.397
+2026-11-26 15:37:16.796 [SENSOR] Dat: DAT VUON | ADC: 2224 (+-3.7) | Am:  72.3% | EC:   976 | N: 78.1 | P: 39.0 | K: 107.3 (chuan 65/33/90: CAO) | pH: 6.2
+2026-11-26 15:37:19.710 [TEST] Gio tram: 1795682240.397
+2026-11-26 15:37:20.796 [SENSOR] Dat: DAT VUON | ADC: 2224 (+-3.4) | Am:  72.3% | EC:   976 | N: 78.1 | P: 39.0 | K: 107.3 (chuan 65/33/90: CAO) | pH: 6.2
+2026-11-26 15:37:23.710 [TEST] Gio tram: 1795682244.397
+2026-11-26 15:37:24.796 [SENSOR] Dat: DAT VUON | ADC: 2224 (+-2.7) | Am:  72.3% | EC:   976 | N: 78.1 | P: 39.0 | K: 107.3 (chuan 65/33/90: CAO) | pH: 6.2
+2026-11-26 15:37:27.709 [TEST] Gio tram: 1795682248.397
+2026-11-26 15:37:28.796 [SENSOR] Dat: DAT VUON | ADC: 2224 (+-4.6) | Am:  72.3% | EC:   976 | N: 78.1 | P: 39.0 | K: 107.3 (chuan 65/33/90: CAO) | pH: 6.2
+2026-11-26 15:37:31.709 [TEST] Gio tram: 1795682252.397
+2026-11-26 15:37:32.795 ����������������������������������������������������������������24 (+-2.4) | Am:  72.3% | EC:   976 | N: 78.1 | P: 39.0 | K: 107.3 (chuan 65/33/90: CAO) | pH: 6.2
+2026-11-26 15:37:35.709 [TEST] Gio tram: 1795682256.397
+2026-11-26 15:37:36.795 [SENSOR] Dat: DAT VUON | ADC: 2221 (+-3.1) | Am:  72.2% | EC:   974 | N: 78.0 | P: 39.0 | K: 107.2 (chuan 65/33/90: OK) | pH: 6.2
+2026-11-26 15:37:39.709 [TEST] Gio tram: 1795682260.397
+2026-11-26 15:37:40.795 [SENSOR] Dat: DAT VUON | ADC: 2220 (+-4.8) | Am:  72.1% | EC:   974 | N: 77.9 | P: 39.0 | K: 107.1 (chuan 65/33/90: OK) | pH: 6.2
+2026-11-26 15:37:43.708 [TEST] Gio tram: 1795682264.397
+2026-11-26 15:37:44.795 [SENSOR] Dat: DAT VUON | ADC: 2217 (+-4.8) | Am:  72.0% | EC:   972 | N: 77.8 | P: 38.9 | K: 107.0 (chuan 65/33/90: OK) | pH: 6.2
+2026-11-26 15:37:47.708 [TEST] Gio tram: 1795682268.397
+2026-11-26 15:37:48.795 [SENSOR] Dat: DAT VUON | ADC: 2268 (+-2.1) | Am:  73.9% | EC:   997 | N: 79.8 | P: 39.9 | K: 109.7 (chuan 65/33/90: CAO) | pH: 6.2
+2026-11-26 15:37:51.708 [TEST] Gio tram: 1795682272.397
+2026-11-26 15:37:52.795 ����������������������������������������������������������������50 (+-3.1) | Am:  73.2% | EC:   988 | N: 79.1 | P: 39.5 | K: 108.7 (chuan 65/33/90: CAO) | pH: 6.2
+2026-11-26 15:37:55.708 [TEST] Gio tram: 1795682276.397
+2026-11-26 15:37:56.794 [SENSOR] Dat: DAT VUON | ADC: 2225 (+-3.7) | Am:  72.3% | EC:   976 | N: 78.1 | P: 39.1 | K: 107.4 (chuan 65/33/90: CAO) | pH: 6.2
+2026-11-26 15:37:59.708 [TEST] Gio tram: 1795682280.397
+2026-11-26 15:38:00.794 [SENSOR] Dat: DAT VUON | ADC: 2212 (+-14.2) | Am:  71.9% | EC:   970 | N: 77.6 | P: 38.8 | K: 106.7 (chuan 65/33/90: OK) | pH: 6.2
+2026-11-26 15:38:03.708 [TEST] Gio tram: 1795682284.397
+2026-11-26 15:38:04.794 [SENSOR] Dat: DAT VUON | ADC: 2206 (+-2.5) | Am:  71.6% | EC:   967 | N: 77.4 | P: 38.7 | K: 106.4 (chuan 65/33/90: OK) | pH: 6.2
+2026-11-26 15:38:07.708 [TEST] Gio tram: 1795682288.397
+2026-11-26 15:38:08.794 [SENSOR] Dat: DAT VUON | ADC: 2206 (+-2.9) | Am:  71.6% | EC:   967 | N: 77.4 | P: 38.7 | K: 106.4 (chuan 65/33/90: OK) | pH: 6.2
+2026-11-26 15:38:11.708 [TEST] Gio tram: 1795682292.397
+2026-11-26 15:38:12.794 [SENSOR] Dat: DAT VUON | ADC: 2203 (+-3.1) | Am:  71.5% | EC:   966 | N: 77.3 | P: 38.6 | K: 106.2 (chuan 65/33/90: OK) | pH: 6.2
+2026-11-26 15:38:15.707 [TEST] Gio tram: 1795682296.397
+2026-11-26 15:38:16.793 [SENSOR] Dat: DAT VUON | ADC: 2205 (+-1.9) | Am:  71.6% | EC:   967 | N: 77.3 | P: 38.7 | K: 106.3 (chuan 65/33/90: OK) | pH: 6.2
+2026-11-26 15:38:19.707 [TEST] Gio tram: 1795682300.397
+2026-11-26 15:38:20.793 [SENSOR] Dat: DAT VUON | ADC: 2201 (+-11.4) | Am:  71.5% | EC:   965 | N: 77.2 | P: 38.6 | K: 106.1 (chuan 65/33/90: OK) | pH: 6.2
+2026-11-26 15:38:23.706 [TEST] Gio tram: 1795682304.397
+2026-11-26 15:38:24.793 [SENSOR] Dat: DAT VUON | ADC: 2201 (+-3.7) | Am:  71.5% | EC:   965 | N: 77.2 | P: 38.6 | K: 106.1 (chuan 65/33/90: OK) | pH: 6.2
+2026-11-26 15:38:27.707 [TEST] Gio tram: 1795682308.397
+2026-11-26 15:38:28.793 [SENSOR] Dat: DAT VUON | ADC: 2196 (+-3.0) | Am:  71.3% | EC:   962 | N: 77.0 | P: 38.5 | K: 105.9 (chuan 65/33/90: OK) | pH: 6.2
+2026-11-26 15:38:31.706 [TEST] Gio tram: 1795682312.397
+2026-11-26 15:38:32.793 [SENSOR] Dat: DAT VUON | ADC: 1774 (+-13.9) | Am:  56.2% | EC:   759 | N: 60.7 | P: 30.4 | K: 83.5 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 15:38:35.706 [TEST] Gio tram: 1795682316.397
+2026-11-26 15:38:36.793 [SENSOR] Dat: DAT VUON | ADC: 1876 (+-4.9) | Am:  59.9% | EC:   808 | N: 64.6 | P: 32.3 | K: 88.9 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 15:38:39.706 [TEST] Gio tram: 1795682320.397
+2026-11-26 15:38:40.792 [SENSOR] Dat: DAT VUON | ADC: 1875 (+-5.6) | Am:  59.8% | EC:   808 | N: 64.6 | P: 32.3 | K: 88.8 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 15:38:43.706 [TEST] Gio tram: 1795682324.397
+2026-11-26 15:38:44.792 ����������������������������������������������������������������67 (+-4.6) | Am:  59.5% | EC:   804 | N: 64.3 | P: 32.1 | K: 88.4 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 15:38:47.706 [TEST] Gio tram: 1795682328.397
+2026-11-26 15:38:48.792 [SENSOR] Dat: DAT VUON | ADC: 1859 (+-2.6) | Am:  59.2% | EC:   800 | N: 64.0 | P: 32.0 | K: 88.0 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 15:38:51.705 [TEST] Gio tram: 1795682332.397
+2026-11-26 15:38:52.792 [SENSOR] Dat: DAT VUON | ADC: 1896 (+-4.4) | Am:  60.6% | EC:   818 | N: 65.4 | P: 32.7 | K: 89.9 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 15:38:55.705 [TEST] Gio tram: 1795682336.397
+2026-11-26 15:38:56.792 [SENSOR] Dat: DAT VUON | ADC: 1907 (+-3.8) | Am:  61.0% | EC:   823 | N: 65.8 | P: 32.9 | K: 90.5 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 15:38:59.705 [TEST] Gio tram: 1795682340.397
+2026-11-26 15:39:00.791 [SENSOR] Dat: DAT VUON | ADC: 1907 (+-3.8) | Am:  61.0% | EC:   823 | N: 65.8 | P: 32.9 | K: 90.5 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 15:39:03.705 [TEST] Gio tram: 1795682344.397
+2026-11-26 15:39:04.791 [SENSOR] Dat: DAT VUON | ADC: 1912 (+-4.7) | Am:  61.1% | EC:   825 | N: 66.0 | P: 33.0 | K: 90.8 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 15:39:07.705 [TEST] Gio tram: 1795682348.397
+2026-11-26 15:39:08.792 [SENSOR] Dat: DAT VUON | ADC: 1915 (+-4.1) | Am:  61.2% | EC:   827 | N: 66.2 | P: 33.1 | K: 91.0 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 15:39:11.704 [TEST] Gio tram: 1795682352.397
+2026-11-26 15:39:12.791 [SENSOR] Dat: DAT VUON | ADC: 1918 (+-4.3) | Am:  61.4% | EC:   828 | N: 66.3 | P: 33.1 | K: 91.1 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 15:39:15.705 [TEST] Gio tram: 1795682356.397
+2026-11-26 15:39:16.790 [SENSOR] Dat: DAT VUON | ADC: 1916 (+-3.7) | Am:  61.3% | EC:   827 | N: 66.2 | P: 33.1 | K: 91.0 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 15:39:19.704 [TEST] Gio tram: 1795682360.397
+2026-11-26 15:39:20.791 [SENSOR] Dat: DAT VUON | ADC: 1912 (+-8.2) | Am:  61.1% | EC:   825 | N: 66.0 | P: 33.0 | K: 90.8 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 15:39:23.704 [TEST] Gio tram: 1795682364.397
+2026-11-26 15:39:24.790 [SENSOR] Dat: DAT VUON | ADC: 2065 (+-13.4) | Am:  66.6% | EC:   899 | N: 71.9 | P: 36.0 | K: 98.9 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:39:27.704 [TEST] Gio tram: 1795682368.397
+2026-11-26 15:39:28.790 [SENSOR] Dat: DAT VUON | ADC: 2008 (+-10.0) | Am:  64.6% | EC:   872 | N: 69.7 | P: 34.9 | K: 95.9 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:39:31.704 [TEST] Gio tram: 1795682372.397
+2026-11-26 15:39:32.790 [SENSOR] Dat: DAT VUON | ADC: 2096 (+-1.6) | Am:  67.7% | EC:   914 | N: 73.1 | P: 36.6 | K: 100.6 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:39:35.703 [TEST] Gio tram: 1795682376.397
+2026-11-26 15:39:36.789 [SENSOR] Dat: DAT VUON | ADC: 2032 (+-3.9) | Am:  65.4% | EC:   883 | N: 70.7 | P: 35.3 | K: 97.2 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:39:39.703 [TEST] Gio tram: 1795682380.397
+2026-11-26 15:39:40.789 [SENSOR] Dat: DAT VUON | ADC: 2030 (+-15.9) | Am:  65.4% | EC:   882 | N: 70.6 | P: 35.3 | K: 97.1 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:39:43.703 [TEST] Gio tram: 1795682384.397
+2026-11-26 15:39:44.789 [SENSOR] Dat: DAT VUON | ADC: 1930 (+-8.3) | Am:  61.8% | EC:   834 | N: 66.7 | P: 33.4 | K: 91.8 (chuan 65/33/90: OK) | pH: 6.4
+2026-11-26 15:39:47.703 [TEST] Gio tram: 1795682388.397
+2026-11-26 15:39:48.789 [SENSOR] Dat: DAT VUON | ADC: 1985 (+-3.4) | Am:  63.8% | EC:   861 | N: 68.8 | P: 34.4 | K: 94.7 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:39:51.703 [TEST] Gio tram: 1795682392.397
+2026-11-26 15:39:52.789 [SENSOR] Dat: DAT VUON | ADC: 1982 (+-3.8) | Am:  63.6% | EC:   859 | N: 68.7 | P: 34.4 | K: 94.5 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:39:55.703 [TEST] Gio tram: 1795682396.397
+2026-11-26 15:39:56.788 [SENSOR] Dat: DAT VUON | ADC: 1981 (+-6.7) | Am:  63.6% | EC:   859 | N: 68.7 | P: 34.3 | K: 94.5 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:39:59.702 [TEST] Gio tram: 1795682400.397
+2026-11-26 15:40:00.788 [SENSOR] Dat: DAT VUON | ADC: 1982 (+-5.4) | Am:  63.6% | EC:   859 | N: 68.7 | P: 34.4 | K: 94.5 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:40:03.702 [TEST] Gio tram: 1795682404.397
+2026-11-26 15:40:04.789 ����������������������������������������������������������������81 (+-5.8) | Am:  63.6% | EC:   859 | N: 68.7 | P: 34.3 | K: 94.5 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:40:07.702 [TEST] Gio tram: 1795682408.397
+2026-11-26 15:40:08.788 [SENSOR] Dat: DAT VUON | ADC: 1978 (+-3.4) | Am:  63.5% | EC:   857 | N: 68.6 | P: 34.3 | K: 94.3 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:40:11.702 [TEST] Gio tram: 1795682412.397
+2026-11-26 15:40:12.788 [SENSOR] Dat: DAT VUON | ADC: 1978 (+-6.8) | Am:  63.5% | EC:   857 | N: 68.6 | P: 34.3 | K: 94.3 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:40:15.702 [TEST] Gio tram: 1795682416.397
+2026-11-26 15:40:16.788 [SENSOR] Dat: DAT VUON | ADC: 1972 (+-10.6) | Am:  63.3% | EC:   854 | N: 68.3 | P: 34.2 | K: 94.0 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:40:19.701 [TEST] Gio tram: 1795682420.397
+2026-11-26 15:40:20.788 [SENSOR] Dat: DAT VUON | ADC: 1968 (+-4.5) | Am:  63.1% | EC:   852 | N: 68.2 | P: 34.1 | K: 93.8 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:40:23.701 [TEST] Gio tram: 1795682424.397
+2026-11-26 15:40:24.787 [SENSOR] Dat: DAT VUON | ADC: 1972 (+-3.4) | Am:  63.3% | EC:   854 | N: 68.3 | P: 34.2 | K: 94.0 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:40:27.701 [TEST] Gio tram: 1795682428.397
+2026-11-26 15:40:28.787 [SENSOR] Dat: DAT VUON | ADC: 1979 (+-5.1) | Am:  63.5% | EC:   858 | N: 68.6 | P: 34.3 | K: 94.4 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:40:31.701 [TEST] Gio tram: 1795682432.397
+2026-11-26 15:40:32.787 [SENSOR] Dat: DAT VUON | ADC: 1980 (+-4.2) | Am:  63.6% | EC:   858 | N: 68.7 | P: 34.3 | K: 94.4 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:40:35.701 [TEST] Gio tram: 1795682436.397
+2026-11-26 15:40:36.787 [SENSOR] Dat: DAT VUON | ADC: 1975 (+-4.5) | Am:  63.4% | EC:   856 | N: 68.5 | P: 34.2 | K: 94.1 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:40:39.700 [TEST] Gio tram: 1795682440.397
+2026-11-26 15:40:40.787 [SENSOR] Dat: DAT VUON | ADC: 1982 (+-3.1) | Am:  63.6% | EC:   859 | N: 68.7 | P: 34.4 | K: 94.5 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:40:43.700 [TEST] Gio tram: 1795682444.397
+2026-11-26 15:40:44.786 [SENSOR] Dat: DAT VUON | ADC: 1973 (+-4.0) | Am:  63.3% | EC:   855 | N: 68.4 | P: 34.2 | K: 94.0 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:40:47.700 [TEST] Gio tram: 1795682448.397
+2026-11-26 15:40:48.786 [SENSOR] Dat: DAT VUON | ADC: 1969 (+-5.5) | Am:  63.2% | EC:   853 | N: 68.2 | P: 34.1 | K: 93.8 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:40:51.700 [TEST] Gio tram: 1795682452.397
+2026-11-26 15:40:52.786 [SENSOR] Dat: DAT VUON | ADC: 1982 (+-16.3) | Am:  63.6% | EC:   859 | N: 68.7 | P: 34.4 | K: 94.5 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:40:55.701 [TEST] Gio tram: 1795682456.397
+2026-11-26 15:40:56.786 [SENSOR] Dat: DAT VUON | ADC: 1985 (+-2.7) | Am:  63.8% | EC:   861 | N: 68.8 | P: 34.4 | K: 94.7 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:40:59.699 [TEST] Gio tram: 1795682460.397
+2026-11-26 15:41:00.786 [SENSOR] Dat: DAT VUON | ADC: 1988 (+-4.2) | Am:  63.9% | EC:   862 | N: 69.0 | P: 34.5 | K: 94.8 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:41:03.699 [TEST] Gio tram: 1795682464.397
+2026-11-26 15:41:04.786 [SENSOR] Dat: DAT VUON | ADC: 1987 (+-3.7) | Am:  63.8% | EC:   862 | N: 68.9 | P: 34.5 | K: 94.8 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:41:07.699 [TEST] Gio tram: 1795682468.397
+2026-11-26 15:41:08.785 [SENSOR] Dat: DAT VUON | ADC: 1988 (+-5.3) | Am:  63.9% | EC:   862 | N: 69.0 | P: 34.5 | K: 94.8 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:41:11.699 [TEST] Gio tram: 1795682472.397
+2026-11-26 15:41:12.786 [SENSOR] Dat: DAT VUON | ADC: 1987 (+-3.2) | Am:  63.8% | EC:   862 | N: 68.9 | P: 34.5 | K: 94.8 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:41:15.699 [TEST] Gio tram: 1795682476.397
+2026-11-26 15:41:16.785 [SENSOR] Dat: DAT VUON | ADC: 1986 (+-3.6) | Am:  63.8% | EC:   861 | N: 68.9 | P: 34.4 | K: 94.7 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:41:19.698 [TEST] Gio tram: 1795682480.397
+2026-11-26 15:41:20.785 [SENSOR] Dat: DAT VUON | ADC: 1990 (+-3.9) | Am:  63.9% | EC:   863 | N: 69.0 | P: 34.5 | K: 94.9 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:41:23.699 [TEST] Gio tram: 1795682484.397
+2026-11-26 15:41:24.784 [SENSOR] Dat: DAT VUON | ADC: 1996 (+-3.2) | Am:  64.1% | EC:   866 | N: 69.3 | P: 34.6 | K: 95.3 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:41:27.698 [TEST] Gio tram: 1795682488.397
+2026-11-26 15:41:28.785 [SENSOR] Dat: DAT VUON | ADC: 1995 (+-3.8) | Am:  64.1% | EC:   865 | N: 69.2 | P: 34.6 | K: 95.2 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:41:31.698 [TEST] Gio tram: 1795682492.397
+2026-11-26 15:41:32.784 [SENSOR] Dat: DAT VUON | ADC: 1996 (+-14.5) | Am:  64.1% | EC:   866 | N: 69.3 | P: 34.6 | K: 95.3 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:41:35.698 [TEST] Gio tram: 1795682496.397
+2026-11-26 15:41:36.784 [SENSOR] Dat: DAT VUON | ADC: 1997 (+-4.5) | Am:  64.2% | EC:   866 | N: 69.3 | P: 34.7 | K: 95.3 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:41:39.698 [TEST] Gio tram: 1795682500.397
+2026-11-26 15:41:40.784 [SENSOR] Dat: DAT VUON | ADC: 1995 (+-3.7) | Am:  64.1% | EC:   865 | N: 69.2 | P: 34.6 | K: 95.2 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:41:43.697 [TEST] Gio tram: 1795682504.397
+2026-11-26 15:41:44.783 [SENSOR] Dat: DAT VUON | ADC: 2004 (+-3.8) | Am:  64.4% | EC:   870 | N: 69.6 | P: 34.8 | K: 95.7 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:41:47.697 [TEST] Gio tram: 1795682508.397
+2026-11-26 15:41:48.784 [SENSOR] Dat: DAT VUON | ADC: 2000 (+-3.5) | Am:  64.3% | EC:   868 | N: 69.4 | P: 34.7 | K: 95.5 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:41:51.697 [TEST] Gio tram: 1795682512.397
+2026-11-26 15:41:52.783 [SENSOR] Dat: DAT VUON | ADC: 2000 (+-4.3) | Am:  64.3% | EC:   868 | N: 69.4 | P: 34.7 | K: 95.5 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:41:55.697 [TEST] Gio tram: 1795682516.397
+2026-11-26 15:41:56.783 [SENSOR] Dat: DAT VUON | ADC: 1983 (+-10.4) | Am:  63.7% | EC:   860 | N: 68.8 | P: 34.4 | K: 94.6 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:41:59.696 [TEST] Gio tram: 1795682520.397
+2026-11-26 15:42:00.783 [SENSOR] Dat: DAT VUON | ADC: 1984 (+-4.9) | Am:  63.7% | EC:   860 | N: 68.8 | P: 34.4 | K: 94.6 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:42:03.696 [TEST] Gio tram: 1795682524.397
+2026-11-26 15:42:04.782 [SENSOR] Dat: DAT VUON | ADC: 1984 (+-2.8) | Am:  63.7% | EC:   860 | N: 68.8 | P: 34.4 | K: 94.6 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:42:07.696 [TEST] Gio tram: 1795682528.397
+2026-11-26 15:42:07.718 [TEST] Bat lai song Wi-Fi
+2026-11-26 15:42:07.742 [WIFI] Mat ket noi, dang do tim lai...
+2026-11-26 15:42:15.302 [WIFI] Da ket noi lai "<wifi>"
+2026-11-26 15:42:16.942 Dang ket noi MQTT broker.emqx.io:8883 (TLS)... Thanh cong! (1637 ms, heap trong 166268 byte)
+2026-11-26 15:42:16.945 Da dang ky lang nghe: soil_station/1/command
+2026-11-26 15:42:17.050 [SENSOR] Dat: DAT VUON | ADC: 1983 (+-4.6) | Am:  63.7% | EC:   860 | N: 68.8 | P: 34.4 | K: 94.6 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:42:17.059 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:42:17.063 [TEST] Gio tram: 1795682537.758
+2026-11-26 15:42:21.049 [SENSOR] Dat: DAT VUON | ADC: 1989 (+-6.5) | Am:  63.9% | EC:   863 | N: 69.0 | P: 34.5 | K: 94.9 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:42:21.059 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:42:21.061 [TEST] Gio tram: 1795682541.758
+2026-11-26 15:42:25.049 [SENSOR] Dat: DAT VUON | ADC: 1989 (+-6.4) | Am:  63.9% | EC:   863 | N: 69.0 | P: 34.5 | K: 94.9 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:42:25.059 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:42:25.061 [TEST] Gio tram: 1795682545.758
+2026-11-26 15:42:29.049 [SENSOR] Dat: DAT VUON | ADC: 1989 (+-5.1) | Am:  63.9% | EC:   863 | N: 69.0 | P: 34.5 | K: 94.9 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:42:29.058 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:42:29.061 [TEST] Gio tram: 1795682549.758
+2026-11-26 15:42:33.049 [SENSOR] Dat: DAT VUON | ADC: 1986 (+-8.2) | Am:  63.8% | EC:   861 | N: 68.9 | P: 34.4 | K: 94.7 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:42:33.058 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:42:33.061 [TEST] Gio tram: 1795682553.758
+2026-11-26 15:42:37.049 [SENSOR] Dat: DAT VUON | ADC: 1985 (+-13.6) | Am:  63.8% | EC:   861 | N: 68.8 | P: 34.4 | K: 94.7 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:42:37.058 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:42:37.061 [TEST] Gio tram: 1795682557.759
+2026-11-26 15:42:41.049 [SENSOR] Dat: DAT VUON | ADC: 1987 (+-3.8) | Am:  63.8% | EC:   862 | N: 68.9 | P: 34.5 | K: 94.8 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:42:41.059 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:42:41.061 [TEST] Gio tram: 1795682561.759
+2026-11-26 15:42:45.048 [SENSOR] Dat: DAT VUON | ADC: 1993 (+-5.2) | Am:  64.0% | EC:   864 | N: 69.2 | P: 34.6 | K: 95.1 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:42:45.057 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:42:45.060 [TEST] Gio tram: 1795682565.759
+2026-11-26 15:42:49.048 [SENSOR] Dat: DAT VUON | ADC: 1988 (+-3.4) | Am:  63.9% | EC:   862 | N: 69.0 | P: 34.5 | K: 94.8 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:42:49.059 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:42:49.061 [TEST] Gio tram: 1795682569.759
+2026-11-26 15:42:53.047 [SENSOR] Dat: DAT VUON | ADC: 1986 (+-4.4) | Am:  63.8% | EC:   861 | N: 68.9 | P: 34.4 | K: 94.7 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:42:53.057 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:42:53.060 [TEST] Gio tram: 1795682573.759
+2026-11-26 15:42:57.048 [SENSOR] Dat: DAT VUON | ADC: 1985 (+-3.9) | Am:  63.8% | EC:   861 | N: 68.8 | P: 34.4 | K: 94.7 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:42:57.057 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:42:57.060 [TEST] Gio tram: 1795682577.759
+2026-11-26 15:43:01.047 [SENSOR] Dat: DAT VUON | ADC: 1990 (+-10.8) | Am:  63.9% | EC:   863 | N: 69.0 | P: 34.5 | K: 94.9 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:43:01.057 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:43:01.059 [TEST] Gio tram: 1795682581.759
+2026-11-26 15:43:05.047 [SENSOR] Dat: DAT VUON | ADC: 1990 (+-4.6) | Am:  63.9% | EC:   863 | N: 69.0 | P: 34.5 | K: 94.9 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:43:05.057 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:43:05.060 [TEST] Gio tram: 1795682585.759
+2026-11-26 15:43:09.048 [SENSOR] Dat: DAT VUON | ADC: 1991 (+-5.1) | Am:  64.0% | EC:   864 | N: 69.1 | P: 34.5 | K: 95.0 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:43:09.057 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:43:09.060 [TEST] Gio tram: 1795682589.759
+2026-11-26 15:43:13.047 [SENSOR] Dat: DAT VUON | ADC: 1993 (+-4.9) | Am:  64.0% | EC:   864 | N: 69.2 | P: 34.6 | K: 95.1 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:43:13.056 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:43:13.059 [TEST] Gio tram: 1795682593.759
+2026-11-26 15:43:17.047 [SENSOR] Dat: DAT VUON | ADC: 1988 (+-4.4) | Am:  63.9% | EC:   862 | N: 69.0 | P: 34.5 | K: 94.8 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:43:17.056 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:43:17.059 [TEST] Gio tram: 1795682597.761
+2026-11-26 15:43:21.047 [SENSOR] Dat: DAT VUON | ADC: 1989 (+-3.8) | Am:  63.9% | EC:   863 | N: 69.0 | P: 34.5 | K: 94.9 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:43:21.057 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:43:21.059 [TEST] Gio tram: 1795682601.761
+2026-11-26 15:43:25.046 [SENSOR] Dat: DAT VUON | ADC: 1987 (+-4.7) | Am:  63.8% | EC:   862 | N: 68.9 | P: 34.5 | K: 94.8 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:43:25.055 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:43:25.058 [TEST] Gio tram: 1795682605.761
+2026-11-26 15:43:29.046 [SENSOR] Dat: DAT VUON | ADC: 1989 (+-5.0) | Am:  63.9% | EC:   863 | N: 69.0 | P: 34.5 | K: 94.9 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:43:29.055 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:43:29.058 [TEST] Gio tram: 1795682609.761
+2026-11-26 15:43:33.046 [SENSOR] Dat: DAT VUON | ADC: 2069 (+-4.9) | Am:  66.8% | EC:   901 | N: 72.1 | P: 36.0 | K: 99.1 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:43:33.055 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:43:33.058 [TEST] Gio tram: 1795682613.761
+2026-11-26 15:43:37.046 [SENSOR] Dat: DAT VUON | ADC: 2119 (+-8.7) | Am:  68.5% | EC:   925 | N: 74.0 | P: 37.0 | K: 101.8 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:43:37.055 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:43:37.058 [TEST] Gio tram: 1795682617.761
+2026-11-26 15:43:41.046 [SENSOR] Dat: DAT VUON | ADC: 2126 (+-4.2) | Am:  68.8% | EC:   929 | N: 74.3 | P: 37.1 | K: 102.1 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:43:41.055 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:43:41.058 [TEST] Gio tram: 1795682621.761
+2026-11-26 15:43:45.045 [SENSOR] Dat: DAT VUON | ADC: 2119 (+-6.5) | Am:  68.5% | EC:   925 | N: 74.0 | P: 37.0 | K: 101.8 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:43:45.055 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:43:45.057 [TEST] Gio tram: 1795682625.761
+2026-11-26 15:43:49.046 [SENSOR] Dat: DAT VUON | ADC: 2132 (+-5.0) | Am:  69.0% | EC:   932 | N: 74.5 | P: 37.3 | K: 102.5 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:43:49.055 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:43:49.058 [TEST] Gio tram: 1795682629.761
+2026-11-26 15:43:53.045 [SENSOR] Dat: DAT VUON | ADC: 2128 (+-3.5) | Am:  68.9% | EC:   930 | N: 74.4 | P: 37.2 | K: 102.3 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:43:53.056 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:43:53.059 [TEST] Gio tram: 1795682633.761
+2026-11-26 15:43:57.045 [SENSOR] Dat: DAT VUON | ADC: 2125 (+-6.8) | Am:  68.8% | EC:   928 | N: 74.2 | P: 37.1 | K: 102.1 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:43:57.055 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:43:57.057 [TEST] Gio tram: 1795682637.761
+2026-11-26 15:44:01.044 [SENSOR] Dat: DAT VUON | ADC: 2112 (+-3.7) | Am:  68.3% | EC:   922 | N: 73.7 | P: 36.9 | K: 101.4 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:44:01.055 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:44:01.057 [TEST] Gio tram: 1795682641.761
+2026-11-26 15:44:05.045 [SENSOR] Dat: DAT VUON | ADC: 2111 (+-3.9) | Am:  68.2% | EC:   921 | N: 73.7 | P: 36.9 | K: 101.4 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:44:05.055 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:44:05.058 [TEST] Gio tram: 1795682645.761
+2026-11-26 15:44:09.044 [SENSOR] Dat: DAT VUON | ADC: 2112 (+-4.9) | Am:  68.3% | EC:   922 | N: 73.7 | P: 36.9 | K: 101.4 (chuan 65/33/90: OK) | pH: 6.3
+2026-11-26 15:44:09.053 => Da gui MQTT thanh cong len topic: soil_station/1/telemetry
+2026-11-26 15:44:09.056 [TEST] Gio tram: 1795682649.761
+# Tóm tắt
+# Thời gian có giờ NTP: n = 1, nhỏ nhất 16546 ms, trung vị 16546 ms, trung bình 16546 ms, lớn nhất 16546 ms
+# Kết nối MQTT thành công 2 lần, thất bại 0 lần
+# Thời gian kết nối MQTT thành công: n = 2, nhỏ nhất 1520 ms, trung vị 1578 ms, trung bình 1578 ms, lớn nhất 1637 ms

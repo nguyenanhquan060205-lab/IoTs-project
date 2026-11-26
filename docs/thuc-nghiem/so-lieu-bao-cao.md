@@ -102,7 +102,7 @@ Tệp gốc nằm trong `docs/thuc-nghiem/log/`, cách đo ghi trong `docs/thuc-
 |---|---|
 | Thời gian có giờ sau khi có IP | Chưa đạt. 10 lần khởi động: nhỏ nhất 0.61 s, trung vị 16.3 s, lớn nhất 19.6 s. 3 lần dưới 4 s, 7 lần từ 15.3 đến 19.6 s |
 | Độ lệch so với giờ chuẩn | Đạt. Giờ nhận trừ `timestamp` của trạm là 0.89 – 0.91 s (5 lần), sau khi bù giờ máy tính theo time.google.com. `timestamp` chỉ tới giây, nên số này gồm phần lẻ bị cắt (0 – 1 s) và độ trễ mạng |
-| Mất Wi-Fi rồi có lại | Chờ buổi đo cùng nhóm (tắt router) |
+| Mất Wi-Fi rồi có lại | Đạt. Tắt sóng Wi-Fi của trạm 5 phút bằng bản nạp tạm: giờ trạm lệch giờ chuẩn trung bình −31 ms trước, −21 ms trong và −14 ms sau lúc mất Wi-Fi (trôi 15 ms trong 5 phút) |
 | Máy chủ chính không phản hồi | Đạt. Đặt sai tên máy chủ chính, trạm lấy giờ từ time.google.com sau 1.9 – 4.6 s (3 lần) |
 | Chưa có giờ | Một phần. Bản tin không có `timestamp` (40/40 bản tin trong 3 phút), đúng như mong đợi. Nhưng kết nối TLS vẫn thành công (1.72 s): trạm không kiểm tra hạn chứng chỉ khi chưa có giờ |
 
@@ -126,6 +126,7 @@ Trạm được giữ ở trạng thái reset 60 s bằng chân EN (tương đư
 |---|---|---|
 | Trạm mất nguồn đột ngột | Broker đăng `{"status":"offline"}` (giữ lại) khi hết hạn keep-alive (15 s × 1.5); app vẫn chỉ thấy "Cập nhật lúc" dừng lại vì app chưa đăng ký topic status | Đạt. Status offline sau 32.6 s, 32.6 s và 28.0 s (trung bình 31.1 s), lâu hơn mức 22.5 s tính theo keep-alive |
 | Trạm bật lại | Trạm gửi status online, ứng dụng nhận dữ liệu mới | Đạt. Status online và bản tin telemetry đầu tiên sau 12.1 – 12.5 s kể từ lúc cấp lại (gồm khởi động, vào Wi-Fi và bắt tay TLS) |
+| Trạm mất Wi-Fi | Trạm vẫn đo, OLED báo NO WIFI, có mạng lại thì tự gửi tiếp | Đạt. Tắt sóng Wi-Fi của trạm 5 phút: trạm vẫn đo (71 lần trong 5 phút); có sóng lại thì nối Wi-Fi sau 7.6 s, MQTT sau 9.2 s, gửi lại bản tin sau 9.3 s. OLED chưa quan sát trực tiếp |
 
 ### Bảng 4.5: cột đo thật trên mạch (thêm vào cạnh bảng tính sẵn)
 
