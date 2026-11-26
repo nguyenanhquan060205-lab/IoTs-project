@@ -58,7 +58,7 @@ node --test "web/*.test.js"
 |---|---|
 | `sample_id` | Mã mẫu |
 | `soil_type` | `potting` (đóng bao), `garden` (đất vườn), `barren` (bạc màu) |
-| `moisture_level` | Khô kiệt / Ẩm thấp / Ẩm tối ưu / Bão hòa |
+| `moisture_level` | Khô / Ẩm |
 | `captured_at` | Thời điểm lấy mẫu (ISO 8601, UTC) |
 | `est_moisture`, `est_ec`, `est_n`, `est_p`, `est_k`, `est_ph` | Ước lượng của trạm (trung bình các bản tin) |
 | `ref_moisture`, `ref_ec`, `ref_n`, `ref_p`, `ref_k`, `ref_ph` | Giá trị tham chiếu, ô trống là không đo |

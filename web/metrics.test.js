@@ -118,14 +118,14 @@ test('parseNumber: nhận dấu phẩy và dấu chấm, ô trống là null', (
 test('toCsv rồi fromCsv trả lại đúng dữ liệu, kể cả ô trống và chữ có dấu', () => {
   const samples = [
     {
-      sample_id: 'M01', soil_type: 'garden', moisture_level: 'Ẩm tối ưu',
+      sample_id: 'M01', soil_type: 'garden', moisture_level: 'Ẩm',
       captured_at: '2026-11-26T08:30:00.000Z',
       est: { moisture: 61.2, ec: 826.2, n: 66.1, p: 33, k: 90.9, ph: 6.4 },
       ref: { moisture: 58, ec: null, n: 70, p: 30, k: null, ph: 6.6 },
       note: 'Đất lấy ở bồn hoa, "ẩm", có rễ',
     },
     {
-      sample_id: 'M02', soil_type: 'barren', moisture_level: 'Khô kiệt',
+      sample_id: 'M02', soil_type: 'barren', moisture_level: 'Khô',
       captured_at: '2026-11-26T08:40:00.000Z',
       est: { moisture: 3.5, ec: 150, n: 12, p: 6, k: 16.5, ph: 6.3 },
       ref: { moisture: null, ec: null, n: null, p: null, k: null, ph: null },
@@ -139,11 +139,11 @@ test('toCsv rồi fromCsv trả lại đúng dữ liệu, kể cả ô trống v
 
 test('fromCsv: đọc được tệp Excel kiểu Việt Nam (dấu chấm phẩy, phẩy thập phân)', () => {
   const header = M.CSV_COLUMNS.join(';');
-  const row = ['M03', 'potting', 'Bão hòa', '2026-11-26T09:00:00.000Z',
+  const row = ['M03', 'potting', 'Ẩm', '2026-11-26T09:00:00.000Z',
     '90,5', '1810', '144,8', '72,4', '199,1', '5,7',
     '88', '', '', '', '', '5,9', 'ghi chú'].join(';');
   const [s] = M.fromCsv('﻿' + header + '\r\n' + row + '\r\n');
-  assert.equal(s.moisture_level, 'Bão hòa');
+  assert.equal(s.moisture_level, 'Ẩm');
   assert.equal(s.est.moisture, 90.5);
   assert.equal(s.est.n, 144.8);
   assert.equal(s.ref.ph, 5.9);
