@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="vi"><head><meta charset="utf-8"><title>Hình 3.1: Sơ đồ kiến trúc 3 tầng của hệ thống giai đoạn 2</title>
+<style>html,body{margin:0;background:#ffffff} svg{display:block}</style></head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="950" viewBox="0 0 1000 950"
+     font-family="'Segoe UI', Arial, sans-serif" role="img" aria-label="Hình 3.1: Sơ đồ kiến trúc 3 tầng của hệ thống giai đoạn 2">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="#222222"/></marker></defs>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<rect x="10" y="10" width="980" height="250" rx="10" fill="#f4f4f1" stroke="#c9c9c4" stroke-width="1.2"/>
+<text x="26" y="36" font-size="15" font-weight="bold" text-anchor="start" fill="#555555">TẦNG ỨNG DỤNG</text>
+<rect x="10" y="300" width="980" height="210" rx="10" fill="#f4f4f1" stroke="#c9c9c4" stroke-width="1.2"/>
+<text x="26" y="326" font-size="15" font-weight="bold" text-anchor="start" fill="#555555">TẦNG TRUYỀN THÔNG</text>
+<rect x="10" y="550" width="980" height="390" rx="10" fill="#f4f4f1" stroke="#c9c9c4" stroke-width="1.2"/>
+<text x="26" y="576" font-size="15" font-weight="bold" text-anchor="start" fill="#555555">TẦNG THIẾT BỊ ĐO</text>
+<rect x="40" y="50" width="440" height="190" rx="8" fill="#eaf6f1" stroke="#222222" stroke-width="1.6"/>
+<text x="54" y="104.5" font-size="17" font-weight="bold" text-anchor="start" fill="#222222">Ứng dụng Flutter (điện thoại)</text>
+<text x="54" y="127.5" font-size="16" font-weight="normal" text-anchor="start" fill="#222222">Tổng quan · Chỉ số · Mẫu đất · Lịch sử · Hiệu chuẩn</text>
+<text x="54" y="150.5" font-size="16" font-weight="normal" text-anchor="start" fill="#222222">Hệ chuyên gia: điểm sức khỏe đất, khuyến nghị</text>
+<text x="54" y="173.5" font-size="16" font-weight="normal" text-anchor="start" fill="#222222">Lịch sử SQLite: 1 bản ghi/phút, giữ 30 ngày</text>
+<text x="54" y="196.5" font-size="16" font-weight="normal" text-anchor="start" fill="#222222">MQTT qua TLS cổng 8883, gửi lệnh QoS 1</text>
+<rect x="520" y="50" width="440" height="190" rx="8" fill="#eaf6f1" stroke="#222222" stroke-width="1.6"/>
+<text x="534" y="104.5" font-size="17" font-weight="bold" text-anchor="start" fill="#222222">Trang web đánh giá sai số (trình duyệt)</text>
+<text x="534" y="127.5" font-size="16" font-weight="normal" text-anchor="start" fill="#222222">MAE, RMSE, MAPE theo từng chỉ số</text>
+<text x="534" y="150.5" font-size="16" font-weight="normal" text-anchor="start" fill="#222222">Đo nhiễu bộ lọc, trạng thái online / offline</text>
+<text x="534" y="173.5" font-size="16" font-weight="normal" text-anchor="start" fill="#222222">WebSocket có TLS cổng 8084</text>
+<text x="534" y="196.5" font-size="16" font-weight="normal" text-anchor="start" fill="#222222">Chỉ nhận bản tin, không gửi lệnh</text>
+<rect x="40" y="340" width="640" height="150" rx="8" fill="#fdf1e8" stroke="#222222" stroke-width="1.6"/>
+<text x="54" y="386.0" font-size="17" font-weight="bold" text-anchor="start" fill="#222222">Broker MQTT broker.emqx.io</text>
+<text x="54" y="409.0" font-size="16" font-weight="normal" text-anchor="start" fill="#222222">soil_station/1/telemetry: trạm → app, web (4 giây/lần)</text>
+<text x="54" y="432.0" font-size="16" font-weight="normal" text-anchor="start" fill="#222222">soil_station/1/command: app → trạm (SET_SOIL_TYPE, CALIBRATE)</text>
+<text x="54" y="455.0" font-size="16" font-weight="normal" text-anchor="start" fill="#222222">soil_station/1/status: online, LWT offline (giữ lại)</text>
+<rect x="720" y="340" width="240" height="150" rx="8" fill="#fdf1e8" stroke="#222222" stroke-width="1.6"/>
+<text x="734" y="386.0" font-size="17" font-weight="bold" text-anchor="start" fill="#222222">Máy chủ NTP</text>
+<text x="734" y="409.0" font-size="16" font-weight="normal" text-anchor="start" fill="#222222">pool.ntp.org</text>
+<text x="734" y="432.0" font-size="16" font-weight="normal" text-anchor="start" fill="#222222">time.google.com</text>
+<text x="734" y="455.0" font-size="16" font-weight="normal" text-anchor="start" fill="#222222">UDP cổng 123</text>
+<rect x="40" y="600" width="230" height="120" rx="8" fill="#ffffff" stroke="#222222" stroke-width="1.6"/>
+<text x="54" y="631.0" font-size="17" font-weight="bold" text-anchor="start" fill="#222222">Cảm biến độ ẩm</text>
+<text x="54" y="654.0" font-size="16" font-weight="normal" text-anchor="start" fill="#222222">module LM393</text>
+<text x="54" y="677.0" font-size="16" font-weight="normal" text-anchor="start" fill="#222222">nguồn 3,3 V</text>
+<text x="54" y="700.0" font-size="16" font-weight="normal" text-anchor="start" fill="#222222">AO → GPIO34 (ADC1)</text>
+<rect x="320" y="590" width="360" height="330" rx="8" fill="#eaf1fb" stroke="#222222" stroke-width="1.6"/>
+<text x="334" y="680.0" font-size="17" font-weight="bold" text-anchor="start" fill="#222222">ESP32 (firmware)</text>
+<text x="334" y="703.0" font-size="16" font-weight="normal" text-anchor="start" fill="#222222">1. Đọc 21 mẫu ADC, lọc cắt tỉa</text>
+<text x="334" y="726.0" font-size="16" font-weight="normal" text-anchor="start" fill="#222222">2. ADC → độ ẩm theo mốc khô / ướt</text>
+<text x="334" y="749.0" font-size="16" font-weight="normal" text-anchor="start" fill="#222222">3. Độ ẩm → EC theo loại đất</text>
+<text x="334" y="772.0" font-size="16" font-weight="normal" text-anchor="start" fill="#222222">4. EC → N, P, K; độ ẩm → pH</text>
+<text x="334" y="795.0" font-size="16" font-weight="normal" text-anchor="start" fill="#222222">5. So N, P, K với mức chuẩn ±20%</text>
+<text x="334" y="818.0" font-size="16" font-weight="normal" text-anchor="start" fill="#222222">6. JSON có timestamp → MQTT</text>
+<text x="334" y="841.0" font-size="16" font-weight="normal" text-anchor="start" fill="#222222">TLS kiểm tra Root CA</text>
+<rect x="720" y="590" width="240" height="72" rx="8" fill="#ffffff" stroke="#222222" stroke-width="1.6"/>
+<text x="734" y="620.0" font-size="16" font-weight="bold" text-anchor="start" fill="#222222">OLED SSD1306</text>
+<text x="734" y="642.0" font-size="15" font-weight="normal" text-anchor="start" fill="#222222">I2C: GPIO21 / GPIO22</text>
+<path d="M 680,626 L 718,626" fill="none" stroke="#222222" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="720" y="674" width="240" height="72" rx="8" fill="#ffffff" stroke="#222222" stroke-width="1.6"/>
+<text x="734" y="704.0" font-size="16" font-weight="bold" text-anchor="start" fill="#222222">LED đỏ / vàng / xanh</text>
+<text x="734" y="726.0" font-size="15" font-weight="normal" text-anchor="start" fill="#222222">GPIO32 / GPIO19 / GPIO33</text>
+<path d="M 680,710 L 718,710" fill="none" stroke="#222222" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="720" y="758" width="240" height="72" rx="8" fill="#ffffff" stroke="#222222" stroke-width="1.6"/>
+<text x="734" y="788.0" font-size="16" font-weight="bold" text-anchor="start" fill="#222222">Còi</text>
+<text x="734" y="810.0" font-size="15" font-weight="normal" text-anchor="start" fill="#222222">GPIO25, phát bằng PWM</text>
+<path d="M 680,794 L 718,794" fill="none" stroke="#222222" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="720" y="842" width="240" height="72" rx="8" fill="#ffffff" stroke="#222222" stroke-width="1.6"/>
+<text x="734" y="872.0" font-size="16" font-weight="bold" text-anchor="start" fill="#222222">Bộ nhớ NVS</text>
+<text x="734" y="894.0" font-size="15" font-weight="normal" text-anchor="start" fill="#222222">loại đất, mốc khô / ướt</text>
+<path d="M 680,878 L 718,878" fill="none" stroke="#222222" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M 270,660 L 318,660" fill="none" stroke="#222222" stroke-width="1.6" marker-end="url(#arrow)"/>
+<path d="M 420,590 L 420,492" fill="none" stroke="#222222" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="412" y="540" font-size="15" font-weight="normal" text-anchor="end" fill="#555555" stroke="#ffffff" stroke-width="5" paint-order="stroke">telemetry, status</text>
+<path d="M 580,492 L 580,588" fill="none" stroke="#222222" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="590" y="540" font-size="15" font-weight="normal" text-anchor="start" fill="#555555" stroke="#ffffff" stroke-width="5" paint-order="stroke">command</text>
+<path d="M 840,492 L 840,560 L 660,560 L 660,588" fill="none" stroke="#222222" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="850" y="535" font-size="15" font-weight="normal" text-anchor="start" fill="#555555" stroke="#ffffff" stroke-width="5" paint-order="stroke">giờ thực (SNTP)</text>
+<path d="M 240,340 L 240,242" fill="none" stroke="#222222" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="232" y="292" font-size="15" font-weight="normal" text-anchor="end" fill="#555555" stroke="#ffffff" stroke-width="5" paint-order="stroke">telemetry</text>
+<path d="M 400,242 L 400,338" fill="none" stroke="#222222" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="410" y="292" font-size="15" font-weight="normal" text-anchor="start" fill="#555555" stroke="#ffffff" stroke-width="5" paint-order="stroke">command (QoS 1)</text>
+<path d="M 600,340 L 600,242" fill="none" stroke="#222222" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="610" y="292" font-size="15" font-weight="normal" text-anchor="start" fill="#555555" stroke="#ffffff" stroke-width="5" paint-order="stroke">telemetry, status</text>
+</svg>
+</body></html>

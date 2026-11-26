@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="vi"><head><meta charset="utf-8"><title>Hình 3.6: Quy trình vận hành của hệ chuyên gia trên ứng dụng</title>
+<style>html,body{margin:0;background:#ffffff} svg{display:block}</style></head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="640" viewBox="0 0 1100 640"
+     font-family="'Segoe UI', Arial, sans-serif" role="img" aria-label="Hình 3.6: Quy trình vận hành của hệ chuyên gia trên ứng dụng">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+<path d="M0,0 L10,5 L0,10 z" fill="#222222"/></marker></defs>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<rect x="20" y="250" width="180" height="110" rx="8" fill="#eaf1fb" stroke="#222222" stroke-width="1.6"/>
+<text x="110.0" y="276.0" font-size="17" font-weight="bold" text-anchor="middle" fill="#222222">Bản tin</text>
+<text x="110.0" y="299.0" font-size="16" font-weight="normal" text-anchor="middle" fill="#222222">telemetry</text>
+<text x="110.0" y="322.0" font-size="16" font-weight="normal" text-anchor="middle" fill="#222222">N, P, K, pH,</text>
+<text x="110.0" y="345.0" font-size="16" font-weight="normal" text-anchor="middle" fill="#222222">EC, độ ẩm</text>
+<path d="M 200,305 L 238,305" fill="none" stroke="#222222" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="240" y="20" width="420" height="600" rx="8" fill="#ffffff" stroke="#222222" stroke-width="1.6"/>
+<text x="254" y="52" font-size="17" font-weight="bold" text-anchor="start" fill="#222222">1. Đối chiếu ngưỡng chuẩn</text>
+<text x="646" y="52" font-size="15" font-weight="normal" text-anchor="end" fill="#555555">điểm trừ</text>
+<text x="254" y="100" font-size="16" font-weight="normal" text-anchor="start" fill="#222222">pH &lt; 5,5: đất chua phèn</text>
+<text x="646" y="100" font-size="16" font-weight="bold" text-anchor="end" fill="#222222">−25</text>
+<line x1="254" y1="116" x2="646" y2="116" stroke="#dddddd" stroke-width="1"/>
+<text x="254" y="146" font-size="16" font-weight="normal" text-anchor="start" fill="#222222">pH &gt; 7,5: đất kiềm</text>
+<text x="646" y="146" font-size="16" font-weight="bold" text-anchor="end" fill="#222222">−15</text>
+<line x1="254" y1="162" x2="646" y2="162" stroke="#dddddd" stroke-width="1"/>
+<text x="254" y="192" font-size="16" font-weight="normal" text-anchor="start" fill="#222222">EC &lt; 300 µS/cm: nghèo dinh dưỡng</text>
+<text x="646" y="192" font-size="16" font-weight="bold" text-anchor="end" fill="#222222">−25</text>
+<line x1="254" y1="208" x2="646" y2="208" stroke="#dddddd" stroke-width="1"/>
+<text x="254" y="238" font-size="16" font-weight="normal" text-anchor="start" fill="#222222">EC &gt; 2000 µS/cm: mặn, dư phân</text>
+<text x="646" y="238" font-size="16" font-weight="bold" text-anchor="end" fill="#222222">−35</text>
+<line x1="254" y1="254" x2="646" y2="254" stroke="#dddddd" stroke-width="1"/>
+<text x="254" y="284" font-size="16" font-weight="normal" text-anchor="start" fill="#222222">N &lt; 50 mg/kg: thiếu đạm</text>
+<text x="646" y="284" font-size="16" font-weight="bold" text-anchor="end" fill="#222222">−15</text>
+<line x1="254" y1="300" x2="646" y2="300" stroke="#dddddd" stroke-width="1"/>
+<text x="254" y="330" font-size="16" font-weight="normal" text-anchor="start" fill="#222222">N &gt; 150 mg/kg: dư đạm</text>
+<text x="646" y="330" font-size="16" font-weight="bold" text-anchor="end" fill="#222222">−10</text>
+<line x1="254" y1="346" x2="646" y2="346" stroke="#dddddd" stroke-width="1"/>
+<text x="254" y="376" font-size="16" font-weight="normal" text-anchor="start" fill="#222222">P &lt; 30 mg/kg: thiếu lân</text>
+<text x="646" y="376" font-size="16" font-weight="bold" text-anchor="end" fill="#222222">−15</text>
+<line x1="254" y1="392" x2="646" y2="392" stroke="#dddddd" stroke-width="1"/>
+<text x="254" y="422" font-size="16" font-weight="normal" text-anchor="start" fill="#222222">K &lt; 80 mg/kg: thiếu kali</text>
+<text x="646" y="422" font-size="16" font-weight="bold" text-anchor="end" fill="#222222">−15</text>
+<line x1="254" y1="438" x2="646" y2="438" stroke="#dddddd" stroke-width="1"/>
+<text x="254" y="468" font-size="16" font-weight="normal" text-anchor="start" fill="#222222">Độ ẩm &lt; 50%: khô hạn</text>
+<text x="646" y="468" font-size="16" font-weight="bold" text-anchor="end" fill="#222222">−15</text>
+<line x1="254" y1="484" x2="646" y2="484" stroke="#dddddd" stroke-width="1"/>
+<text x="254" y="514" font-size="16" font-weight="normal" text-anchor="start" fill="#222222">Độ ẩm &gt; 80%: ngập úng</text>
+<text x="646" y="514" font-size="16" font-weight="bold" text-anchor="end" fill="#222222">−15</text>
+<line x1="254" y1="530" x2="646" y2="530" stroke="#dddddd" stroke-width="1"/>
+<text x="254" y="590" font-size="15" font-weight="normal" text-anchor="start" fill="#555555">Một bộ ngưỡng chung cho mọi loại đất</text>
+<path d="M 660,320 L 698,320" fill="none" stroke="#222222" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="700" y="220" width="180" height="200" rx="8" fill="#fdf1e8" stroke="#222222" stroke-width="1.6"/>
+<text x="790.0" y="279.5" font-size="17" font-weight="bold" text-anchor="middle" fill="#222222">2. Điểm</text>
+<text x="790.0" y="302.5" font-size="16" font-weight="normal" text-anchor="middle" fill="#222222">100 − tổng</text>
+<text x="790.0" y="325.5" font-size="16" font-weight="normal" text-anchor="middle" fill="#222222">điểm trừ,</text>
+<text x="790.0" y="348.5" font-size="16" font-weight="normal" text-anchor="middle" fill="#222222">giới hạn</text>
+<text x="790.0" y="371.5" font-size="16" font-weight="normal" text-anchor="middle" fill="#222222">0 – 100</text>
+<path d="M 880,320 L 918,320" fill="none" stroke="#222222" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="920" y="110" width="160" height="420" rx="8" fill="#eaf6f1" stroke="#222222" stroke-width="1.6"/>
+<text x="1000.0" y="222.0" font-size="17" font-weight="bold" text-anchor="middle" fill="#222222">3. Kết luận</text>
+<text x="1000.0" y="245.0" font-size="16" font-weight="normal" text-anchor="middle" fill="#222222">≥ 80: tốt</text>
+<text x="1000.0" y="268.0" font-size="16" font-weight="normal" text-anchor="middle" fill="#222222">50 – 79:</text>
+<text x="1000.0" y="291.0" font-size="16" font-weight="normal" text-anchor="middle" fill="#222222">trung bình</text>
+<text x="1000.0" y="314.0" font-size="16" font-weight="normal" text-anchor="middle" fill="#222222">&lt; 50: kém</text>
+<text x="1000.0" y="337.0" font-size="16" font-weight="normal" text-anchor="middle" fill="#222222"></text>
+<text x="1000.0" y="360.0" font-size="16" font-weight="normal" text-anchor="middle" fill="#222222">Danh sách</text>
+<text x="1000.0" y="383.0" font-size="16" font-weight="normal" text-anchor="middle" fill="#222222">vấn đề và</text>
+<text x="1000.0" y="406.0" font-size="16" font-weight="normal" text-anchor="middle" fill="#222222">phân bón cần</text>
+<text x="1000.0" y="429.0" font-size="16" font-weight="normal" text-anchor="middle" fill="#222222">bổ sung</text>
+</svg>
+</body></html>
