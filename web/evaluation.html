@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Đánh giá sai số - Trạm đo dinh dưỡng đất</title>
+  <!-- Cùng thư viện MQTT qua WebSocket với simulator/index.html -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js"></script>
+  <script src="metrics.js"></script>
+  <style>
+    .viz-root {
+      color-scheme: light;
+      --surface-0: #f4f4f2;
+      --surface-1: #ffffff;
+      --line: #dcdcd8;
+      --grid: #ececec;
+      --text-primary: #191919;
+      --text-secondary: #666666;
+      --accent: #2370cd;
+      --accent-text: #ffffff;
+      --series-1: #257de0;
+      --series-2: #f47230;
+      --series-3: #00b894;
+      --series-other: #8a8a8a;
+      --good: #0aac23;
+      --warning: #fbb315;
+      --critical: #dc3c3d;
+      --input-bad: #fde8e8;
+    }
+    @media (prefers-color-scheme: dark) {
+      .viz-root {
+        color-scheme: dark;
+        --surface-0: #111111;
+        --surface-1: #191919;
+        --line: #333333;
+        --grid: #2a2a2a;
+        --text-primary: #efefef;
+        --text-secondary: #9c9c9c;
+        --accent: #338ced;
+        --accent-text: #0b0b0b;
+        --series-1: #338ced;
+        --series-2: #e76624;
+        --series-3: #00a888;
+        --series-other: #8a8a8a;
+        --input-bad: #4a1f1f;
+      }
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    .viz-root {
+      min-height: 100vh;
+      background: var(--surface-0);
+      color: var(--text-primary);
+      font: 14px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      padding: 20px;
+    }
+    .wrap { max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+    .results > * { min-width: 0; }
+    header h1 { font-size: 22px; margin: 0 0 4px; }
+    header p { margin: 0; color: var(--text-secondary); }
+    section {
+      background: var(--surface-1);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    section h2 { font-size: 16px; margin: 0 0 12px; }
+    .hint { color: var(--text-secondary); font-size: 13px; margin: 6px 0 0; }
+    .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; }
+    label.field { display: grid; gap: 2px; font-size: 12px; color: var(--text-secondary); }
+    input, select, button { font: inherit; color: var(--text-primary); }
+    input[type="text"], input[type="number"], select {
+      background: var(--surface-1);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 5px 8px;
+      min-width: 0;
+    }
+    input[aria-invalid="true"] { background: var(--input-bad); border-color: var(--critical); }
+    button {
+      border: 1px solid var(--line);
+      background: var(--surface-1);
+      border-radius: 6px;
+      padding: 6px 12px;
+      cursor: pointer;
+    }
+    button.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+    .status { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; }
+    .status .icon { font-size: 12px; }
+    .status.ok .icon { color: var(--good); }
+    .status.busy .icon { color: var(--warning); }
+    .status.error .icon { color: var(--critical); }
+    .status.idle .icon { color: var(--text-secondary); }
+
+    .live-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+    .tile { border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; }
+    .tile .k { font-size: 12px; color: var(--text-secondary); }
+    .tile .v { font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums; }
+    .tile .s { font-size: 12px; color: var(--text-secondary); }
+
+    .table-wrap { overflow-x: auto; }
+    table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+    caption { text-align: left; font-size: 13px; color: var(--text-secondary); padding-bottom: 6px; }
+    th, td { border-bottom: 1px solid var(--line); padding: 6px 8px; text-align: right; white-space: nowrap; }
+    th { font-size: 12px; color: var(--text-secondary); font-weight: 600; }
+    th.l, td.l { text-align: left; }
+    td input[type="text"] { width: 72px; text-align: right; }
+    td input.note { width: 160px; text-align: left; }
+
+    .results { display: grid; grid-template-columns: minmax(320px, 1fr) minmax(320px, 520px); gap: 20px; align-items: start; }
+    @media (max-width: 860px) { .results { grid-template-columns: 1fr; } }
+    .chart-box { position: relative; }
+    .legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 13px; margin-bottom: 6px; }
+    .legend span { display: inline-flex; align-items: center; gap: 6px; }
+    svg.chart { width: 100%; height: auto; display: block; }
+    svg.chart text { fill: var(--text-secondary); font-size: 12px; }
+    svg.chart .grid { stroke: var(--grid); stroke-width: 1; }
+    svg.chart .axis { stroke: var(--line); stroke-width: 1; }
+    svg.chart .identity { stroke: var(--text-secondary); stroke-width: 1; }
+    svg.chart .hit { fill: transparent; cursor: pointer; }
+    .tooltip {
+      position: absolute;
+      pointer-events: none;
+      background: var(--surface-1);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 12px;
+      min-width: 170px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      display: none;
+      z-index: 2;
+    }
+    .tooltip .t { display: flex; align-items: center; gap: 6px; color: var(--text-secondary); margin-bottom: 4px; }
+    .tooltip .r { display: flex; gap: 8px; }
+    .tooltip .r b { color: var(--text-primary); min-width: 64px; text-align: right; font-variant-numeric: tabular-nums; }
+    .tooltip .r span { color: var(--text-secondary); }
+    .empty { color: var(--text-secondary); padding: 24px 0; text-align: center; }
+
+    ul.log {
+      list-style: none; margin: 0; padding: 0;
+      max-height: 180px; overflow-y: auto;
+      font: 12px/1.6 ui-monospace, Consolas, monospace;
+      color: var(--text-secondary);
+    }
+  </style>
+</head>
+<body>
+<div class="viz-root">
+  <div class="wrap">
+    <header>
+      <h1>Đánh giá sai số trạm đo dinh dưỡng đất</h1>
+      <p>Trang này chỉ nhận bản tin của trạm qua MQTT, không gửi lệnh nào tới trạm. Sai số chỉ hiện ở đây, không hiện trên OLED.</p>
+    </header>
+
+    <!-- 1. KẾT NỐI -->
+    <section aria-labelledby="h-conn">
+      <h2 id="h-conn">1. Kết nối broker</h2>
+      <div class="row">
+        <label class="field">Broker<input type="text" id="host" value="broker.emqx.io" size="18"></label>
+        <label class="field">Cổng WebSocket<input type="number" id="port" value="8084" style="width:90px"></label>
+        <label class="field">Đường dẫn<input type="text" id="path" value="/mqtt" size="6"></label>
+        <label class="field">Topic telemetry<input type="text" id="topicTelemetry" value="soil_station/1/telemetry" size="22"></label>
+        <label class="field">Topic status<input type="text" id="topicStatus" value="soil_station/1/status" size="20"></label>
+        <label class="field">TLS (WSS)<input type="checkbox" id="tls" checked></label>
+        <button class="primary" id="btnConnect" type="button">Kết nối</button>
+        <button id="btnDisconnect" type="button">Ngắt</button>
+      </div>
+      <p class="hint"><span class="status idle" id="connStatus" aria-live="polite"><span class="icon" aria-hidden="true">●</span><span class="txt">Chưa kết nối</span></span></p>
+    </section>
+
+    <!-- 2. TRỰC TIẾP -->
+    <section aria-labelledby="h-live">
+      <h2 id="h-live">2. Số đo trực tiếp</h2>
+      <div class="live-grid" id="liveGrid"></div>
+      <p class="hint" id="liveMeta">Chưa nhận bản tin nào.</p>
+    </section>
+
+    <!-- 3. MẪU ĐẤT -->
+    <section aria-labelledby="h-samples">
+      <h2 id="h-samples">3. Mẫu đất và giá trị tham chiếu</h2>
+      <div class="row">
+        <label class="field">Mã mẫu<input type="text" id="sampleId" size="6"></label>
+        <label class="field">Mức ẩm
+          <select id="level">
+            <option>Khô kiệt</option>
+            <option>Ẩm thấp</option>
+            <option selected>Ẩm tối ưu</option>
+            <option>Bão hòa</option>
+          </select>
+        </label>
+        <label class="field">Số bản tin lấy trung bình<input type="number" id="captureK" value="5" min="1" max="30" style="width:70px"></label>
+        <label class="field">Ghi chú<input type="text" id="captureNote" size="22"></label>
+        <button class="primary" id="btnCapture" type="button">Lấy mẫu</button>
+        <button id="btnCancelCapture" type="button" disabled>Hủy</button>
+      </div>
+      <p class="hint" id="captureStatus" aria-live="polite">Cắm đầu dò vào mẫu, chờ số đứng yên khoảng 1 phút rồi bấm Lấy mẫu. Loại đất lấy theo trạm đang đo.</p>
+      <div class="table-wrap" style="margin-top:12px">
+        <table id="sampleTable"></table>
+      </div>
+      <div class="row" style="margin-top:12px">
+        <button id="btnExport" type="button">Xuất CSV</button>
+        <button id="btnImport" type="button">Nhập CSV</button>
+        <input type="file" id="fileImport" accept=".csv,text/csv" hidden>
+        <button id="btnClear" type="button">Xóa tất cả mẫu</button>
+      </div>
+      <p class="hint">Ô tham chiếu nào bộ kit không đo thì để trống. Gõ số bằng dấu phẩy hoặc dấu chấm đều được. Dữ liệu được lưu trong trình duyệt này; xuất CSV để lưu vào <code>docs/thuc-nghiem/</code>.</p>
+    </section>
+
+    <!-- 4. KẾT QUẢ -->
+    <section aria-labelledby="h-results">
+      <h2 id="h-results">4. Sai số theo từng chỉ số</h2>
+      <div class="row" style="margin-bottom:12px">
+        <label class="field">Loại đất
+          <select id="soilFilter">
+            <option value="">Tất cả</option>
+            <option value="potting">Đất đóng bao</option>
+            <option value="garden">Đất vườn</option>
+            <option value="barren">Đất bạc màu</option>
+          </select>
+        </label>
+        <label class="field">Chỉ số trên biểu đồ<select id="chartIndicator"></select></label>
+      </div>
+      <div class="results">
+        <div class="table-wrap">
+          <table id="metricTable"></table>
+          <p class="hint">Mỗi chỉ số tính riêng theo đơn vị của nó, không gộp các chỉ số khác đơn vị. Sai số = ước lượng − tham chiếu. MAPE bỏ qua mẫu có tham chiếu bằng 0.</p>
+        </div>
+        <div class="chart-box" id="chartBox">
+          <div class="legend" id="legend"></div>
+          <div id="chart"></div>
+          <div class="tooltip" id="tooltip" role="status"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. ĐO NHIỄU -->
+    <section aria-labelledby="h-noise">
+      <h2 id="h-noise">5. Đo nhiễu bộ lọc</h2>
+      <div class="row">
+        <label class="field">Số bản tin M<input type="number" id="noiseM" value="100" min="2" max="1000" style="width:90px"></label>
+        <button class="primary" id="btnNoiseStart" type="button">Bắt đầu</button>
+        <button id="btnNoiseStop" type="button" disabled>Dừng và tính</button>
+        <button id="btnNoiseExport" type="button" disabled>Xuất CSV bản tin thô</button>
+      </div>
+      <p class="hint" id="noiseStatus" aria-live="polite">Cắm đầu dò vào một cốc đất, không chạm vào trong lúc đo. 100 bản tin mất khoảng 7 phút (4 giây một bản tin).</p>
+      <div class="table-wrap" style="margin-top:12px"><table id="noiseTable"></table></div>
+      <p class="hint">"Không lọc" là trung bình <code>adc.noise</code>: độ lệch chuẩn của 21 mẫu thô trong một lần đo. "Có lọc" là độ lệch chuẩn của <code>adc.raw</code> (giá trị sau lọc cắt tỉa) giữa M bản tin. Phần trăm độ ẩm tính theo khoảng cách hai mốc khô/ướt.</p>
+    </section>
+
+    <!-- 6. NHẬT KÝ -->
+    <section aria-labelledby="h-log">
+      <h2 id="h-log">Nhật ký</h2>
+      <ul class="log" id="log"></ul>
+    </section>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  const M = window.SoilMetrics;
+  const STORAGE_KEY = 'soil-eval-samples-v1';
+  const STALE_SECONDS = 15;
+  const SOIL_TYPES = [
+    { code: 'potting', label: 'Đất đóng bao', color: 'var(--series-1)', shape: 'circle' },
+    { code: 'garden', label: 'Đất vườn', color: 'var(--series-2)', shape: 'square' },
+    { code: 'barren', label: 'Đất bạc màu', color: 'var(--series-3)', shape: 'triangle' },
+  ];
+  const OTHER_SOIL = { code: '', label: 'Khác', color: 'var(--series-other)', shape: 'diamond' };
+  const LEVEL_LABELS = { low: 'Thấp', normal: 'Bình thường', high: 'Cao' };
+  // Số chữ số lẻ khi hiện số đo của từng chỉ số; sai số hiện thêm 1 chữ số
+  const DIGITS = { moisture: 1, ec: 1, n: 1, p: 1, k: 1, ph: 2 };
+
+  const $ = (id) => document.getElementById(id);
+  const isNum = (v) => typeof v === 'number' && Number.isFinite(v);
+  const soilInfo = (code) => SOIL_TYPES.find((s) => s.code === code) || OTHER_SOIL;
+  const soilLabel = (code) => (soilInfo(code) === OTHER_SOIL ? (code || 'Không rõ') : soilInfo(code).label);
+
+  function fmt(value, digits) {
+    if (!isNum(value)) return '–';
+    return value.toLocaleString('vi-VN', { minimumFractionDigits: digits, maximumFractionDigits: digits });
+  }
+  function unitText(ind) { return ind.unit ? ' ' + ind.unit : ''; }
+  function round2(value) { return isNum(value) ? Math.round(value * 100) / 100 : null; }
+  function el(tag, props, children) {
+    const node = document.createElement(tag);
+    if (props) {
+      for (const [key, value] of Object.entries(props)) {
+        if (key === 'text') node.textContent = value;
+        else if (key === 'className') node.className = value;
+        else node.setAttribute(key, value);
+      }
+    }
+    for (const child of children || []) node.appendChild(typeof child === 'string' ? document.createTextNode(child) : child);
+    return node;
+  }
+  function clock(date) {
+    return date.toLocaleTimeString('vi-VN', { hour12: false });
+  }
+  function stamp() {
+    const d = new Date();
+    const p = (n) => String(n).padStart(2, '0');
+    return `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}`;
+  }
+  function download(filename, text) {
+    const url = URL.createObjectURL(new Blob([text], { type: 'text/csv;charset=utf-8' }));
+    const a = el('a', { href: url, download: filename });
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  // ---------------- Nhật ký ----------------
+  function log(text) {
+    const list = $('log');
+    list.insertBefore(el('li', { text: `[${clock(new Date())}] ${text}` }), list.firstChild);
+    while (list.children.length > 80) list.removeChild(list.lastChild);
+  }
+
+  // ---------------- Kết nối MQTT ----------------
+  let client = null;
+  let userDisconnected = true;
+  let retryTimer = null;
+  let topics = { telemetry: '', status: '' };
+
+  function setConn(state, text) {
+    const node = $('connStatus');
+    node.className = 'status ' + state;
+    node.querySelector('.txt').textContent = text;
+  }
+
+  function scheduleRetry() {
+    if (userDisconnected) return;
+    clearTimeout(retryTimer);
+    retryTimer = setTimeout(connect, 5000);
+    log('Thử kết nối lại sau 5 giây');
+  }
+
+  function connect() {
+    clearTimeout(retryTimer);
+    if (typeof Paho === 'undefined') {
+      setConn('error', 'Không tải được thư viện MQTT. Trang cần Internet để tải Paho từ cdnjs.');
+      return;
+    }
+    const host = $('host').value.trim();
+    const port = Number($('port').value);
+    const path = $('path').value.trim() || '/mqtt';
+    if (!host || !Number.isInteger(port) || port <= 0) {
+      setConn('error', 'Broker hoặc cổng không hợp lệ');
+      return;
+    }
+    userDisconnected = false;
+    if (client) {
+      const old = client;
+      client = null;
+      try { if (old.isConnected()) old.disconnect(); } catch (e) { /* phiên cũ đã đóng */ }
+    }
+    const newTopics = { telemetry: $('topicTelemetry').value.trim(), status: $('topicStatus').value.trim() };
+    if (newTopics.telemetry !== topics.telemetry || newTopics.status !== topics.status) {
+      // Đổi topic thì bỏ số đo và trạng thái của topic cũ để không hiện nhầm
+      lastMsg = null;
+      lastMsgAt = null;
+      lastSkew = null;
+      station = null;
+      renderLive();
+    }
+    topics = newTopics;
+    const me =new Paho.MQTT.Client(host, port, path, 'soil_eval_' + Math.random().toString(16).slice(2, 10));
+    client = me;
+    me.onConnectionLost = (res) => {
+      if (client !== me) return;
+      setConn('error', 'Mất kết nối' + (res && res.errorMessage ? ': ' + res.errorMessage : ''));
+      log('Mất kết nối broker' + (res && res.errorMessage ? ': ' + res.errorMessage : ''));
+      scheduleRetry();
+    };
+    me.onMessageArrived = (message) => { if (client === me) onMessage(message); };
+    setConn('busy', `Đang kết nối ${host}:${port}...`);
+    me.connect({
+      useSSL: $('tls').checked,
+      timeout: 10,
+      keepAliveInterval: 30,
+      cleanSession: true,
+      onSuccess: () => {
+        if (client !== me) return;
+        setConn('ok', `Đã kết nối ${host}:${port}`);
+        log(`Đã kết nối ${host}:${port}, đăng ký ${topics.telemetry} và ${topics.status}`);
+        if (topics.telemetry) me.subscribe(topics.telemetry, { qos: 0 });
+        if (topics.status) me.subscribe(topics.status, { qos: 0 });
+      },
+      onFailure: (err) => {
+        if (client !== me) return;
+        setConn('error', 'Lỗi kết nối' + (err && err.errorMessage ? ': ' + err.errorMessage : ''));
+        log('Lỗi kết nối broker' + (err && err.errorMessage ? ': ' + err.errorMessage : ''));
+        scheduleRetry();
+      },
+    });
+  }
+
+  function disconnect() {
+    userDisconnected = true;
+    clearTimeout(retryTimer);
+    const old = client;
+    client = null;
+    try { if (old && old.isConnected()) old.disconnect(); } catch (e) { /* đã đóng */ }
+    setConn('idle', 'Đã ngắt kết nối');
+    log('Ngắt kết nối theo yêu cầu');
+  }
+
+  function isConnected() {
+    try { return !!client && client.isConnected(); } catch (e) { return false; }
+  }
+
+  // ---------------- Bản tin ----------------
+  let lastMsg = null;
+  let lastMsgAt = null;
+  let lastSkew = null;
+  let station = null;  // {status, device, at, retained}
+
+  function onMessage(message) {
+    const topic = message.destinationName;
+    let data;
+    try {
+      data = JSON.parse(message.payloadString);
+    } catch (e) {
+      log(`Bỏ qua bản tin không phải JSON trên ${topic}`);
+      return;
+    }
+    if (topic === topics.status) {
+      station = {
+        status: data && typeof data.status === 'string' ? data.status : '?',
+        device: data && typeof data.device === 'string' ? data.device : '',
+        at: new Date(),
+        retained: !!message.retained,
+      };
+      log(`Trạng thái trạm: ${station.status}${station.retained ? ' (bản tin giữ lại trên broker)' : ''}`);
+      renderLive();
+      return;
+    }
+    if (!data || typeof data.telemetry !== 'object' || data.telemetry === null) {
+      log('Bỏ qua bản tin thiếu trường telemetry');
+      return;
+    }
+    lastMsg = data;
+    lastMsgAt = Date.now();
+    lastSkew = isNum(data.timestamp) ? lastMsgAt / 1000 - data.timestamp : null;
+    if (!isNum(data.timestamp)) log('Bản tin không có timestamp: trạm chưa có giờ NTP');
+    renderLive();
+    if (capture) onCaptureMessage(data);
+    if (noiseRun) onNoiseMessage(data);
+  }
+
+  function tile(key, value, sub) {
+    return el('div', { className: 'tile' }, [
+      el('div', { className: 'k', text: key }),
+      el('div', { className: 'v', text: value }),
+      el('div', { className: 's', text: sub || '' }),
+    ]);
+  }
+
+  function renderLive() {
+    const grid = $('liveGrid');
+    grid.replaceChildren();
+    if (station) {
+      const online = station.status === 'online';
+      grid.appendChild(tile('Trạng thái trạm', online ? '● Trực tuyến' : station.status === 'offline' ? '● Ngoại tuyến' : station.status,
+        `nhận lúc ${clock(station.at)}${station.retained ? ', giữ lại trên broker' : ''}`));
+    }
+    if (!lastMsg) {
+      $('liveMeta').textContent = 'Chưa nhận bản tin telemetry nào.';
+      return;
+    }
+    const t = lastMsg.telemetry;
+    const level = lastMsg.npk_level || {};
+    const normal = lastMsg.npk_normal || {};
+    grid.appendChild(tile('Loại đất', soilLabel(lastMsg.soil_type), lastMsg.device_id || ''));
+    for (const ind of M.INDICATORS) {
+      let sub = ind.unit;
+      if (ind.key === 'n' || ind.key === 'p' || ind.key === 'k') {
+        const lv = level[ind.field];
+        sub = `${ind.unit} · ${LEVEL_LABELS[lv] || '–'} so với mức chuẩn ${isNum(normal[ind.field]) ? fmt(normal[ind.field], 0) : '–'}`;
+      }
+      grid.appendChild(tile(ind.label, fmt(t[ind.field], DIGITS[ind.key]), sub));
+    }
+    const adc = lastMsg.adc || {};
+    grid.appendChild(tile('ADC sau lọc', isNum(adc.raw) ? String(adc.raw) : '–', `nhiễu ±${fmt(adc.noise, 1)} ADC`));
+    grid.appendChild(tile('Mốc khô / ướt', `${isNum(adc.dry) ? adc.dry : '–'} / ${isNum(adc.wet) ? adc.wet : '–'}`, 'đang lưu trong NVS'));
+    renderMeta();
+  }
+
+  function renderMeta() {
+    if (!lastMsg) return;
+    const age = Math.round((Date.now() - lastMsgAt) / 1000);
+    const parts = [`Bản tin cuối: ${age} giây trước${age > STALE_SECONDS ? ' (quá lâu không có bản tin mới)' : ''}`];
+    if (isNum(lastMsg.timestamp)) {
+      parts.push(`Giờ trạm: ${new Date(lastMsg.timestamp * 1000).toLocaleString('vi-VN', { hour12: false })}`);
+      parts.push(`Độ lệch giờ (máy tính − trạm): ${fmt(lastSkew, 1)} s, gồm cả độ trễ mạng, timestamp của trạm làm tròn tới giây`);
+    } else {
+      parts.push('Trạm chưa có giờ NTP (bản tin không có timestamp)');
+    }
+    $('liveMeta').textContent = parts.join(' · ');
+  }
+  setInterval(renderMeta, 1000);
+
+  // ---------------- Mẫu đất ----------------
+  let samples = loadSamples();
+  let capture = null;  // {id, level, note, needed, messages}
+
+  function loadSamples() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      const parsed = raw ? JSON.parse(raw) : [];
+      return Array.isArray(parsed) ? parsed.filter((s) => s && s.sample_id && s.est && s.ref) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+  function saveSamples() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(samples)); }
+    catch (e) { log('Không lưu được vào trình duyệt, hãy xuất CSV để giữ dữ liệu'); }
+  }
+  function nextSampleId() {
+    let max = 0;
+    for (const s of samples) {
+      const m = /(\d+)$/.exec(s.sample_id);
+      if (m) max = Math.max(max, Number(m[1]));
+    }
+    return 'M' + String(max + 1).padStart(2, '0');
+  }
+
+  function setCaptureUi(running) {
+    $('btnCapture').disabled = running;
+    $('btnCancelCapture').disabled = !running;
+  }
+
+  function startCapture() {
+    if (!isConnected()) {
+      $('captureStatus').textContent = 'Chưa kết nối broker nên chưa lấy mẫu được.';
+      return;
+    }
+    const id = $('sampleId').value.trim() || nextSampleId();
+    if (samples.some((s) => s.sample_id === id)) {
+      $('captureStatus').textContent = `Mã mẫu ${id} đã có. Đổi mã khác hoặc xóa mẫu cũ trước.`;
+      return;
+    }
+    const needed = Math.max(1, Math.min(30, Math.round(Number($('captureK').value) || 5)));
+    capture = { id, level: $('level').value, note: $('captureNote').value.trim(), needed, messages: [] };
+    setCaptureUi(true);
+    $('captureStatus').textContent = `Đang lấy mẫu ${id}: chờ ${needed} bản tin kế tiếp (khoảng ${needed * 4} giây)...`;
+  }
+
+  function cancelCapture(reason) {
+    capture = null;
+    setCaptureUi(false);
+    $('captureStatus').textContent = reason || 'Đã hủy lấy mẫu.';
+  }
+
+  function onCaptureMessage(data) {
+    capture.messages.push(data);
+    const got = capture.messages.length;
+    if (got < capture.needed) {
+      $('captureStatus').textContent = `Đang lấy mẫu ${capture.id}: đã nhận ${got}/${capture.needed} bản tin...`;
+      return;
+    }
+    const soilTypes = new Set(capture.messages.map((m) => m.soil_type));
+    if (soilTypes.size > 1) {
+      cancelCapture(`Loại đất trên trạm đổi trong lúc lấy mẫu ${capture.id}, mẫu bị bỏ. Lấy lại sau khi trạm ổn định.`);
+      return;
+    }
+    const avg = M.averageTelemetry(capture.messages);
+    const est = {};
+    const ref = {};
+    for (const ind of M.INDICATORS) {
+      est[ind.key] = round2(avg[ind.key]);
+      ref[ind.key] = null;
+    }
+    const sample = {
+      sample_id: capture.id,
+      soil_type: capture.messages[capture.messages.length - 1].soil_type || '',
+      moisture_level: capture.level,
+      captured_at: new Date().toISOString(),
+      est,
+      ref,
+      note: capture.note,
+    };
+    samples.push(sample);
+    saveSamples();
+    log(`Đã lấy mẫu ${sample.sample_id} (${soilLabel(sample.soil_type)}, ${sample.moisture_level}) từ ${capture.needed} bản tin`);
+    cancelCapture(`Đã lấy mẫu ${sample.sample_id}. Nhập giá trị tham chiếu vào bảng bên dưới.`);
+    $('sampleId').value = nextSampleId();
+    $('captureNote').value = '';
+    renderSamples();
+    renderResults();
+  }
+
+  function numberInput(sample, key) {
+    const value = sample.ref[key];
+    const input = el('input', {
+      type: 'text',
+      inputmode: 'decimal',
+      'aria-label': `Tham chiếu ${M.INDICATORS.find((i) => i.key === key).label} của mẫu ${sample.sample_id}`,
+    });
+    input.value = isNum(value) ? String(value).replace('.', ',') : '';
+    input.addEventListener('change', () => {
+      const text = input.value.trim();
+      const parsed = M.parseNumber(text);
+      if (text !== '' && parsed === null) {
+        input.setAttribute('aria-invalid', 'true');
+        return;
+      }
+      input.removeAttribute('aria-invalid');
+      sample.ref[key] = parsed;
+      saveSamples();
+      renderResults();
+    });
+    return input;
+  }
+
+  function renderSamples() {
+    const table = $('sampleTable');
+    table.replaceChildren();
+    table.appendChild(el('caption', { text: `${samples.length} mẫu. Cột trái mỗi chỉ số là ước lượng của trạm, cột phải là giá trị tham chiếu từ bộ kit.` }));
+    const head1 = el('tr', null, [
+      el('th', { className: 'l', rowspan: '2', scope: 'col', text: 'Mã' }),
+      el('th', { className: 'l', rowspan: '2', scope: 'col', text: 'Loại đất' }),
+      el('th', { className: 'l', rowspan: '2', scope: 'col', text: 'Mức ẩm' }),
+    ]);
+    const head2 = el('tr');
+    for (const ind of M.INDICATORS) {
+      head1.appendChild(el('th', { colspan: '2', scope: 'colgroup', text: ind.label + (ind.unit ? ` (${ind.unit})` : '') }));
+      head2.appendChild(el('th', { scope: 'col', text: 'Ước lượng' }));
+      head2.appendChild(el('th', { scope: 'col', text: 'Tham chiếu' }));
+    }
+    head1.appendChild(el('th', { className: 'l', rowspan: '2', scope: 'col', text: 'Ghi chú' }));
+    head1.appendChild(el('th', { rowspan: '2', scope: 'col', text: '' }));
+    table.appendChild(el('thead', null, [head1, head2]));
+
+    const body = el('tbody');
+    if (samples.length === 0) {
+      body.appendChild(el('tr', null, [el('td', { className: 'l', colspan: String(5 + M.INDICATORS.length * 2), text: 'Chưa có mẫu nào.' })]));
+    }
+    for (const sample of samples) {
+      const row = el('tr', null, [
+        el('td', { className: 'l', text: sample.sample_id }),
+        el('td', { className: 'l', text: soilLabel(sample.soil_type) }),
+        el('td', { className: 'l', text: sample.moisture_level }),
+      ]);
+      for (const ind of M.INDICATORS) {
+        row.appendChild(el('td', { text: fmt(sample.est[ind.key], DIGITS[ind.key]) }));
+        row.appendChild(el('td', null, [numberInput(sample, ind.key)]));
+      }
+      const note = el('input', { type: 'text', className: 'note', 'aria-label': `Ghi chú mẫu ${sample.sample_id}` });
+      note.value = sample.note || '';
+      note.addEventListener('change', () => { sample.note = note.value; saveSamples(); });
+      row.appendChild(el('td', { className: 'l' }, [note]));
+      const del = el('button', { type: 'button', text: 'Xóa', 'aria-label': `Xóa mẫu ${sample.sample_id}` });
+      del.addEventListener('click', () => {
+        if (!confirm(`Xóa mẫu ${sample.sample_id}?`)) return;
+        samples = samples.filter((s) => s !== sample);
+        saveSamples();
+        renderSamples();
+        renderResults();
+      });
+      row.appendChild(el('td', null, [del]));
+      body.appendChild(row);
+    }
+    table.appendChild(body);
+  }
+
+  function importCsv(file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      let imported;
+      try {
+        imported = M.fromCsv(reader.result);
+      } catch (e) {
+        alert('Không đọc được tệp CSV: ' + e.message);
+        return;
+      }
+      imported = imported.filter((s) => s.sample_id);
+      if (samples.length > 0 && !confirm(`Thay ${samples.length} mẫu hiện có bằng ${imported.length} mẫu trong tệp?`)) return;
+      samples = imported;
+      saveSamples();
+      log(`Đã nhập ${imported.length} mẫu từ ${file.name}`);
+      $('sampleId').value = nextSampleId();
+      renderSamples();
+      renderResults();
+    };
+    reader.readAsText(file, 'utf-8');
+  }
+
+  // ---------------- Kết quả: bảng sai số ----------------
+  function renderResults() {
+    const soil = $('soilFilter').value;
+    const rows = M.summarize(samples, soil);
+    const table = $('metricTable');
+    table.replaceChildren();
+    table.appendChild(el('caption', { text: soil ? `Chỉ tính mẫu ${soilLabel(soil)}` : 'Tính trên mọi mẫu' }));
+    table.appendChild(el('thead', null, [el('tr', null, [
+      el('th', { className: 'l', scope: 'col', text: 'Chỉ số' }),
+      el('th', { className: 'l', scope: 'col', text: 'Đơn vị' }),
+      el('th', { scope: 'col', text: 'n' }),
+      el('th', { scope: 'col', text: 'MAE' }),
+      el('th', { scope: 'col', text: 'RMSE' }),
+      el('th', { scope: 'col', text: 'MAPE (%)' }),
+      el('th', { scope: 'col', text: 'n MAPE' }),
+    ])]));
+    const body = el('tbody');
+    for (const r of rows) {
+      const d = DIGITS[r.key] + 1;
+      body.appendChild(el('tr', null, [
+        el('td', { className: 'l', text: r.label }),
+        el('td', { className: 'l', text: r.unit || '–' }),
+        el('td', { text: String(r.n) }),
+        el('td', { text: fmt(r.mae, d) }),
+        el('td', { text: fmt(r.rmse, d) }),
+        el('td', { text: fmt(r.mape, 1) }),
+        el('td', { text: String(r.mapeN) }),
+      ]));
+    }
+    table.appendChild(body);
+
+    // Giữ chỉ số đang chọn; lần đầu chọn chỉ số đầu tiên có dữ liệu
+    const select = $('chartIndicator');
+    if (select.options.length === 0) {
+      for (const ind of M.INDICATORS) select.appendChild(el('option', { value: ind.key, text: ind.label }));
+      const firstWithData = rows.find((r) => r.n > 0);
+      select.value = firstWithData ? firstWithData.key : 'n';
+    }
+    renderChart();
+  }
+
+  // ---------------- Kết quả: biểu đồ ước lượng - tham chiếu ----------------
+  const SVG_NS = 'http://www.w3.org/2000/svg';
+  function svg(tag, attrs) {
+    const node = document.createElementNS(SVG_NS, tag);
+    for (const [key, value] of Object.entries(attrs || {})) node.setAttribute(key, value);
+    return node;
+  }
+
+  function niceStep(range) {
+    const raw = range / 5;
+    const mag = Math.pow(10, Math.floor(Math.log10(raw)));
+    const norm = raw / mag;
+    return (norm <= 1 ? 1 : norm <= 2 ? 2 : norm <= 2.5 ? 2.5 : norm <= 5 ? 5 : 10) * mag;
+  }
+
+  function markerShape(shape, cx, cy, color) {
+    // Màu đặt qua style vì var() trong thuộc tính fill/stroke của SVG không được mọi trình duyệt nhận
+    const common = { style: `fill: ${color}; stroke: var(--surface-1); stroke-width: 2px` };
+    if (shape === 'square') return svg('rect', Object.assign({ x: cx - 5, y: cy - 5, width: 10, height: 10 }, common));
+    if (shape === 'triangle') return svg('polygon', Object.assign({ points: `${cx},${cy - 6.5} ${cx + 6},${cy + 4.5} ${cx - 6},${cy + 4.5}` }, common));
+    if (shape === 'diamond') return svg('polygon', Object.assign({ points: `${cx},${cy - 6.5} ${cx + 6.5},${cy} ${cx},${cy + 6.5} ${cx - 6.5},${cy}` }, common));
+    return svg('circle', Object.assign({ cx, cy, r: 5.5 }, common));
+  }
+
+  function legendKey(shape, color) {
+    const s = svg('svg', { width: 14, height: 14, viewBox: '0 0 14 14', 'aria-hidden': 'true' });
+    s.appendChild(markerShape(shape, 7, 7, color));
+    return s;
+  }
+
+  function renderLegend(points) {
+    const legend = $('legend');
+    legend.replaceChildren();
+    const present = new Set(points.map((p) => soilInfo(p.sample.soil_type)));
+    for (const info of SOIL_TYPES.concat([OTHER_SOIL])) {
+      if (!present.has(info)) continue;
+      const item = el('span');
+      item.appendChild(legendKey(info.shape, info.color));
+      item.appendChild(document.createTextNode(info.label));
+      legend.appendChild(item);
+    }
+    if (points.length > 0) {
+      const key = svg('svg', { width: 18, height: 14, viewBox: '0 0 18 14', 'aria-hidden': 'true' });
+      key.appendChild(svg('line', { x1: 1, y1: 13, x2: 17, y2: 1, style: 'stroke: var(--text-secondary); stroke-width: 1px' }));
+      const item = el('span');
+      item.appendChild(key);
+      item.appendChild(document.createTextNode('y = x: ước lượng đúng bằng tham chiếu'));
+      legend.appendChild(item);
+    }
+  }
+
+  function renderChart() {
+    const key = $('chartIndicator').value || 'n';
+    const ind = M.INDICATORS.find((i) => i.key === key);
+    const soil = $('soilFilter').value;
+    const points = samples
+      .filter((s) => (!soil || s.soil_type === soil) && isNum(s.est[key]) && isNum(s.ref[key]))
+      .map((s) => ({ sample: s, x: s.ref[key], y: s.est[key] }));
+    const box = $('chart');
+    box.replaceChildren();
+    hideTip();
+    renderLegend(points);
+    if (points.length === 0) {
+      box.appendChild(el('div', { className: 'empty', text: `Chưa có mẫu nào có cả ước lượng và tham chiếu cho ${ind.label}.` }));
+      return;
+    }
+
+    // Hai trục cùng thang để đường y = x nằm chéo 45 độ
+    let lo = Math.min(...points.map((p) => Math.min(p.x, p.y)));
+    let hi = Math.max(...points.map((p) => Math.max(p.x, p.y)));
+    if (hi - lo < 1e-9) { lo -= Math.max(1, Math.abs(lo) * 0.1); hi += Math.max(1, Math.abs(hi) * 0.1); }
+    const pad = (hi - lo) * 0.08;
+    lo -= pad; hi += pad;
+    const step = niceStep(hi - lo);
+    lo = Math.floor(lo / step) * step;
+    hi = Math.ceil(hi / step) * step;
+
+    const ML = 60, MT = 14, MB = 46, MR = 18, SIZE = 340;
+    const W = ML + SIZE + MR, H = MT + SIZE + MB;
+    const sx = (v) => ML + ((v - lo) / (hi - lo)) * SIZE;
+    const sy = (v) => MT + SIZE - ((v - lo) / (hi - lo)) * SIZE;
+    // Số chữ số lẻ của nhãn trục theo bước (2,5 cần 1 chữ số lẻ, 0,25 cần 2)
+    const tickDigits = (String(Number(step.toPrecision(6))).split('.')[1] || '').length;
+
+    const root = svg('svg', {
+      class: 'chart', viewBox: `0 0 ${W} ${H}`, role: 'img',
+      'aria-label': `Biểu đồ ước lượng so với tham chiếu của ${ind.label}, ${points.length} mẫu. Số liệu đầy đủ nằm trong bảng mẫu đất.`,
+    });
+    for (let v = lo; v <= hi + step / 2; v += step) {
+      root.appendChild(svg('line', { class: 'grid', x1: sx(v), x2: sx(v), y1: MT, y2: MT + SIZE }));
+      root.appendChild(svg('line', { class: 'grid', x1: ML, x2: ML + SIZE, y1: sy(v), y2: sy(v) }));
+      const tx = svg('text', { x: sx(v), y: MT + SIZE + 16, 'text-anchor': 'middle' });
+      tx.textContent = fmt(v, tickDigits);
+      root.appendChild(tx);
+      const ty = svg('text', { x: ML - 6, y: sy(v) + 4, 'text-anchor': 'end' });
+      ty.textContent = fmt(v, tickDigits);
+      root.appendChild(ty);
+    }
+    root.appendChild(svg('line', { class: 'axis', x1: ML, x2: ML + SIZE, y1: MT + SIZE, y2: MT + SIZE }));
+    root.appendChild(svg('line', { class: 'axis', x1: ML, x2: ML, y1: MT, y2: MT + SIZE }));
+    // Đường y = x được giải thích trong chú giải phía trên, không ghi chữ đè lên vùng vẽ
+    root.appendChild(svg('line', { class: 'identity', x1: sx(lo), y1: sy(lo), x2: sx(hi), y2: sy(hi) }));
+
+    const xLabel = svg('text', { x: ML + SIZE / 2, y: H - 8, 'text-anchor': 'middle' });
+    xLabel.textContent = `Tham chiếu${ind.unit ? ` (${ind.unit})` : ''}`;
+    root.appendChild(xLabel);
+    const yLabel = svg('text', { x: 14, y: MT + SIZE / 2, 'text-anchor': 'middle', transform: `rotate(-90 14 ${MT + SIZE / 2})` });
+    yLabel.textContent = `Ước lượng của trạm${ind.unit ? ` (${ind.unit})` : ''}`;
+    root.appendChild(yLabel);
+
+    for (const p of points) {
+      const info = soilInfo(p.sample.soil_type);
+      const cx = sx(p.x), cy = sy(p.y);
+      root.appendChild(markerShape(info.shape, cx, cy, info.color));
+      const hit = svg('circle', {
+        class: 'hit', cx, cy, r: 12, tabindex: 0,
+        'aria-label': `Mẫu ${p.sample.sample_id}, ${soilLabel(p.sample.soil_type)}: ước lượng ${fmt(p.y, DIGITS[key])}, tham chiếu ${fmt(p.x, DIGITS[key])}${unitText(ind)}`,
+      });
+      const show = () => showTip(p, ind, info, cx, cy, root);
+      hit.addEventListener('pointerenter', show);
+      hit.addEventListener('focus', show);
+      hit.addEventListener('pointerleave', hideTip);
+      hit.addEventListener('blur', hideTip);
+      root.appendChild(hit);
+    }
+    box.appendChild(root);
+  }
+
+  function showTip(p, ind, info, cx, cy, root) {
+    const tip = $('tooltip');
+    tip.replaceChildren();
+    const title = el('div', { className: 't' });
+    title.appendChild(legendKey(info.shape, info.color));
+    title.appendChild(document.createTextNode(`${p.sample.sample_id} · ${soilLabel(p.sample.soil_type)} · ${p.sample.moisture_level}`));
+    tip.appendChild(title);
+    const d = DIGITS[ind.key];
+    const rows = [
+      [fmt(p.y, d) + unitText(ind), 'Ước lượng'],
+      [fmt(p.x, d) + unitText(ind), 'Tham chiếu'],
+      [(p.y - p.x >= 0 ? '+' : '') + fmt(p.y - p.x, d), 'Sai số'],
+    ];
+    for (const [value, label] of rows) {
+      tip.appendChild(el('div', { className: 'r' }, [el('b', { text: value }), el('span', { text: label })]));
+    }
+    // Đổi tọa độ trong viewBox sang tọa độ thật trên màn hình
+    const rect = root.getBoundingClientRect();
+    const boxRect = $('chartBox').getBoundingClientRect();
+    const scale = rect.width / root.viewBox.baseVal.width;
+    let left = rect.left - boxRect.left + cx * scale + 14;
+    const top = rect.top - boxRect.top + cy * scale - 10;
+    tip.style.display = 'block';
+    if (left + tip.offsetWidth > boxRect.width) left = rect.left - boxRect.left + cx * scale - tip.offsetWidth - 14;
+    tip.style.left = Math.max(0, left) + 'px';
+    tip.style.top = Math.max(0, top) + 'px';
+  }
+
+  function hideTip() {
+    $('tooltip').style.display = 'none';
+  }
+
+  // ---------------- Đo nhiễu ----------------
+  let noiseRun = null;    // {target, messages}
+  let noiseResult = null; // {summary, messages}
+
+  function setNoiseUi(running) {
+    $('btnNoiseStart').disabled = running;
+    $('btnNoiseStop').disabled = !running;
+    $('btnNoiseExport').disabled = running || !noiseResult;
+  }
+
+  function startNoise() {
+    if (!isConnected()) {
+      $('noiseStatus').textContent = 'Chưa kết nối broker nên chưa đo được.';
+      return;
+    }
+    const target = Math.max(2, Math.min(1000, Math.round(Number($('noiseM').value) || 100)));
+    noiseRun = { target, messages: [] };
+    noiseResult = null;
+    $('noiseTable').replaceChildren();
+    setNoiseUi(true);
+    $('noiseStatus').textContent = `Đang gom ${target} bản tin (khoảng ${Math.ceil(target * 4 / 60)} phút)...`;
+    log(`Bắt đầu đo nhiễu ${target} bản tin`);
+  }
+
+  function onNoiseMessage(data) {
+    noiseRun.messages.push(Object.assign({ received_at: new Date().toISOString() }, data));
+    const got = noiseRun.messages.length;
+    const left = Math.ceil((noiseRun.target - got) * 4 / 60);
+    $('noiseStatus').textContent = `Đã nhận ${got}/${noiseRun.target} bản tin${got < noiseRun.target ? `, còn khoảng ${left} phút` : ''}.`;
+    if (got >= noiseRun.target) finishNoise();
+  }
+
+  function finishNoise() {
+    const messages = noiseRun.messages;
+    noiseRun = null;
+    const summary = M.noiseSummary(messages);
+    noiseResult = { summary, messages };
+    setNoiseUi(false);
+    const calibrations = new Set(messages.filter((m) => m.adc).map((m) => `${m.adc.dry}/${m.adc.wet}`));
+    const soils = new Set(messages.map((m) => m.soil_type));
+    let note = `Đã đo xong ${summary.m} bản tin có khối adc.`;
+    if (calibrations.size > 1) note += ' Lưu ý: mốc khô/ướt đã đổi trong lúc đo, nên đo lại.';
+    if (soils.size > 1) note += ' Lưu ý: loại đất đã đổi trong lúc đo.';
+    if (summary.m < 2) note += ' Cần ít nhất 2 bản tin để tính độ lệch chuẩn.';
+    $('noiseStatus').textContent = note;
+    renderNoise(summary);
+    log(`Đo nhiễu xong: ${summary.m} bản tin`);
+  }
+
+  function renderNoise(s) {
+    const table = $('noiseTable');
+    table.replaceChildren();
+    table.appendChild(el('thead', null, [el('tr', null, [
+      el('th', { className: 'l', scope: 'col', text: 'Đại lượng' }),
+      el('th', { scope: 'col', text: 'Đơn vị ADC' }),
+      el('th', { scope: 'col', text: '% độ ẩm' }),
+    ])]));
+    const reduceTimes = isNum(s.filteredSd) && s.filteredSd > 0 && isNum(s.rawNoiseMean) ? s.rawNoiseMean / s.filteredSd : null;
+    const rows = [
+      ['Số bản tin m', String(s.m), ''],
+      ['ADC trung bình', fmt(s.adcMean, 1), ''],
+      ['Mốc khô / ướt', `${isNum(s.dry) ? s.dry : '–'} / ${isNum(s.wet) ? s.wet : '–'}`, ''],
+      ['Nhiễu khi không lọc (trung bình adc.noise)', fmt(s.rawNoiseMean, 2), fmt(s.rawNoisePct, 2)],
+      ['Nhiễu khi có lọc (SD của adc.raw)', fmt(s.filteredSd, 2), fmt(s.filteredSdPct, 2)],
+      ['Mức giảm nhiễu', isNum(s.reductionPercent) ? `${fmt(s.reductionPercent, 1)} %` : '–',
+        isNum(reduceTimes) && reduceTimes >= 1 ? `giảm ${fmt(reduceTimes, 1)} lần` : ''],
+    ];
+    if (isNum(s.reductionPercent) && s.reductionPercent < 0) {
+      $('noiseStatus').textContent += ' Nhiễu sau lọc lớn hơn trước lọc: độ ẩm đã trôi trong lúc đo'
+        + ' (đầu dò bị chạm, đất đang khô dần hoặc vừa tưới). Để cốc đứng yên rồi đo lại.';
+    }
+    const body = el('tbody');
+    for (const [label, adc, pct] of rows) {
+      body.appendChild(el('tr', null, [el('td', { className: 'l', text: label }), el('td', { text: adc }), el('td', { text: pct })]));
+    }
+    table.appendChild(body);
+  }
+
+  function exportNoise() {
+    if (!noiseResult) return;
+    const header = ['received_at', 'timestamp', 'soil_type', 'adc_raw', 'adc_noise', 'adc_dry', 'adc_wet', 'moisture'];
+    const cell = (v) => (v === null || v === undefined ? '' : String(v).includes(',') ? `"${String(v)}"` : String(v));
+    const lines = [header.join(',')];
+    for (const m of noiseResult.messages) {
+      const adc = m.adc || {};
+      lines.push([m.received_at, m.timestamp, m.soil_type, adc.raw, adc.noise, adc.dry, adc.wet, m.telemetry.moisture].map(cell).join(','));
+    }
+    download(`nhieu-${stamp()}.csv`, '﻿' + lines.join('\r\n') + '\r\n');
+  }
+
+  // ---------------- Gắn sự kiện ----------------
+  $('btnConnect').addEventListener('click', connect);
+  $('btnDisconnect').addEventListener('click', disconnect);
+  $('btnCapture').addEventListener('click', startCapture);
+  $('btnCancelCapture').addEventListener('click', () => cancelCapture());
+  $('btnExport').addEventListener('click', () => download(`mau-dat-${stamp()}.csv`, M.toCsv(samples)));
+  $('btnImport').addEventListener('click', () => $('fileImport').click());
+  $('fileImport').addEventListener('change', (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (file) importCsv(file);
+    e.target.value = '';
+  });
+  $('btnClear').addEventListener('click', () => {
+    if (samples.length === 0 || !confirm(`Xóa cả ${samples.length} mẫu? Nên xuất CSV trước.`)) return;
+    samples = [];
+    saveSamples();
+    $('sampleId').value = nextSampleId();
+    renderSamples();
+    renderResults();
+  });
+  $('soilFilter').addEventListener('change', renderResults);
+  $('chartIndicator').addEventListener('change', renderChart);
+  $('btnNoiseStart').addEventListener('click', startNoise);
+  $('btnNoiseStop').addEventListener('click', () => { if (noiseRun) finishNoise(); });
+  $('btnNoiseExport').addEventListener('click', exportNoise);
+
+  $('sampleId').value = nextSampleId();
+  renderLive();
+  renderSamples();
+  renderResults();
+  setNoiseUi(false);
+  connect();
+})();
+</script>
+</body>
+</html>

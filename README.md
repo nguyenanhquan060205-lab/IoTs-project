@@ -33,6 +33,7 @@ soil-nutrient-analysis-system/
 ├── SPECIFICATION.md       # Đặc tả kỹ thuật, sơ đồ nối chân, thuật toán ước lượng, Rule Engine
 ├── docs/                  # Tài liệu sơ đồ mạch, hướng dẫn chi tiết
 ├── firmware/              # Mã nguồn C++ cho ESP32 (PlatformIO / Arduino)
+├── web/                   # Trang web đánh giá sai số (MAE, RMSE, MAPE) và đo nhiễu từ bản tin MQTT
 ├── backend/               # Dịch vụ Backend (tùy chọn lưu CSDL lịch sử)
 └── mobile/                # Ứng dụng di động Flutter (Android & iOS)
 ```
@@ -42,3 +43,5 @@ soil-nutrient-analysis-system/
 ## 🚀 Hướng dẫn bắt đầu nhanh
 
 Chi tiết sơ đồ nối chân ESP32, thuật toán ước lượng theo loại đất, giao thức MQTT, công thức đánh giá nông học và danh mục linh kiện xem tại [SPECIFICATION.md](./SPECIFICATION.md).
+
+Để đánh giá sai số so với bộ dụng cụ thử đất, mở `web/evaluation.html` bằng trình duyệt; hướng dẫn tại [web/README.md](./web/README.md).
