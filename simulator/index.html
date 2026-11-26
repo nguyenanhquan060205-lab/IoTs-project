@@ -92,6 +92,49 @@
             50% { opacity: 0.4; transform: scale(0.9); }
         }
 
+        .conn-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: flex-end;
+            margin-bottom: 20px;
+        }
+
+        .conn-form label {
+            display: grid;
+            gap: 4px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .conn-form input {
+            user-select: text;
+            -webkit-user-select: text;
+            background: var(--surface-card);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 8px;
+            color: var(--text-main);
+            font: 13px 'JetBrains Mono', monospace;
+            padding: 8px 10px;
+            min-width: 200px;
+        }
+
+        .conn-form input:focus-visible,
+        .conn-form button:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 1px;
+        }
+
+        .conn-form button {
+            background: var(--accent);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            cursor: pointer;
+            font: 600 13px 'Outfit', sans-serif;
+            padding: 9px 16px;
+        }
+
         .simulator-grid {
             display: grid;
             grid-template-columns: 380px 1fr 340px;
@@ -372,9 +415,17 @@
         </div>
         <div class="status-badge" id="mqttStatus">
             <span class="status-dot" id="statusDot"></span>
-            <span id="statusText">Đang kết nối MQTT...</span>
+            <span id="statusText">Chưa kết nối MQTT</span>
         </div>
     </header>
+
+    <!-- Broker riêng bắt buộc đăng nhập bằng tài khoản của trạm; broker công cộng thì để trống -->
+    <form class="conn-form" id="connForm">
+        <label>Broker (WSS cổng 8084)<input type="text" id="brokerHost" value="y0601019.ala.asia-southeast1.emqxsl.com" size="38" spellcheck="false"></label>
+        <label>Username<input type="text" id="brokerUser" value="soil_station" spellcheck="false"></label>
+        <label>Password<input type="password" id="brokerPass"></label>
+        <button type="submit">Kết nối</button>
+    </form>
 
     <div class="simulator-grid">
         <!-- CỘT 1: PHẦN CỨNG ẢO ESP32 & OLED -->
@@ -486,7 +537,7 @@
         <!-- CỘT 3: NHẬT KÝ MQTT NETWORK TRAFFIC -->
         <div class="card">
             <div class="card-header">
-                <span>📡 Giao Thức MQTT (broker.emqx.io)</span>
+                <span>📡 Giao Thức MQTT (<span id="brokerLabel">chưa kết nối</span>)</span>
                 <span style="font-size: 11px; color: #38bdf8;">WSS :8084</span>
             </div>
 
@@ -497,19 +548,19 @@
     </div>
 
     <footer>
-        Hệ Thống Dinh Dưỡng Đất Thông Minh IoT • Kết nối song song hai chiều với App Flutter qua HiveMQ / EMQX
+        Hệ Thống Dinh Dưỡng Đất Thông Minh IoT • Kết nối song song hai chiều với App Flutter qua broker EMQX
     </footer>
 
     <script>
-        // CẤU HÌNH MQTT WEBSOCKET
-        const MQTT_HOST = "broker.emqx.io";
-        const MQTT_PORT = 8084; // WebSocket SSL port của EMQX
+        // CẤU HÌNH MQTT WEBSOCKET (broker và tài khoản lấy từ ô nhập trên đầu trang)
+        const MQTT_PORT = 8084; // WebSocket có TLS, broker.emqx.io và EMQX Serverless đều dùng cổng này
         const CLIENT_ID = "web_esp32_sim_" + Math.floor(Math.random() * 100000);
         const TOPIC_TELEMETRY = "soil_station/1/telemetry";
         const TOPIC_COMMAND = "soil_station/1/command";
         const TOPIC_STATUS = "soil_station/1/status";
 
         let client;
+        let retryTimer;
 
         const ADC_DRY = 200;
         const ADC_WET = 3000;
@@ -628,18 +679,44 @@
 
         slider.addEventListener("input", updateUI);
 
+        function setStatus(color, text) {
+            document.getElementById("statusDot").style.backgroundColor = color;
+            document.getElementById("statusText").innerText = text;
+        }
+
         // MQTT CLIENT SETUP
         function initMQTT() {
-            client = new Paho.MQTT.Client(MQTT_HOST, MQTT_PORT, "/mqtt", CLIENT_ID);
+            clearTimeout(retryTimer);
+            const host = document.getElementById("brokerHost").value.trim() || "broker.emqx.io";
+            const username = document.getElementById("brokerUser").value.trim();
+            const password = document.getElementById("brokerPass").value;
+            // Broker riêng không cho đăng nhập thiếu mật khẩu, nên chờ người dùng nhập thay vì thử lại liên tục
+            if (username && !password) {
+                setStatus("#f59e0b", `Nhập mật khẩu ${username} rồi bấm Kết nối`);
+                document.getElementById("brokerPass").focus();
+                return;
+            }
 
-            client.onConnectionLost = function(responseObject) {
-                document.getElementById("statusDot").style.backgroundColor = "#ef4444";
-                document.getElementById("statusText").innerText = "Mất kết nối MQTT!";
+            // Bấm Kết nối lần nữa thì đóng phiên cũ, callback của phiên cũ bỏ qua nhờ so với client hiện tại
+            if (client) {
+                const old = client;
+                client = null;
+                try { if (old.isConnected()) old.disconnect(); } catch (e) { /* phiên cũ đã đóng */ }
+            }
+            const me = new Paho.MQTT.Client(host, MQTT_PORT, "/mqtt", CLIENT_ID);
+            client = me;
+            document.getElementById("brokerLabel").innerText = host;
+            setStatus("#f59e0b", "Đang kết nối MQTT...");
+
+            me.onConnectionLost = function(responseObject) {
+                if (client !== me) return;
+                setStatus("#ef4444", "Mất kết nối MQTT!");
                 log("[MQTT] Mất kết nối: " + responseObject.errorMessage, "in");
-                setTimeout(initMQTT, 3000);
+                retryTimer = setTimeout(initMQTT, 3000);
             };
 
-            client.onMessageArrived = function(message) {
+            me.onMessageArrived = function(message) {
+                if (client !== me) return;
                 try {
                     JSON.parse(message.payloadString);
                     log(`[MQTT NHẬN TỪ APP] Topic: ${message.destinationName} -> ${message.payloadString}`, "in");
@@ -648,27 +725,35 @@
                 }
             };
 
-            client.connect({
+            const options = {
                 useSSL: true,
                 onSuccess: function() {
-                    document.getElementById("statusDot").style.backgroundColor = "#34d399";
-                    document.getElementById("statusText").innerText = "Đã kết nối EMQX Cloud";
-                    log(`[MQTT] Đã kết nối Broker ${MQTT_HOST}:${MQTT_PORT}`, "out");
+                    if (client !== me) return;
+                    setStatus("#34d399", `Đã kết nối ${host}${username ? " (" + username + ")" : ""}`);
+                    log(`[MQTT] Đã kết nối Broker ${host}:${MQTT_PORT}`, "out");
 
-                    client.subscribe(TOPIC_COMMAND);
+                    me.subscribe(TOPIC_COMMAND);
                     log(`[MQTT] Lắng nghe lệnh App tại: ${TOPIC_COMMAND}`, "out");
-
-                    // Bắt đầu gửi telemetry
-                    setInterval(publishTelemetry, 3500);
                 },
                 onFailure: function(e) {
-                    document.getElementById("statusDot").style.backgroundColor = "#ef4444";
-                    document.getElementById("statusText").innerText = "Lỗi kết nối MQTT";
-                    log("[MQTT] Lỗi kết nối Broker: " + JSON.stringify(e), "in");
-                    setTimeout(initMQTT, 5000);
+                    if (client !== me) return;
+                    // Sai mật khẩu thì broker đóng WebSocket ngay, Paho chỉ báo "Socket error" nên nhắc kiểm tra mật khẩu
+                    setStatus("#ef4444", username ? "Lỗi kết nối: kiểm tra lại mật khẩu và mạng" : "Lỗi kết nối MQTT");
+                    log("[MQTT] Lỗi kết nối Broker: " + (e.errorMessage || JSON.stringify(e)), "in");
+                    retryTimer = setTimeout(initMQTT, 5000);
                 }
-            });
+            };
+            if (username) {
+                options.userName = username;
+                options.password = password;
+            }
+            me.connect(options);
         }
+
+        document.getElementById("connForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            initMQTT();
+        });
 
         function publishTelemetry() {
             if (!client || !client.isConnected()) return;
@@ -701,8 +786,10 @@
             oledTimer.innerText = String(now.getMinutes()).padStart(2, '0') + ":" + String(now.getSeconds()).padStart(2, '0');
         }, 1000);
 
-        // Khởi động
+        // Khởi động. Chỉ hẹn giờ gửi telemetry 1 lần: publishTelemetry tự bỏ qua khi chưa kết nối,
+        // nên nối lại broker không sinh thêm vòng gửi trùng
         updateUI();
+        setInterval(publishTelemetry, 3500);
         initMQTT();
     </script>
 </body>
