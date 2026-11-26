@@ -9,6 +9,7 @@
 #include <Adafruit_SSD1306.h>
 #include <Preferences.h>
 #include <time.h>
+#include <esp_sntp.h>
 #include "soil_estimator.h"
 #include "adc_filter.h"
 #include "root_ca.h"
@@ -90,6 +91,17 @@ unsigned long lastMqttAttempt = 0;
 unsigned long lastWifiAttempt = 0;
 unsigned long lastStatusPublish = 0;
 String mqttClientId;
+// Đo thời gian lấy giờ NTP (Bảng 4.2 của báo cáo): mốc lúc WiFi vừa nối, mốc lúc SNTP đặt giờ lần đầu
+// (ghi trong callback của SNTP nên không bị lệch khi loop() đang bận bắt tay TLS) và cờ đã in log hay chưa
+unsigned long wifiConnectedAt = 0;
+bool wifiWasUp = false;
+volatile unsigned long ntpSyncedAt = 0;
+bool ntpLogged = false;
+
+void onTimeSynced(struct timeval* tv) {
+    (void)tv;
+    if (ntpSyncedAt == 0) ntpSyncedAt = millis();  // SNTP đồng bộ lại mỗi giờ, chỉ giữ lần đầu
+}
 const unsigned long TELEMETRY_INTERVAL = 4000;   // 4 giây gửi 1 lần
 // Gửi lại "online" (giữ lại trên broker) 30 giây 1 lần. Trạm khởi động lại thì phiên MQTT cũ còn treo trên broker
 // khoảng 22 giây (1,5 lần keep-alive 15 giây) rồi broker mới đăng LWT "offline" của phiên cũ, đè lên "online"
@@ -286,6 +298,8 @@ void setupWiFi() {
     }
 
     if (WiFi.status() == WL_CONNECTED) {
+        wifiConnectedAt = millis();
+        wifiWasUp = true;
         Serial.println("\n✅ WiFi da ket noi!");
         Serial.print("   SSID: ");
         Serial.println(WiFi.SSID());
@@ -322,17 +336,21 @@ void tryConnectMqtt() {
     mqttClientId = "ESP32_Soil_" + String(random(0xffff), HEX);
     // LWT: trạm rút điện hay mất mạng đột ngột thì broker tự đăng "offline" (giữ lại) lên topic status
     bool hasAccount = strlen(MQTT_USERNAME) > 0;
+    // Đo thời gian mở kết nối (gồm bắt tay TLS) và gói CONNECT, dùng cho Bảng 4.3 của báo cáo
+    unsigned long connectStarted = millis();
     bool connected = mqttClient.connect(mqttClientId.c_str(),
                                         hasAccount ? MQTT_USERNAME : nullptr,
                                         hasAccount ? MQTT_PASSWORD : nullptr,
                                         TOPIC_STATUS, 1, true, "{\"status\":\"offline\"}");
+    unsigned long connectMs = millis() - connectStarted;
     if (!connected) {
         // rc = -2: không mở được kết nối (sai host/cổng, chứng chỉ TLS), rc = 4/5: sai tài khoản
-        Serial.printf(" That bai, rc=%d. Thu lai sau %lu giay...\n", mqttClient.state(), MQTT_RETRY_INTERVAL / 1000);
+        Serial.printf(" That bai sau %lu ms, rc=%d. Thu lai sau %lu giay...\n",
+                      connectMs, mqttClient.state(), MQTT_RETRY_INTERVAL / 1000);
         return;
     }
 
-    Serial.println(" Thanh cong!");
+    Serial.printf(" Thanh cong! (%lu ms, heap trong %u byte)\n", connectMs, (unsigned)ESP.getFreeHeap());
     mqttClient.subscribe(TOPIC_COMMAND);
     Serial.printf("Da dang ky lang nghe: %s\n", TOPIC_COMMAND);
     publishOnlineStatus();
@@ -396,6 +414,7 @@ void setup() {
 
     // Kết nối mạng, đồng bộ giờ thực Việt Nam (UTC+7) qua NTP, chạy nền và tự thử lại
     setupWiFi();
+    sntp_set_time_sync_notification_cb(onTimeSynced);
     configTzTime("ICT-7", "pool.ntp.org", "time.google.com");
 
     // MQTT qua TLS: xác thực chứng chỉ broker bằng Root CA, chống kết nối nhầm máy chủ giả
@@ -419,6 +438,23 @@ void loop() {
         lastWifiAttempt = millis();
         if (wifiUp) Serial.printf("[WIFI] Da ket noi lai \"%s\"\n", WiFi.SSID().c_str());
     }
+    // Ghi lại lúc WiFi vừa nối (kể cả khi ESP32 tự nối lại) để đo thời gian lấy giờ NTP
+    if (wifiUp && !wifiWasUp) wifiConnectedAt = millis();
+    wifiWasUp = wifiUp;
+
+    // In một lần mỗi lần khởi động: sau bao lâu kể từ khi có WiFi thì SNTP đặt được giờ thực
+    unsigned long syncedAt = ntpSyncedAt;
+    if (!ntpLogged && syncedAt != 0 && wifiConnectedAt != 0 && syncedAt >= wifiConnectedAt) {
+        time_t epoch = time(nullptr);
+        struct tm timeinfo;
+        char when[20];
+        localtime_r(&epoch, &timeinfo);
+        strftime(when, sizeof(when), "%Y-%m-%d %H:%M:%S", &timeinfo);
+        Serial.printf("[NTP] Da co gio sau %lu ms ke tu khi co WiFi: %s (ICT)\n",
+                      syncedAt - wifiConnectedAt, when);
+        ntpLogged = true;
+    }
+
     if (wifiUp) {
         if (!mqttClient.connected() && millis() - lastMqttAttempt >= MQTT_RETRY_INTERVAL) {
             lastMqttAttempt = millis();

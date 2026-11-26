@@ -43,6 +43,7 @@ Lần đầu build, PlatformIO tải toolchain ESP32 (chiếm khoảng 4 GB ổ 
 - **MQTT**: broker trong `secrets.h`, mất kết nối thì 5 giây thử lại. Topic `soil_station/1/status` nhận `online` (giữ lại trên broker) khi trạm kết nối và cứ 30 giây gửi lại 1 lần, và `offline` qua LWT khi trạm mất kết nối đột ngột. Trên mạng ảo `Wokwi-GUEST` trạm dùng cổng 1883 không mã hóa.
 - **Lệnh từ App** (`soil_station/1/command`): `SET_SOIL_TYPE`, `CALIBRATE` (`dry` / `wet`). Sau mỗi lệnh trạm gửi ngay một bản tin để App xác nhận.
 - **Hiệu chuẩn**: loại đất và 2 mốc lưu trong NVS, rút điện vẫn giữ. Mốc mới bị từ chối nếu cách mốc còn lại dưới 300 ADC, nhưng chỉ khi mốc còn lại đã được đo thật (không so với số mặc định 200 / 3000).
+- **Log đo thời gian** (dùng cho Chương 4 của báo cáo): mỗi lần khởi động in một lần `[NTP] Da co gio sau ... ms ke tu khi co WiFi: <giờ> (ICT)`. Mỗi lần kết nối broker in `Thanh cong! (... ms, heap trong ... byte)`, trong đó số ms gồm cả bắt tay TLS và gói CONNECT.
 - **Còi**: kêu 3 tiếng ngắn khi đất vừa chuyển sang quá khô (dưới 35%) hoặc ngập úng (trên 80%). Phải về hẳn khoảng 38 - 77% mới hết báo, nên độ ẩm dao động quanh ngưỡng không làm còi kêu liên tục. Trước khi hiệu chuẩn, còi có thể kêu một lần lúc khởi động vì độ ẩm tính theo mốc mặc định.
 
 ## Lỗi thường gặp
@@ -53,8 +54,8 @@ Lần đầu build, PlatformIO tải toolchain ESP32 (chiếm khoảng 4 GB ổ 
 | Nạp hay đứt giữa chừng (board CH340, cáp dài) | Thêm `upload_speed = 115200` vào `platformio.ini` |
 | `could not open port` | Đóng Serial Monitor hoặc Arduino IDE đang giữ cổng |
 | `Chua vao duoc WiFi` | Sai tên/mật khẩu trong `secrets.h`, hoặc mạng 5 GHz |
-| `That bai, rc=-2` | Không mở được kết nối tới broker: sai host/cổng, mạng chặn 8883, hoặc Root CA không khớp |
-| `That bai, rc=4` / `rc=5` | Sai tài khoản MQTT |
+| `That bai sau ... ms, rc=-2` | Không mở được kết nối tới broker: sai host/cổng, mạng chặn 8883, hoặc Root CA không khớp |
+| `That bai sau ... ms, rc=4` / `rc=5` | Sai tài khoản MQTT |
 | `Bo qua: ADC ... qua gan moc ... da luu` | Đầu dò chưa được lau khô hoặc chưa nhúng vào nước khi lưu mốc |
 
 Sơ đồ đấu nối đầy đủ xem [`HARDWARE_CHECKLIST.md`](../HARDWARE_CHECKLIST.md), giao thức và thuật toán xem [`SPECIFICATION.md`](../SPECIFICATION.md).
